@@ -1,0 +1,882 @@
+/* ======================================================================
+   Page Programme - Jubilé 2027-2028
+   Couleurs : Bleu marine (#0b3d91) + Rose (#e83e8c) pour Association
+             Bleu marine (#0b3d91) + Jaune (#ffd700) pour Chorale
+   ==================================================================== */
+
+/* Hero Section */
+.programme-hero {
+    background: linear-gradient(135deg, var(--marine-blue), var(--rose));
+    color: var(--white);
+    padding: 140px 0 80px;
+    margin-top: var(--header-height);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.programme-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.programme-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    font-family: 'Playfair Display', serif;
+}
+
+.programme-hero p {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.programme-period {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+}
+
+.period-badge {
+    padding: 12px 35px;
+    border-radius: 50px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: var(--transition-normal);
+    backdrop-filter: blur(5px);
+}
+
+.period-badge:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+}
+
+.period-badge.active {
+    background: var(--gold);
+    color: var(--marine-blue);
+    border-color: var(--white);
+    box-shadow: var(--shadow-md);
+}
+
+/* Filtres Section */
+.filtres-section {
+    padding: 30px 0;
+    background: var(--light);
+    position: sticky;
+    top: var(--header-height);
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.filtres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.filtre-btn {
+    padding: 10px 24px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--marine-blue);
+    background: var(--white);
+    color: var(--marine-blue);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-normal);
+    font-size: 0.9rem;
+}
+
+.filtre-btn:hover {
+    background: var(--marine-blue-light);
+    transform: translateY(-2px);
+}
+
+.filtre-btn.active {
+    background: linear-gradient(135deg, var(--marine-blue), var(--rose));
+    color: var(--white);
+    border-color: transparent;
+}
+
+/* Calendrier Section */
+.calendrier-section {
+    background: var(--white);
+    padding: 60px 0;
+}
+
+.calendrier-annee {
+    margin-bottom: 70px;
+}
+
+.annee-title {
+    font-size: 2rem;
+    color: var(--marine-blue);
+    margin-bottom: 2rem;
+    padding-bottom: 15px;
+    border-bottom: 3px solid var(--gold);
+    display: inline-block;
+    font-family: 'Playfair Display', serif;
+}
+
+.annee-2027-title {
+    border-bottom-color: var(--rose);
+}
+
+.annee-2028-title {
+    border-bottom-color: var(--gold);
+}
+
+/* Mois Grid */
+.mois-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 30px;
+}
+
+.mois-card {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition-normal);
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.mois-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.mois-header {
+    background: linear-gradient(135deg, var(--marine-blue), #1a3a6e);
+    color: var(--white);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.mois-header h4 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.mois-badge {
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.25);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mois-badge.sport {
+    background: var(--gold-dark);
+    color: var(--marine-blue);
+}
+
+.mois-badge.musique {
+    background: var(--gold);
+    color: var(--marine-blue);
+}
+
+.mois-badge.spirituel {
+    background: var(--rose);
+    color: var(--white);
+}
+
+.mois-events {
+    padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.mois-events::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mois-events::-webkit-scrollbar-track {
+    background: var(--light);
+    border-radius: 3px;
+}
+
+.mois-events::-webkit-scrollbar-thumb {
+    background: var(--marine-blue);
+    border-radius: 3px;
+}
+
+/* Event Items */
+.event-item {
+    margin-bottom: 15px;
+    background: var(--light);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    border-left: 4px solid var(--marine-blue);
+    transition: var(--transition-normal);
+    position: relative;
+}
+
+.event-item:last-child {
+    margin-bottom: 0;
+}
+
+.event-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(5px);
+}
+
+.event-item.highlight {
+    border-left-color: var(--gold);
+    background: linear-gradient(135deg, var(--gold-light), var(--white));
+    position: relative;
+    overflow: hidden;
+}
+
+.event-item.highlight::before {
+    content: '⭐';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.2rem;
+    opacity: 0.5;
+}
+
+.event-date {
+    font-weight: 700;
+    color: var(--rose);
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    display: inline-block;
+    background: var(--rose-light);
+    padding: 3px 10px;
+    border-radius: 15px;
+}
+
+.event-content h5 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: var(--marine-blue);
+    font-weight: 600;
+}
+
+.event-content p {
+    font-size: 0.9rem;
+    color: var(--gray);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.event-lieu, .event-time {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.event-lieu i, .event-time i {
+    color: var(--gold-dark);
+    font-size: 0.75rem;
+}
+
+.event-link {
+    display: inline-block;
+    color: var(--rose);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: var(--transition-normal);
+    margin-top: 8px;
+}
+
+.event-link:hover {
+    color: var(--gold-dark);
+    transform: translateX(5px);
+}
+
+/* Download Section */
+.download-section {
+    background: linear-gradient(135deg, var(--marine-blue-light), var(--gold-light));
+    padding: 60px 0;
+}
+
+.download-card {
+    background: var(--white);
+    border-radius: var(--border-radius-xl);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow-lg);
+    flex-wrap: wrap;
+    gap: 40px;
+    transition: var(--transition-normal);
+}
+
+.download-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.download-content {
+    flex: 1;
+    min-width: 280px;
+}
+
+.download-content h3 {
+    color: var(--marine-blue);
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.download-content p {
+    margin-bottom: 25px;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--dark);
+}
+
+.download-info {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.info-item i {
+    font-size: 2rem;
+    color: var(--rose);
+}
+
+.info-item h5 {
+    margin-bottom: 5px;
+    color: var(--marine-blue);
+}
+
+.info-item p {
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.download-btns {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.download-btns .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+}
+
+.file-details {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+.download-image {
+    width: 180px;
+    height: 180px;
+    background: linear-gradient(135deg, var(--marine-blue), var(--rose));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 4rem;
+    flex-shrink: 0;
+    transition: var(--transition-normal);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.download-image:hover {
+    transform: rotate(5deg) scale(1.05);
+}
+
+/* Next Event Banner */
+.next-event-banner {
+    background: linear-gradient(135deg, var(--marine-blue), var(--rose));
+    color: var(--white);
+    padding: 30px 0;
+    margin-bottom: 40px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-lg);
+    animation: fadeIn 0.6s ease-out;
+}
+
+.next-event-content {
+    text-align: center;
+}
+
+.next-event-content h3 {
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+}
+
+.next-event-details {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    backdrop-filter: blur(10px);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.next-event-details h4 {
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.next-event-details p {
+    opacity: 0.95;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+}
+
+.next-event-date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Countdown */
+.countdown {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px 18px;
+    border-radius: var(--border-radius);
+    min-width: 80px;
+    backdrop-filter: blur(5px);
+}
+
+.countdown-number {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Montserrat', monospace;
+    line-height: 1;
+}
+
+.countdown-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.mois-card {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+    animation-fill-mode: forwards;
+}
+
+.mois-card:nth-child(1) { animation-delay: 0.1s; }
+.mois-card:nth-child(2) { animation-delay: 0.2s; }
+.mois-card:nth-child(3) { animation-delay: 0.3s; }
+.mois-card:nth-child(4) { animation-delay: 0.4s; }
+.mois-card:nth-child(5) { animation-delay: 0.5s; }
+.mois-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .mois-grid {
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 25px;
+    }
+}
+
+@media (max-width: 992px) {
+    .programme-hero {
+        padding: 110px 0 60px;
+    }
+    
+    .programme-hero h1 {
+        font-size: 2.8rem;
+    }
+    
+    .programme-hero p {
+        font-size: 1.1rem;
+    }
+    
+    .annee-title {
+        font-size: 1.8rem;
+    }
+    
+    .mois-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .programme-hero {
+        padding: 90px 0 50px;
+    }
+    
+    .programme-hero h1 {
+        font-size: 2.2rem;
+        padding: 0 15px;
+    }
+    
+    .programme-hero p {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+    
+    .programme-period {
+        gap: 12px;
+        padding: 0 15px;
+    }
+    
+    .period-badge {
+        padding: 8px 20px;
+        font-size: 0.85rem;
+    }
+    
+    .filtres-section {
+        padding: 20px 0;
+    }
+    
+    .filtre-btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+        flex: 1 0 auto;
+        min-width: calc(50% - 8px);
+    }
+    
+    .calendrier-section {
+        padding: 40px 0;
+    }
+    
+    .calendrier-annee {
+        margin-bottom: 50px;
+        padding: 0 15px;
+    }
+    
+    .annee-title {
+        font-size: 1.6rem;
+        text-align: center;
+        display: block;
+    }
+    
+    .mois-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .mois-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .mois-header h4 {
+        font-size: 1.2rem;
+    }
+    
+    .mois-events {
+        padding: 15px;
+        max-height: 400px;
+    }
+    
+    .event-item {
+        padding: 12px;
+    }
+    
+    .event-content h5 {
+        font-size: 1rem;
+    }
+    
+    .event-content p {
+        font-size: 0.85rem;
+    }
+    
+    .download-section {
+        padding: 40px 0;
+    }
+    
+    .download-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+        margin: 0 15px;
+    }
+    
+    .download-content {
+        min-width: auto;
+    }
+    
+    .download-info {
+        justify-content: center;
+    }
+    
+    .download-btns {
+        justify-content: center;
+    }
+    
+    .download-image {
+        width: 140px;
+        height: 140px;
+        font-size: 3rem;
+        margin-top: 20px;
+    }
+    
+    .next-event-banner {
+        padding: 20px 0;
+        margin: 0 15px 30px 15px;
+    }
+    
+    .next-event-content h3 {
+        font-size: 1.2rem;
+    }
+    
+    .countdown {
+        gap: 12px;
+    }
+    
+    .countdown-item {
+        min-width: 65px;
+        padding: 8px 12px;
+    }
+    
+    .countdown-number {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .programme-hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .programme-hero p {
+        font-size: 0.9rem;
+    }
+    
+    .period-badge {
+        width: 90%;
+        max-width: 280px;
+        text-align: center;
+    }
+    
+    .programme-period {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .filtre-btn {
+        min-width: calc(50% - 6px);
+        flex: 0 0 calc(50% - 6px);
+        text-align: center;
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+    
+    .annee-title {
+        font-size: 1.4rem;
+    }
+    
+    .mois-header h4 {
+        font-size: 1.1rem;
+    }
+    
+    .event-date {
+        font-size: 0.75rem;
+    }
+    
+    .event-lieu, .event-time {
+        font-size: 0.7rem;
+        margin-right: 10px;
+    }
+    
+    .download-btns {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+    }
+    
+    .download-btns .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .download-image {
+        width: 110px;
+        height: 110px;
+        font-size: 2.5rem;
+    }
+    
+    .countdown-item {
+        min-width: 55px;
+        padding: 6px 10px;
+    }
+    
+    .countdown-number {
+        font-size: 1.2rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.6rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .programme-hero h1 {
+        font-size: 1.6rem;
+    }
+    
+    .filtre-btn {
+        min-width: 100%;
+        flex: 0 0 100%;
+    }
+    
+    .mois-card {
+        margin: 0;
+    }
+    
+    .download-card {
+        padding: 20px 15px;
+    }
+    
+    .download-content h3 {
+        font-size: 1.4rem;
+    }
+    
+    .countdown {
+        gap: 8px;
+    }
+    
+    .countdown-item {
+        min-width: 48px;
+        padding: 5px 8px;
+    }
+    
+    .countdown-number {
+        font-size: 1rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .header, .filtres-section, .download-section, .footer, .mobile-menu-btn {
+        display: none;
+    }
+    
+    .programme-hero {
+        background: var(--marine-blue);
+        padding: 40px 0;
+        margin-top: 0;
+    }
+    
+    .mois-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .event-item {
+        break-inside: avoid;
+    }
+    
+    .calendrier-section {
+        padding: 20px 0;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

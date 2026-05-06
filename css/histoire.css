@@ -1,0 +1,730 @@
+/* =========================================================
+   PAGE HISTOIRE - Jubilé 2027-2028
+   Couleurs : Bleu marine (#0b3d91) + Rose (#e83e8c)
+             Bleu marine (#0b3d91) + Jaune (#ffd700)
+   Mise à jour : Mars 2026
+============================================================ */
+
+:root {
+    --marine-blue: #0b3d91;
+    --marine-blue-dark: #051432;
+    --marine-blue-light: rgba(10, 31, 68, 0.1);
+    --rose: #e83e8c;
+    --rose-dark: #c2185b;
+    --rose-light: rgba(232, 62, 140, 0.1);
+    --gold: #ffd700;
+    --gold-dark: #e6c300;
+    --gold-light: rgba(255, 215, 0, 0.1);
+    --white: #ffffff;
+    --light: #f8f9fa;
+    --gray: #6c757d;
+    --gray-dark: #343a40;
+    --darker: #212529;
+    --border-radius: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.16);
+    --transition: all 0.3s ease;
+}
+
+/* Hero Section */
+.histoire-hero {
+    background: linear-gradient(135deg, rgba(10, 31, 68, 0.92), rgba(10, 31, 68, 0.85)), url('../images/histoire-hero-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+    padding: 140px 0 80px;
+    margin-top: var(--header-height);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.histoire-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.histoire-hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    font-family: 'Playfair Display', serif;
+}
+
+.histoire-hero p {
+    font-size: 1.2rem;
+    opacity: 0.95;
+    position: relative;
+    z-index: 1;
+}
+
+/* Bannière Mars 2026 */
+.info-banner-mars {
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--marine-blue);
+    padding: 15px 0;
+    position: relative;
+    z-index: 10;
+    box-shadow: var(--shadow-md);
+}
+
+.info-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    text-align: center;
+}
+
+.info-banner-content i {
+    font-size: 2rem;
+    background: var(--marine-blue);
+    color: var(--gold);
+    padding: 12px;
+    border-radius: 50%;
+}
+
+.info-banner-content div {
+    flex: 1;
+    min-width: 200px;
+}
+
+.info-banner-content strong {
+    font-size: 1.1rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.info-banner-content p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.countdown-mini {
+    background: var(--marine-blue);
+    color: var(--gold);
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Timeline */
+.histoire-timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 50px auto 0;
+    padding: 20px 0;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--marine-blue), var(--gold));
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+    position: relative;
+}
+
+.timeline-year {
+    position: absolute;
+    top: -15px;
+    background: var(--marine-blue);
+    color: var(--white);
+    padding: 5px 15px;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 0.9rem;
+    z-index: 2;
+    box-shadow: var(--shadow-sm);
+}
+
+.timeline-content {
+    width: 45%;
+    background: var(--white);
+    padding: 25px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    transition: var(--transition);
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.timeline-content h3 {
+    color: var(--marine-blue);
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.timeline-content p {
+    color: var(--gray-dark);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Événements futurs */
+.timeline-item.future-event .timeline-year {
+    background: var(--gold);
+    color: var(--marine-blue);
+}
+
+.timeline-dot.future-dot {
+    border-color: var(--gold);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+}
+
+.timeline-content.future-content {
+    border-left: 4px solid var(--gold);
+}
+
+.badge-future {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--marine-blue);
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-left: 10px;
+    vertical-align: middle;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+.event-countdown {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: var(--light);
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.event-countdown .countdown-number {
+    font-weight: bold;
+    color: var(--rose);
+    font-size: 1rem;
+}
+
+/* Alternance des cartes timeline */
+.timeline-item:nth-child(odd) .timeline-content {
+    margin-right: auto;
+    margin-left: 5%;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+    margin-left: auto;
+    margin-right: 5%;
+}
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background: var(--white);
+    transform: translateY(-50%) rotate(45deg);
+    box-shadow: var(--shadow-md);
+}
+
+.timeline-item:nth-child(odd) .timeline-content::before {
+    right: -10px;
+}
+
+.timeline-item:nth-child(even) .timeline-content::before {
+    left: -10px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 20px;
+    height: 20px;
+    background: var(--white);
+    border: 4px solid var(--rose);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    transition: var(--transition);
+}
+
+.timeline-item:hover .timeline-dot {
+    transform: translate(-50%, -50%) scale(1.2);
+    border-color: var(--gold);
+}
+
+/* Fondateurs Section */
+.fondateurs-section {
+    background: linear-gradient(135deg, var(--marine-blue-light), var(--gold-light));
+    padding: 80px 0;
+}
+
+.fondateurs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+    margin-top: 3rem;
+}
+
+.fondateur-card {
+    background: var(--white);
+    border-radius: var(--border-radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    padding: 30px 25px;
+    transition: var(--transition);
+}
+
+.fondateur-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.fondateur-photo {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 3rem;
+    transition: var(--transition);
+}
+
+.fondateur-card:hover .fondateur-photo {
+    transform: scale(1.05);
+}
+
+.fondateur-rita .fondateur-photo {
+    background: linear-gradient(135deg, var(--marine-blue), var(--rose));
+}
+
+.fondateur-chorale .fondateur-photo {
+    background: linear-gradient(135deg, var(--marine-blue), var(--gold));
+}
+
+.fondateur-president .fondateur-photo {
+    background: linear-gradient(135deg, var(--marine-blue), var(--rose));
+}
+
+.fondateur-name {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    color: var(--marine-blue);
+    font-weight: 700;
+}
+
+.fondateur-role {
+    color: var(--gray);
+    font-style: italic;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.fondateur-temoignage {
+    color: var(--gray-dark);
+    line-height: 1.6;
+    font-style: normal;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid var(--gold-light);
+}
+
+/* Chiffres Section */
+.chiffres-section {
+    background: linear-gradient(135deg, var(--marine-blue), var(--marine-blue-dark));
+    color: var(--white);
+    padding: 80px 0;
+}
+
+.chiffres-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 40px;
+    text-align: center;
+}
+
+.chiffre-item {
+    padding: 20px;
+}
+
+.chiffre-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.chiffre-text {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.chiffre-note {
+    font-size: 0.7rem;
+    opacity: 0.7;
+    display: block;
+    margin-top: 5px;
+    text-transform: none;
+}
+
+/* Statut actuel - Mars 2026 */
+.current-status-section {
+    padding: 60px 0;
+    background: var(--light);
+}
+
+.status-card {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: var(--white);
+    padding: 35px;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-lg);
+    max-width: 900px;
+    margin: 0 auto;
+    border-left: 5px solid var(--gold);
+    transition: var(--transition);
+}
+
+.status-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-xl);
+}
+
+.status-card i {
+    font-size: 3.5rem;
+    color: var(--rose);
+    background: var(--rose-light);
+    padding: 20px;
+    border-radius: 50%;
+}
+
+.status-content {
+    flex: 1;
+}
+
+.status-content h4 {
+    color: var(--marine-blue);
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.status-content p {
+    margin: 0 0 20px 0;
+    color: var(--gray-dark);
+    line-height: 1.6;
+}
+
+.status-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Galerie */
+.histoire-galerie {
+    padding: 80px 0;
+    background: var(--white);
+}
+
+.galerie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 2rem;
+}
+
+.galerie-item {
+    position: relative;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    height: 250px;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+}
+
+.galerie-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.galerie-item:hover img {
+    transform: scale(1.1);
+}
+
+.galerie-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(10, 31, 68, 0.9), transparent);
+    color: var(--white);
+    padding: 20px;
+    transform: translateY(100%);
+    transition: var(--transition);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.galerie-item:hover .galerie-overlay {
+    transform: translateY(0);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.timeline-item.animated .timeline-content {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .histoire-hero h1 {
+        font-size: 2.8rem;
+    }
+    
+    .chiffre-number {
+        font-size: 2.8rem;
+    }
+    
+    .status-card {
+        margin: 0 20px;
+        padding: 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    .histoire-hero {
+        padding: 100px 0 60px;
+    }
+    
+    .histoire-hero h1 {
+        font-size: 2.2rem;
+    }
+    
+    .timeline-line {
+        left: 30px;
+    }
+    
+    .timeline-content {
+        width: calc(100% - 80px);
+        margin-left: 80px !important;
+        margin-right: 0 !important;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content::before,
+    .timeline-item:nth-child(even) .timeline-content::before {
+        left: -10px;
+        right: auto;
+    }
+    
+    .timeline-dot {
+        left: 30px;
+    }
+    
+    .timeline-year {
+        left: 15px;
+        transform: none;
+    }
+    
+    .fondateurs-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 0 20px;
+    }
+    
+    .chiffres-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+    
+    .chiffre-number {
+        font-size: 2.5rem;
+    }
+    
+    .status-card {
+        flex-direction: column;
+        text-align: center;
+        margin: 0 20px;
+    }
+    
+    .status-buttons {
+        justify-content: center;
+    }
+    
+    .galerie-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 20px;
+    }
+    
+    .galerie-item {
+        height: 220px;
+    }
+    
+    .info-banner-content {
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
+    }
+    
+    .countdown-mini {
+        white-space: normal;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .histoire-hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .histoire-hero p {
+        font-size: 1rem;
+    }
+    
+    .timeline-content {
+        padding: 18px;
+        margin-left: 70px !important;
+        width: calc(100% - 70px);
+    }
+    
+    .timeline-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .timeline-content p {
+        font-size: 0.9rem;
+    }
+    
+    .timeline-year {
+        font-size: 0.75rem;
+        padding: 3px 12px;
+    }
+    
+    .chiffres-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .chiffre-number {
+        font-size: 2.2rem;
+    }
+    
+    .fondateur-card {
+        padding: 20px;
+    }
+    
+    .fondateur-photo {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+    }
+    
+    .fondateur-name {
+        font-size: 1.2rem;
+    }
+    
+    .status-card {
+        padding: 20px;
+    }
+    
+    .status-card i {
+        font-size: 2.5rem;
+        padding: 15px;
+    }
+    
+    .status-buttons .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .header, .info-banner-mars, .footer, .mobile-menu-btn, .status-buttons {
+        display: none;
+    }
+    
+    .histoire-hero {
+        background: var(--marine-blue);
+        padding: 40px 0;
+        margin-top: 0;
+    }
+    
+    .timeline-content {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

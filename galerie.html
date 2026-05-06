@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Galerie photos et vidéos du Jubilé 2027-2028. Découvrez les moments forts des célébrations, concerts, événements sportifs et culturels.">
+    <meta name="keywords" content="galerie, photos, vidéos, Jubilé, Sainte Rita, Chorale La Foi, concerts, football, The Voïx, Miss Bè-Kpota">
+    <title>Galerie | Photos et Vidéos du Jubilé 2027-2028</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/galerie.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-image">SR</div>
+                    <div class="logo-text">
+                        <div class="logo-title">Jubilé 2027-2028</div>
+                        <div class="logo-subtitle">50 ans · 25 ans</div>
+                    </div>
+                </a>
+
+                <nav class="nav-menu" id="navMenu">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="histoire.html">Histoire</a></li>
+                        <li><a href="programme.html">Programme</a></li>
+                        <li><a href="evenements.html">Événements</a></li>
+                        <li><a href="vote.html">Vote</a></li>
+                        <li><a href="actualites.html">Actualités</a></li>
+                        <li><a href="galerie.html" class="active">Galerie</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Galerie avec animation -->
+    <section class="galerie-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1><i class="fas fa-images"></i> Galerie</h1>
+                <p class="hero-subtitle">Photos, vidéos et souvenirs des célébrations 2027-2028</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="photoCount">0</span>
+                        <span class="stat-label">Photos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="videoCount">0</span>
+                        <span class="stat-label">Vidéos</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="albumCount">4</span>
+                        <span class="stat-label">Albums</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Galerie -->
+    <section class="section galerie-nav-section">
+        <div class="container">
+            <div class="galerie-nav">
+                <button class="nav-btn active" data-type="all">
+                    <i class="fas fa-th"></i> Tous
+                </button>
+                <button class="nav-btn" data-type="historique">
+                    <i class="fas fa-history"></i> Historique
+                </button>
+                <button class="nav-btn" data-type="concerts">
+                    <i class="fas fa-music"></i> Concerts
+                </button>
+                <button class="nav-btn" data-type="football">
+                    <i class="fas fa-futbol"></i> Football
+                </button>
+                <button class="nav-btn" data-type="evenements">
+                    <i class="fas fa-calendar-alt"></i> Événements
+                </button>
+                <button class="nav-btn" data-type="portraits">
+                    <i class="fas fa-user-friends"></i> Portraits
+                </button>
+                <button class="nav-btn" data-type="videos">
+                    <i class="fas fa-video"></i> Vidéos
+                </button>
+                <button class="nav-btn" data-type="the-voix">
+                    <i class="fas fa-microphone-alt"></i> The Voïx
+                </button>
+                <button class="nav-btn" data-type="miss-be-kpota">
+                    <i class="fas fa-crown"></i> Miss Bè-Kpota
+                </button>
+            </div>
+
+            <div class="galerie-options">
+                <div class="option-group">
+                    <label for="triGalerie"><i class="fas fa-sort"></i> Trier par :</label>
+                    <select id="triGalerie">
+                        <option value="recent">Plus récent</option>
+                        <option value="ancien">Plus ancien</option>
+                        <option value="populaire">Plus populaire</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label for="viewMode"><i class="fas fa-th-large"></i> Affichage :</label>
+                    <select id="viewMode">
+                        <option value="grid">Grille</option>
+                        <option value="masonry">Mosaïque</option>
+                    </select>
+                </div>
+                <button class="btn-upload" id="uploadBtn">
+                    <i class="fas fa-cloud-upload-alt"></i> Partager une photo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galerie Grid -->
+    <section class="section galerie-section">
+        <div class="container">
+            <div class="galerie-grid" id="galerieGrid">
+                <!-- Photo 1 - Historique -->
+                <div class="galerie-item historique" data-date="2003-09-15" data-likes="45">
+                    <div class="galerie-media">
+                        <img src="images/galerie/historique-1.jpg" alt="Première répétition 2003">
+                        <div class="media-overlay">
+                            <button class="media-btn view-btn" data-id="1">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">45</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>Première répétition</h4>
+                        <p class="media-date">15 Sept 2003</p>
+                        <p class="media-desc">La toute première répétition de la Chorale La Foi avec les membres fondateurs.</p>
+                        <div class="media-tags">
+                            <span class="tag">historique</span>
+                            <span class="tag">fondation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photo 2 - Concerts -->
+                <div class="galerie-item concerts" data-date="2010-12-24" data-likes="89">
+                    <div class="galerie-media">
+                        <img src="images/galerie/concert-noel-2010.jpg" alt="Concert de Noël 2010">
+                        <div class="media-overlay">
+                            <button class="media-btn view-btn" data-id="2">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">89</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>Concert de Noël 2010</h4>
+                        <p class="media-date">24 Déc 2010</p>
+                        <p class="media-desc">Premier concert de Noël après la sortie du premier album "Louange".</p>
+                        <div class="media-tags">
+                            <span class="tag">concert</span>
+                            <span class="tag">noël</span>
+                            <span class="tag">album</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 3 - Football -->
+                <div class="galerie-item football" data-date="2018-05-20" data-likes="67">
+                    <div class="galerie-media">
+                        <img src="images/galerie/football-2018.jpg" alt="Tournoi amical 2018">
+                        <div class="media-overlay">
+                            <button class="media-btn view-btn" data-id="3">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">67</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>Tournoi amical 2018</h4>
+                        <p class="media-date">20 Mai 2018</p>
+                        <p class="media-desc">Premier tournoi de football entre les pupitres de la chorale.</p>
+                        <div class="media-tags">
+                            <span class="tag">football</span>
+                            <span class="tag">tournoi</span>
+                            <span class="tag">communauté</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 4 - Portraits -->
+                <div class="galerie-item portraits" data-date="2015-06-10" data-likes="102">
+                    <div class="galerie-media">
+                        <img src="images/galerie/portrait-alex-1.jpg" alt="Portrait d'Alex Kouevi">
+                        <div class="media-overlay">
+                            <button class="media-btn view-btn" data-id="4">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">102</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>Alex KOUEVI - Maître de chant</h4>
+                        <p class="media-date">10 Juin 2015</p>
+                        <p class="media-desc">Portrait officiel après la victoire au Concours National de Chant Sacré.</p>
+                        <div class="media-tags">
+                            <span class="tag">portrait</span>
+                            <span class="tag">direction</span>
+                            <span class="tag">récompense</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vidéo 1 -->
+                <div class="galerie-item videos" data-date="2022-12-24" data-likes="123">
+                    <div class="galerie-media video">
+                        <img src="images/galerie/video-noel-2022.jpg" alt="Concert de Noël 2022">
+                        <div class="video-badge">
+                            <i class="fas fa-play"></i> Vidéo
+                        </div>
+                        <div class="media-overlay">
+                            <button class="media-btn play-btn" data-video="concert-noel-2022">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">123</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>Concert de Noël 2022</h4>
+                        <p class="media-date">24 Déc 2022</p>
+                        <p class="media-desc">Extrait du concert complet disponible sur notre chaîne YouTube.</p>
+                        <div class="media-tags">
+                            <span class="tag">vidéo</span>
+                            <span class="tag">concert</span>
+                            <span class="tag">noël</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 5 - Événement The Voïx 2027 -->
+                <div class="galerie-item the-voix evenements" data-date="2027-07-15" data-likes="0">
+                    <div class="galerie-media">
+                        <img src="images/galerie/the-voix-2027.jpg" alt="Concours The Voïx 2027">
+                        <div class="event-badge">À venir</div>
+                        <div class="media-overlay">
+                            <button class="media-btn view-btn" data-id="9">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>The Voïx - Édition 2027</h4>
+                        <p class="media-date">Juillet 2027</p>
+                        <p class="media-desc">Concours vocal gratuit. Présélections en ligne, finale intégrée au concert.</p>
+                        <div class="media-tags">
+                            <span class="tag">the-voix</span>
+                            <span class="tag">concours</span>
+                            <span class="tag">musique</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 6 - Événement Miss Bè-Kpota 2028 -->
+                <div class="galerie-item miss-be-kpota evenements" data-date="2028-03-10" data-likes="0">
+                    <div class="galerie-media">
+                        <img src="images/galerie/miabe-foire-2027.jpg" alt="Miss Bè-Kpota 2028">
+                        <div class="event-badge">À venir</div>
+                        <div class="media-overlay">
+                            <button class="media-btn view-btn" data-id="12">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>Miss Bè-Kpota 2028</h4>
+                        <p class="media-date">10 Mars 2028</p>
+                        <p class="media-desc">Premier concours célébrant la beauté, l'intelligence et le leadership.</p>
+                        <div class="media-tags">
+                            <span class="tag">miss</span>
+                            <span class="tag">concours</span>
+                            <span class="tag">culture</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Photo 7 - Événement Semaine du Jubilé -->
+                <div class="galerie-item evenements" data-date="2028-09-23" data-likes="0">
+                    <div class="galerie-media">
+                        <img src="images/galerie/album-evenements-jubile.jpg" alt="Semaine du Jubilé">
+                        <div class="event-badge">À venir</div>
+                        <div class="media-overlay">
+                            <button class="media-btn view-btn" data-id="13">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                            <button class="media-btn like-btn">
+                                <i class="far fa-heart"></i>
+                                <span class="like-count">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="galerie-info">
+                        <h4>Semaine du Jubilé</h4>
+                        <p class="media-date">23-29 Sept 2028</p>
+                        <p class="media-desc">7 jours exceptionnels : conférences, célébrations, répétitions solennelles.</p>
+                        <div class="media-tags">
+                            <span class="tag">semaine</span>
+                            <span class="tag">jubilé</span>
+                            <span class="tag">célébration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chargement plus -->
+            <div class="load-more">
+                <button class="btn btn-outline" id="loadMoreBtn">
+                    <i class="fas fa-plus"></i> Charger plus de médias
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Albums -->
+    <section class="section album-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Albums thématiques</h2>
+                <p>Explorez nos collections organisées</p>
+            </div>
+
+            <div class="albums-grid">
+                <div class="album-card">
+                    <div class="album-cover">
+                        <img src="images/galerie/album-historique.jpg" alt="Album Historique">
+                        <div class="album-count">12 photos</div>
+                    </div>
+                    <div class="album-info">
+                        <h3>Histoire & Mémoire</h3>
+                        <p>Les moments forts depuis la fondation en 1978 et 2003.</p>
+                        <div class="album-stats">
+                            <span><i class="fas fa-eye"></i> 456 vues</span>
+                            <span><i class="fas fa-heart"></i> 89 likes</span>
+                        </div>
+                        <a href="#" class="btn-album">Voir l'album →</a>
+                    </div>
+                </div>
+
+                <div class="album-card">
+                    <div class="album-cover">
+                        <img src="images/galerie/album-concerts.jpg" alt="Album Concerts">
+                        <div class="album-count">8 photos</div>
+                    </div>
+                    <div class="album-info">
+                        <h3>Concerts & Prestations</h3>
+                        <p>Nos plus belles performances sur scène depuis 2003.</p>
+                        <div class="album-stats">
+                            <span><i class="fas fa-eye"></i> 512 vues</span>
+                            <span><i class="fas fa-heart"></i> 102 likes</span>
+                        </div>
+                        <a href="#" class="btn-album">Voir l'album →</a>
+                    </div>
+                </div>
+
+                <div class="album-card">
+                    <div class="album-cover">
+                        <img src="images/galerie/coupe-foi-2027.jpg" alt="Album Football">
+                        <div class="album-count">6 photos</div>
+                    </div>
+                    <div class="album-info">
+                        <h3>Tournois & Sports</h3>
+                        <p>Les moments sportifs de notre communauté.</p>
+                        <div class="album-stats">
+                            <span><i class="fas fa-eye"></i> 389 vues</span>
+                            <span><i class="fas fa-heart"></i> 76 likes</span>
+                        </div>
+                        <a href="#" class="btn-album">Voir l'album →</a>
+                    </div>
+                </div>
+
+                <div class="album-card">
+                    <div class="album-cover">
+                        <img src="images/galerie/album-evenements-jubile.jpg" alt="Album Événements du Jubilé">
+                        <div class="album-count">6 photos</div>
+                    </div>
+                    <div class="album-info">
+                        <h3>Événements du Jubilé</h3>
+                        <p>Préparations et annonces des événements 2027-2028.</p>
+                        <div class="album-stats">
+                            <span><i class="fas fa-eye"></i> 287 vues</span>
+                            <span><i class="fas fa-heart"></i> 54 likes</span>
+                        </div>
+                        <a href="#" class="btn-album">Voir l'album →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Téléchargement -->
+    <section class="section download-section">
+        <div class="container">
+            <div class="download-card">
+                <div class="download-content">
+                    <h3>Télécharger nos photos</h3>
+                    <p>Vous pouvez télécharger gratuitement les photos pour usage personnel. Pour usage commercial, merci de nous contacter.</p>
+
+                    <div class="download-options">
+                        <div class="option">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <h4>Téléchargement simple</h4>
+                                <p>Cliquez sur le bouton de téléchargement sous chaque photo</p>
+                            </div>
+                        </div>
+                        <div class="option">
+                            <i class="fas fa-box-archive"></i>
+                            <div>
+                                <h4>Pack complet</h4>
+                                <p>Téléchargez toutes les photos d'un album en ZIP</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="download-btns">
+                        <a href="#" class="btn btn-primary">
+                            <i class="fas fa-images"></i> Voir les conditions d'utilisation
+                        </a>
+                        <a href="contact.html" class="btn btn-outline">
+                            <i class="fas fa-camera"></i> Demander une photo professionnelle
+                        </a>
+                    </div>
+                </div>
+                <div class="download-image">
+                    <i class="fas fa-camera-retro"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-title">Galerie du Jubilé</div>
+                        <div class="logo-subtitle">Mémoire en images</div>
+                    </div>
+                    <p>Partagez vos souvenirs, découvrez notre histoire en photos et vidéos.</p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Catégories</h4>
+                    <ul>
+                        <li><a href="#" data-type="historique">Historique</a></li>
+                        <li><a href="#" data-type="concerts">Concerts</a></li>
+                        <li><a href="#" data-type="football">Football</a></li>
+                        <li><a href="#" data-type="videos">Vidéos</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-contact">
+                    <h4>Partagez vos photos</h4>
+                    <p>Vous avez des photos des événements passés ?</p>
+                    <p><i class="fas fa-envelope"></i> choralelafoi@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +228 79 28 82 09</p>
+                </div>
+
+                <div class="footer-social">
+                    <h4>Suivez-nous</h4>
+                    <div class="footer-social-icons">
+                        <a href="https://www.facebook.com/share/1CjrMTYc5J/" class="social-icon" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.youtube.com/channel/UC4lLbvFvvwVxiwhyPl0HRQQ" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@chorale.la.foi.bk1" class="social-icon" target="_blank"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025-2028 Galerie du Jubilé - Association Sainte Rita & Chorale La Foi</p>
+                <p><small>Programme mis à jour en Mars 2026</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close">&times;</button>
+            <button class="lightbox-prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="lightbox-next"><i class="fas fa-chevron-right"></i></button>
+
+            <div class="lightbox-media">
+                <img id="lightboxImage" src="" alt="">
+                <div id="lightboxVideo" class="lightbox-video"></div>
+            </div>
+
+            <div class="lightbox-info">
+                <h3 id="lightboxTitle"></h3>
+                <p class="lightbox-date" id="lightboxDate"></p>
+                <p class="lightbox-desc" id="lightboxDesc"></p>
+                <div class="lightbox-actions">
+                    <button class="action-btn like-btn">
+                        <i class="far fa-heart"></i> <span id="lightboxLikes">0</span>
+                    </button>
+                    <button class="action-btn download-btn">
+                        <i class="fas fa-download"></i> Télécharger
+                    </button>
+                    <button class="action-btn share-btn">
+                        <i class="fas fa-share-alt"></i> Partager
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Upload -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h3>Partager une photo</h3>
+
+            <form id="uploadForm">
+                <div class="form-group">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Glissez-déposez une photo ou cliquez pour parcourir</p>
+                        <input type="file" id="photoUpload" accept="image/*" hidden>
+                        <button type="button" class="btn btn-outline" id="browseBtn">
+                            <i class="fas fa-folder-open"></i> Parcourir
+                        </button>
+                    </div>
+                    <div class="upload-preview" id="uploadPreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="photoTitle">Titre de la photo *</label>
+                    <input type="text" id="photoTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="photoDescription">Description</label>
+                    <textarea id="photoDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="photoDate">Date de la photo *</label>
+                    <input type="date" id="photoDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="photoCategory">Catégorie *</label>
+                    <select id="photoCategory" required>
+                        <option value="">Choisir une catégorie</option>
+                        <option value="historique">Historique</option>
+                        <option value="concerts">Concerts</option>
+                        <option value="football">Football</option>
+                        <option value="evenements">Événements</option>
+                        <option value="portraits">Portraits</option>
+                        <option value="the-voix">The Voïx</option>
+                        <option value="miss-be-kpota">Miss Bè-Kpota</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="photoAuthor">Votre nom *</label>
+                    <input type="text" id="photoAuthor" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="photoEmail">Votre email *</label>
+                    <input type="email" id="photoEmail" required>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="photoConsent" required>
+                    <label for="photoConsent">
+                        J'autorise la publication de cette photo sur le site du Jubilé et confirme en être l'auteur ou détenir les droits de publication.
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Envoyer la photo
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/galerie.js"></script>
+</body>
+</html>

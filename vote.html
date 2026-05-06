@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Concours The Voïx - Édition 2027 gratuite et édition 2028 avec votes payants. Inscrivez-vous, votez pour vos talents préférés du Jubilé 2027-2028 !">
+    <meta name="keywords" content="The Voïx, concours vocal, Jubilé, Sainte Rita, Chorale La Foi, vote, musique sacrée">
+    <title>The Voïx | Concours vocal du Jubilé 2027-2028</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/vote.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-image">SR</div>
+                    <div class="logo-text">
+                        <div class="logo-title">Jubilé 2027-2028</div>
+                        <div class="logo-subtitle">50 ans · 25 ans</div>
+                    </div>
+                </a>
+
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="histoire.html">Histoire</a></li>
+                        <li><a href="programme.html">Programme</a></li>
+                        <li><a href="evenements.html">Événements</a></li>
+                        <li><a href="vote.html" class="active">Vote</a></li>
+                        <li><a href="actualites.html">Actualités</a></li>
+                        <li><a href="galerie.html">Galerie</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero avec animation -->
+    <section class="vote-hero">
+        <div class="container">
+            <h1><i class="fas fa-microphone-alt"></i> The Voïx</h1>
+            <h2>Concours vocal du Jubilé</h2>
+            <p class="hero-subtitle">Découvrez, écoutez et votez pour les talents de la musique sacrée</p>
+            
+            <div class="edition-selector">
+                <button class="edition-btn active" data-edition="2027">
+                    <span class="edition-year">2027</span>
+                    <span class="edition-type">Édition Gratuite</span>
+                </button>
+                <button class="edition-btn" data-edition="2028">
+                    <span class="edition-year">2028</span>
+                    <span class="edition-type">Édition avec Votes</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Édition 2027 -->
+    <section class="section edition-section" id="edition-2027">
+        <div class="container">
+            <div class="edition-header">
+                <h2>Édition 2027 - Concours Gratuit</h2>
+                <div class="edition-badge gratuit">🎁 100% Gratuit</div>
+            </div>
+            
+            <div class="edition-description">
+                <p>La première édition du concours, entièrement gratuite, pour découvrir les nouveaux talents de la musique sacrée. Une compétition ouverte à tous, sans frais d'inscription ni de vote.</p>
+                <div class="date-info">
+                    <i class="fas fa-calendar-alt"></i> <strong>Mars 2026 :</strong> Les inscriptions sont OUVERTES ! Préparez votre candidature et postulez dès maintenant.
+                </div>
+            </div>
+
+            <div class="concours-infos">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h4>Calendrier 2027</h4>
+                    <ul>
+                        <li><strong>Mars-Avril :</strong> Inscriptions en ligne</li>
+                        <li><strong>Mai :</strong> Présélections vidéo</li>
+                        <li><strong>Juin :</strong> Demi-finales en ligne</li>
+                        <li><strong>15 Juillet :</strong> Grande Finale en présentiel</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h4>Prix à gagner</h4>
+                    <ul>
+                        <li>Un Frigidaire chez le Lebelier</li>
+                        <li>Un Téléphone Iphone Pro Max</li>
+                        <li>Participation à l'album anniversaire</li>
+                        <li>Prestation au Concert Jubilé 2028</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Comment voter ?</h4>
+                    <ul>
+                        <li>Visionnez les vidéos des candidats sur <a href="https://tiktok.com/@chorale.la.foi.bk1" target="_blank" class="tiktok-link">notre TikTok</a></li>
+                        <li>Likez vos performances préférées</li>
+                        <li>Les 10 plus likés passent en finale</li>
+                        <li>La finale : 50% jury / 50% likes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Jury 2027 -->
+            <div class="jury-section">
+                <h3>Le Jury 2027</h3>
+                <p>Nos experts qui évalueront les performances</p>
+                
+                <div class="jury-grid">
+                    <div class="jury-card">
+                        <div class="jury-photo">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="jury-info">
+                            <h4>Pr. Jean AGBESSI</h4>
+                            <p class="jury-title">Professeur de musique sacrée</p>
+                            <p class="jury-bio">25 ans d'expérience dans l'enseignement vocal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="jury-card">
+                        <div class="jury-photo">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="jury-info">
+                            <h4>Mme. Adjoavi DEDJI</h4>
+                            <p class="jury-title">Chef de chœur</p>
+                            <p class="jury-bio">Directrice artistique de la Chorale La Foi depuis 15 ans</p>
+                        </div>
+                    </div>
+                    
+                    <div class="jury-card">
+                        <div class="jury-photo">
+                            <i class="fas fa-guitar"></i>
+                        </div>
+                        <div class="jury-info">
+                            <h4>M. Kodjo SEGBENA</h4>
+                            <p class="jury-title">Compositeur</p>
+                            <p class="jury-bio">Auteur de plus de 50 chants sacrées</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inscription candidat 2027 -->
+            <div class="inscription-candidat-section">
+                <h3><i class="fas fa-microphone-alt"></i> Concours The Voïx 2027</h3>
+                <p>Inscrivez-vous gratuitement pour participer à l'édition 2027</p>
+
+                <!-- Boutons d'authentification -->
+                <div id="authButtons2027" class="auth-buttons-2027">
+                    <button id="btnInscription2027" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Inscription Candidat 2027
+                    </button>
+                    <button id="btnConnexion2027" class="btn btn-secondary">
+                        <i class="fas fa-sign-in-alt"></i> Connexion Candidat 2027
+                    </button>
+                </div>
+
+                <!-- Formulaire d'inscription 2027 -->
+                <div id="formInscription2027" style="display: none;">
+                    <div class="form-card">
+                        <h4><i class="fas fa-file-signature"></i> Formulaire d'inscription 2027</h4>
+                        <p>Remplissez ce formulaire pour participer à l'édition gratuite 2027</p>
+                        <p class="info-note"><i class="fas fa-info-circle"></i> Les inscriptions sont OUVERTES depuis Mars 2026 !</p>
+
+                        <form id="candidatureForm2027" class="candidature-form" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="nom2027">Nom *</label>
+                                    <input type="text" id="nom2027" name="nom" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prenom2027">Prénom *</label>
+                                    <input type="text" id="prenom2027" name="prenom" required>
+                                </div>
+                            </div>
+                
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email2027">Email *</label>
+                                    <input type="email" id="email2027" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telephone2027">Téléphone *</label>
+                                    <input type="tel" id="telephone2027" name="telephone" required>
+                                </div>
+                            </div>
+    
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="password2027">Mot de passe *</label>
+                                    <input type="password" id="password2027" name="password" required minlength="6">
+                                    <small>Minimum 6 caractères</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirmPassword2027">Confirmer le mot de passe *</label>
+                                    <input type="password" id="confirmPassword2027" name="confirmPassword" required minlength="6">
+                                </div>
+                            </div>
+                
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="genre2027">Genre *</label>
+                                    <select id="genre2027" name="genre" required>
+                                        <option value="">Sélectionnez</option>
+                                        <option value="homme">Homme</option>
+                                        <option value="femme">Femme</option>
+                                        <option value="autre">Autre</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="categorie2027">Catégorie *</label>
+                                    <select id="categorie2027" name="categorie" required>
+                                        <option value="">Sélectionnez</option>
+                                        <option value="soliste">Soliste</option>
+                                        <option value="duo">Duo</option>
+                                        <option value="groupe">Groupe</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="chant2027">Chant à interpréter *</label>
+                                <input type="text" id="chant2027" name="chant" required placeholder="Ex: Ave Maria de Schubert">
+                            </div>
+                
+                            <div class="form-group">
+                                <label for="biographie2027">Biographie (max 500 caractères) *</label>
+                                <textarea id="biographie2027" name="biographie" rows="4" maxlength="500" required></textarea>
+                            </div>
+                
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="photo2027">Photo *</label>
+                                    <input type="file" id="photo2027" name="photo" accept="image/*" required>
+                                    <small>Format: JPG, PNG. Taille max: 5MB</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="video2027">Vidéo de performance *</label>
+                                    <input type="file" id="video2027" name="video" accept="video/*" required>
+                                    <small>Format: MP4, MOV, AVI. Taille max: 100MB</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="reglement2027" name="reglement" required>
+                                    J'accepte le <a href="#" class="reglement-link">règlement du concours</a>
+                                </label>
+                            </div>
+                
+                            <div class="form-actions">
+                                <button type="button" id="btnAnnulerInscription" class="btn btn-outline">
+                                    <i class="fas fa-times"></i> Annuler
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Soumettre ma candidature
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Formulaire de connexion 2027 -->
+                <div id="formConnexion2027" style="display: none;">
+                    <div class="form-card">
+                        <h4><i class="fas fa-sign-in-alt"></i> Connexion à votre espace candidat</h4>
+                        <p>Connectez-vous avec votre email ou numéro de téléphone</p>
+                
+                        <form id="loginForm2027">
+                            <div class="form-group">
+                                <label for="loginIdentifiant2027">Email ou Numéro de téléphone *</label>
+                                <input type="text" id="loginIdentifiant2027" required placeholder="exemple@email.com ou +228 XX XX XX XX">
+                                <small>Entrez l'email ou le numéro utilisé lors de votre inscription</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword2027">Mot de passe *</label>
+                                <input type="password" id="loginPassword2027" required>
+                            </div>
+                
+                            <div class="form-actions">
+                                <button type="button" id="btnAnnulerConnexion" class="btn btn-outline">
+                                    <i class="fas fa-times"></i> Annuler
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="contact-help">
+                            <p><i class="fas fa-question-circle"></i> Problème de connexion ? Contactez-nous : <strong>+228 79 28 82 09</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Espace personnel 2027 -->
+                <div id="welcomeSection2027" style="display: none;">
+                    <div class="welcome-card">
+                        <div class="welcome-header">
+                            <div class="welcome-user-info">
+                                <i class="fas fa-user-circle"></i>
+                                <h3 id="welcomeUserName">Bienvenue !</h3>
+                            </div>
+                            <button id="logout2027Btn" class="btn btn-danger">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                        <div class="welcome-info" id="welcomeUserDetails"></div>
+                        <div class="welcome-help">
+                            <p><i class="fas fa-question-circle"></i> Besoin d'aide ? Contactez-nous : <strong>+228 79 28 82 09</strong> (WhatsApp)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Édition 2028 -->
+    <section class="section edition-section" id="edition-2028" style="display: none;">
+        <div class="container">
+            <div class="edition-header">
+                <h2>Édition 2028 - Concours avec Votes Payants</h2>
+                <div class="edition-badge payant">💰 Votes à partir de 200 F CFA</div>
+                <div class="chrono-container">
+                    <div class="chrono-title">Temps restant pour voter:</div>
+                    <div class="chrono" id="voteChrono">
+                        <div class="chrono-item">
+                            <span class="chrono-value" id="jours">00</span>
+                            <span class="chrono-label">Jours</span>
+                        </div>
+                        <div class="chrono-item">
+                            <span class="chrono-value" id="heures">00</span>
+                            <span class="chrono-label">Heures</span>
+                        </div>
+                        <div class="chrono-item">
+                            <span class="chrono-value" id="minutes">00</span>
+                            <span class="chrono-label">Minutes</span>
+                        </div>
+                        <div class="chrono-item">
+                            <span class="chrono-value" id="secondes">00</span>
+                            <span class="chrono-label">Secondes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="edition-description">
+                <p>L'édition spéciale du 50ème anniversaire ! Un concours avec système de votes payants où chaque vote compte. Les fonds récoltés seront réinvestis dans les bourses de formation musicale.</p>
+                <div class="date-info">
+                    <i class="fas fa-calendar-alt"></i> <strong>Mars 2026 :</strong> Préparatifs en cours. Les inscriptions pour l'édition 2028 ouvriront en Janvier 2028.
+                </div>
+            </div>
+
+            <!-- Jury 2028 -->
+            <div class="jury-section">
+                <h3>Le Jury 2028</h3>
+                <p>Nos experts pour l'édition spéciale Jubilé</p>
+                
+                <div class="jury-grid">
+                    <div class="jury-card">
+                        <div class="jury-photo">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="jury-info">
+                            <h4>Pr. Jean AGBESSI</h4>
+                            <p class="jury-title">Professeur de musique sacrée</p>
+                            <p class="jury-bio">25 ans d'expérience dans l'enseignement vocal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="jury-card">
+                        <div class="jury-photo">
+                            <i class="fas fa-music"></i>
+                        </div>
+                        <div class="jury-info">
+                            <h4>Mme. Adjoavi DEDJI</h4>
+                            <p class="jury-title">Chef de chœur</p>
+                            <p class="jury-bio">Directrice artistique de la Chorale La Foi depuis 15 ans</p>
+                        </div>
+                    </div>
+                    
+                    <div class="jury-card">
+                        <div class="jury-photo">
+                            <i class="fas fa-guitar"></i>
+                        </div>
+                        <div class="jury-info">
+                            <h4>M. Kodjo SEGBENA</h4>
+                            <p class="jury-title">Compositeur</p>
+                            <p class="jury-bio">Auteur de plus de 50 chants sacrées</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vote-system">
+                <h3>Système de votes 2028</h3>
+                <div class="system-grid">
+                    <div class="system-card">
+                        <div class="system-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <h4>50% Jury / 50% Public</h4>
+                        <p>Équilibre entre expertise professionnelle et choix du public</p>
+                    </div>
+                    <div class="system-card">
+                        <div class="system-icon">
+                            <i class="fas fa-franc-sign"></i>
+                        </div>
+                        <h4>200 F CFA par vote</h4>
+                        <p>Chaque vote contribue au fonds des bourses musicales</p>
+                    </div>
+                    <div class="system-card">
+                        <div class="system-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h4>Vote en ligne sécurisé</h4>
+                        <p>Plateforme sécurisée avec paiement en ligne</p>
+                    </div>
+                    <div class="system-card">
+                        <div class="system-icon">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <h4>Shows télévisés</h4>
+                        <p>Diffusion des épreuves en direct sur nos plateformes</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Classement en temps réel -->
+            <div class="classement-realtime">
+                <h3>Classement en Direct</h3>
+                <p>Suivez l'évolution des votes en temps réel <span class="live-badge"><i class="fas fa-circle"></i> LIVE</span></p>
+                
+                <div class="classement-container">
+                    <div id="classementTable" class="classement-table">
+                        <div class="classement-header">
+                            <span>Position</span>
+                            <span>Candidat</span>
+                            <span>Catégorie</span>
+                            <span>Votes</span>
+                        </div>
+                        <div class="empty-message">Aucun candidat pour le moment</div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" id="resetCandidatesBtn" style="margin-top: 20px; display: inline-flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-undo"></i> Réinitialiser les candidats
+                </button>
+                <div class="auto-refresh">
+                    <i class="fas fa-sync-alt"></i> Mise à jour automatique
+                </div>
+            </div>
+
+            <!-- Packs de votes -->
+            <div class="achat-votes-section" id="achat-votes-section">
+                <h3>Acheter des votes</h3>
+                <p>Soutenez votre candidat préféré et contribuez aux bourses musicales</p>
+                
+                <div class="pack-votes">
+                    <div class="pack-card">
+                        <div class="pack-header">
+                            <h4>Vote Simple</h4>
+                            <div class="pack-prix">200 F CFA</div>
+                        </div>
+                        <div class="pack-content">
+                            <ul>
+                                <li><i class="fas fa-check"></i> 1 vote</li>
+                                <li><i class="fas fa-check"></i> Soutien individuel</li>
+                            </ul>
+                            <button class="btn btn-primary acheter-pack" data-pack="simple" data-votes="1" data-prix="200">
+                                <i class="fas fa-shopping-cart"></i> Acheter ce vote
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pack-card">
+                        <div class="pack-header">
+                            <h4>Pack Découverte</h4>
+                            <div class="pack-prix">500 F CFA</div>
+                        </div>
+                        <div class="pack-content">
+                            <ul>
+                                <li><i class="fas fa-check"></i> 2 votes (valeur 400 F CFA)</li>
+                                <li><i class="fas fa-check"></i> 1 vote offert</li>
+                                <li><i class="fas fa-check"></i> Total : 3 votes</li>
+                            </ul>
+                            <button class="btn btn-primary acheter-pack" data-pack="decouverte" data-votes="3" data-prix="500">
+                                <i class="fas fa-shopping-cart"></i> Acheter ce pack
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pack-card populaire">
+                        <div class="pack-badge">Le plus populaire</div>
+                        <div class="pack-header">
+                            <h4>Pack Passion</h4>
+                            <div class="pack-prix">1 500 F CFA</div>
+                        </div>
+                        <div class="pack-content">
+                            <ul>
+                                <li><i class="fas fa-check"></i> 7 votes (valeur 1 400 F CFA)</li>
+                                <li><i class="fas fa-check"></i> 3 votes offerts</li>
+                                <li><i class="fas fa-check"></i> Total : 10 votes</li>
+                                <li><i class="fas fa-check"></i> <strong>Mention "Supporter Passion"</strong></li>
+                            </ul>
+                            <button class="btn btn-secondary acheter-pack" data-pack="passion" data-votes="10" data-prix="1500">
+                                <i class="fas fa-shopping-cart"></i> Acheter ce pack
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pack-card">
+                        <div class="pack-header">
+                            <h4>Pack Jubilé</h4>
+                            <div class="pack-prix">3 000 F CFA</div>
+                        </div>
+                        <div class="pack-content">
+                            <ul>
+                                <li><i class="fas fa-check"></i> 15 votes (valeur 3 000 F CFA)</li>
+                                <li><i class="fas fa-check"></i> 10 votes offerts</li>
+                                <li><i class="fas fa-check"></i> Total : 25 votes</li>
+                                <li><i class="fas fa-check"></i> <strong>Invitation à la finale</strong></li>
+                                <li><i class="fas fa-check"></i> <strong>Mention "Mécène du Jubilé"</strong></li>
+                            </ul>
+                            <button class="btn btn-primary acheter-pack" data-pack="jubile" data-votes="25" data-prix="3000">
+                                <i class="fas fa-shopping-cart"></i> Acheter ce pack
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inscription candidat 2028 -->
+            <div class="inscription-candidat-section">
+                <div id="authContainer2028">
+                    <!-- Section NON CONNECTÉ -->
+                    <div id="authLoginSection2028">
+                        <h3><i class="fas fa-user-plus"></i> Inscription Édition 2028</h3>
+                        <p>Postulez comme candidat ou créez un compte pour voter</p>
+                        
+                        <div class="role-selection">
+                            <div class="role-grid">
+                                <div class="role-card">
+                                    <div class="role-icon">
+                                        <i class="fas fa-microphone-alt"></i>
+                                    </div>
+                                    <h4>Devenir Candidat</h4>
+                                    <ul>
+                                        <li>Participer au concours</li>
+                                        <li>Recevoir des votes</li>
+                                        <li><strong>5 000 FCFA d'inscription</strong></li>
+                                        <li>Ne peut pas voter</li>
+                                    </ul>
+                                    <button class="btn btn-secondary create-account-btn" data-role="candidat">
+                                        <i class="fas fa-user-plus"></i> Créer Compte Candidat
+                                    </button>
+                                </div>
+                                
+                                <div class="role-card">
+                                    <div class="role-icon">
+                                        <i class="fas fa-vote-yea"></i>
+                                    </div>
+                                    <h4>Devenir Votant</h4>
+                                    <ul>
+                                        <li>Soutenir les candidats</li>
+                                        <li>Acheter des votes à partir de 200 FCFA/vote</li>
+                                        <li><strong>Inscription gratuite</strong></li>
+                                        <li>Ne peut pas être candidat</li>
+                                    </ul>
+                                    <button class="btn btn-primary create-account-btn" data-role="votant">
+                                        <i class="fas fa-user-plus"></i> Créer Compte Votant
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="existing-account">
+                                <p>Déjà un compte ?</p>
+                                <button class="btn btn-outline show-login-btn">
+                                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Candidat -->
+                    <div id="candidateDashboard2028" style="display: none;">
+                        <div class="dashboard-header">
+                            <div class="dashboard-info">
+                                <h4><i class="fas fa-user-tie"></i> Bienvenue <span id="candidateName"></span> !</h4>
+                                <p>Compte Candidat - Édition 2028</p>
+                            </div>
+                            <button class="btn btn-danger logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                        <div class="account-badge candidate-badge">
+                            <i class="fas fa-microphone-alt"></i> COMPTE CANDIDAT
+                        </div>
+                        
+                        <div id="candidateSubmittedInfo" style="display: none;"></div>
+                        <div id="candidateFormContainer" style="display: none;">
+                            <div class="form-card">
+                                <h4><i class="fas fa-file-signature"></i> Formulaire de candidature 2028</h4>
+                                <p>Remplissez ce formulaire pour devenir candidat officiel (frais d'inscription : 5 000 FCFA)</p>
+                                
+                                <form id="candidateApplicationForm2028" class="candidature-form">
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Nom *</label>
+                                            <input type="text" id="candidateNom2028" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Prénom *</label>
+                                            <input type="text" id="candidatePrenom2028" readonly>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Email *</label>
+                                            <input type="email" id="candidateEmail2028" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Téléphone *</label>
+                                            <input type="tel" id="candidateTelephone2028" readonly>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label>Genre *</label>
+                                            <select id="candidateGenre2028" required>
+                                                <option value="">Sélectionnez</option>
+                                                <option value="homme">Homme</option>
+                                                <option value="femme">Femme</option>
+                                                <option value="autre">Autre</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Catégorie *</label>
+                                            <select id="candidateCategorie2028" required>
+                                                <option value="">Sélectionnez</option>
+                                                <option value="soliste">Soliste</option>
+                                                <option value="duo">Duo</option>
+                                                <option value="groupe">Groupe</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                    
+                                    <div class="form-group">
+                                        <label>Chant à interpréter *</label>
+                                        <input type="text" id="candidateChant2028" required placeholder="Ex: Ave Maria de Schubert">
+                                    </div>
+                    
+                                    <div class="form-group">
+                                        <label>Biographie musicale *</label>
+                                        <textarea id="candidateBiographie2028" rows="4" required placeholder="Parlez de votre expérience musicale, formations, participations..."></textarea>
+                                    </div>
+                    
+                                    <div class="form-group">
+                                        <label>Photo du candidat *</label>
+                                        <input type="file" id="candidatePhoto2028" accept="image/*" required>
+                                        <small>Format: JPG, PNG. Taille max: 2MB</small>
+                                    </div>
+                    
+                                    <div class="form-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="candidateReglement2028" required>
+                                            J'accepte le règlement du concours 2028 et les frais d'inscription de 5 000 FCFA
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="payment-info">
+                                        <h5><i class="fas fa-money-bill-wave"></i> Paiement des frais d'inscription</h5>
+                                        <p><strong>Montant :</strong> 5 000 FCFA</p>
+                                        <p><strong>Méthode :</strong> Flooz / Mixx By Yas</p>
+                                        <p><strong>Numéro :</strong> (+228) 98 02 55 05 / 91 60 09 45</p>
+                                        <p><strong>Après paiement :</strong> Envoyez la capture au +228 79 28 82 09 (WhatsApp)</p>
+                                    </div>
+                    
+                                    <div class="form-actions">
+                                        <button type="button" class="btn btn-outline cancel-candidature-btn">
+                                            <i class="fas fa-times"></i> Annuler
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-paper-plane"></i> Soumettre ma candidature
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Dashboard Votant -->
+                    <div id="voterDashboard2028" style="display: none;">
+                        <div class="dashboard-header voter-header">
+                            <div class="dashboard-info">
+                                <h4><i class="fas fa-vote-yea"></i> Bienvenue <span id="voterName"></span> !</h4>
+                                <p>Compte Votant - Édition 2028</p>
+                            </div>
+                            <button class="btn btn-danger logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </div>
+                        <div class="account-badge voter-badge">
+                            <i class="fas fa-vote-yea"></i> COMPTE VOTANT
+                        </div>
+                        
+                        <div class="voter-actions">
+                            <h4><i class="fas fa-shopping-cart"></i> Acheter des votes</h4>
+                            <p>Soutenez vos candidats préférés et contribuez aux bourses musicales</p>
+                            
+                            <div class="voter-buttons">
+                                <a href="#achat-votes-section" class="btn btn-primary btn-large">
+                                    <i class="fas fa-vote-yea"></i> Voir les packs de votes
+                                </a>
+                            </div>
+                            
+                            <div class="info-box">
+                                <p><strong>Instructions :</strong></p>
+                                <ul>
+                                    <li>Choisissez un pack de votes</li>
+                                    <li>Cliquez sur "Acheter ce pack"</li>
+                                    <li>Vous serez guidé pour valider votre vote</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-title">The Voïx</div>
+                        <div class="logo-subtitle">Concours vocal du Jubilé</div>
+                    </div>
+                    <p>Découvrez, votez, soutenez les talents de la musique sacrée</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Concours</h4>
+                    <ul>
+                        <li><a href="#edition-2027">Édition 2027 (gratuite)</a></li>
+                        <li><a href="#edition-2028">Édition 2028 (votes payants)</a></li>
+                        <li><a href="#">Règlement du concours</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Contact Concours</h4>
+                    <p><i class="fas fa-envelope"></i> choralelafoi@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +228 79 28 82 09</p>
+                    <p><i class="fas fa-clock"></i> Réponses sous 48h</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Suivez The Voïx</h4>
+                    <p>Videos des candidats, lives, résultats...</p>
+                    <div class="footer-social-icons">
+                        <a href="https://www.youtube.com/channel/UC4lLbvFvvwVxiwhyPl0HRQQ" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@chorale.la.foi.bk1" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/22898025502" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2028 Concours The Voïx - Jubilé Association Sainte Rita & Chorale La Foi. Tous droits réservés.</p>
+                <p><small>Les votes sont définitifs. Aucun remboursement possible. Les fonds récoltés servent aux bourses musicales.</small></p>
+                <p><small>Programme mis à jour en Mars 2026 - Inscriptions 2027 OUVERTES !</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Popups -->
+    <div class="auth-page" id="authPage">
+        <div class="page-header">
+            <h2><i class="fas fa-user-circle"></i> The Voïx - Accès Compte</h2>
+            <p id="authPageSubtitle">Connectez-vous ou créez un compte</p>
+            <button class="page-close" id="authPageClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="page-content">
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">Connexion</button>
+                <button class="auth-tab" data-tab="register">Inscription</button>
+            </div>
+            
+            <form class="auth-form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email *</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe *</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-sign-in-alt"></i> Se connecter
+                </button>
+                <div class="auth-link">
+                    Pas encore de compte ? <a href="#" class="switch-to-register">S'inscrire</a>
+                </div>
+            </form>
+            
+            <form class="auth-form" id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="registerNom">Nom *</label>
+                        <input type="text" id="registerNom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPrenom">Prénom *</label>
+                        <input type="text" id="registerPrenom" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email *</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Téléphone *</label>
+                    <input type="tel" id="registerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mot de passe *</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirmer le mot de passe *</label>
+                    <input type="password" id="registerConfirmPassword" required>
+                </div>
+                
+                <div id="accountTypeInfo" style="display: none;">
+                    <small><i class="fas fa-info-circle"></i> Vous créez un compte <strong id="accountTypeLabel"></strong></small>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-user-plus"></i> Créer mon compte
+                </button>
+                <div class="auth-link">
+                    Déjà un compte ? <a href="#" class="switch-to-login">Se connecter</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="vote-page" id="votePage">
+        <div class="page-header">
+            <h2><i class="fas fa-vote-yea"></i> Voter pour votre candidat</h2>
+            <p id="votePageSubtitle"></p>
+            <button class="page-close" id="votePageClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="page-content">
+            <div class="pack-info" id="selectedPackInfo">
+                <h4><i class="fas fa-shopping-cart"></i> Pack sélectionné</h4>
+                <div id="packDetails"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="candidateSelect"><i class="fas fa-user-friends"></i> Choisir un candidat</label>
+                <select id="candidateSelect" class="candidate-select">
+                    <option value="">Sélectionnez un candidat</option>
+                </select>
+            </div>
+            
+            <div class="vote-summary" id="voteSummary">
+                <p><i class="fas fa-info-circle"></i> <strong>Résumé du vote :</strong></p>
+                <p>• Pack : <strong id="summaryPack"></strong></p>
+                <p>• Votes : <strong id="summaryVotes"></strong> vote(s)</p>
+                <p>• Prix : <strong id="summaryPrice"></strong> FCFA</p>
+            </div>
+            
+            <button class="btn btn-primary" id="validateVoteBtn" style="width: 100%;">
+                <i class="fas fa-vote-yea"></i> Continuer
+            </button>
+            <button class="btn btn-outline" id="cancelVoteBtn" style="width: 100%; margin-top: 10px;">
+                <i class="fas fa-times"></i> Annuler
+            </button>
+        </div>
+    </div>
+
+    <div class="code-page" id="codePage">
+        <div class="page-header">
+            <h2><i class="fas fa-key"></i> Entrer votre code</h2>
+            <p id="codePageSubtitle">Code pour valider votre vote</p>
+            <button class="page-close" id="codePageClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="page-content">
+            <div class="vote-info" id="voteInfo"></div>
+            
+            <div class="form-group">
+                <label for="codeInput"><i class="fas fa-barcode"></i> Code de validation</label>
+                <input type="text" id="codeInput" placeholder="Ex: ABC123" maxlength="6" style="text-align: center; letter-spacing: 3px;">
+                <small>Entrez le code unique reçu après l'achat</small>
+            </div>
+            
+            <div class="help-box">
+                <p><i class="fas fa-question-circle"></i> <strong>Important :</strong></p>
+                <p>• Un code ne peut être utilisé qu'une seule fois</p>
+                <p>• Contact : <strong>+228 79 28 82 09</strong> (WhatsApp)</p>
+            </div>
+            
+            <div class="code-buttons">
+                <button class="btn btn-outline" id="backToVoteBtn">
+                    <i class="fas fa-arrow-left"></i> Retour
+                </button>
+                <button class="btn btn-primary" id="validateCodeBtn">
+                    <i class="fas fa-check"></i> Valider le code
+                </button>
+            </div>
+            
+            <div id="codeValidationResult"></div>
+        </div>
+    </div>
+    <!-- Modal de ticket (doit être présent) -->
+<div id="ticketModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <button class="modal-close" id="ticketModalClose">&times;</button>
+        <div class="modal-icon">
+            <i class="fas fa-ticket-alt"></i>
+        </div>
+        <h3 style="text-align: center;">Saisie du code ticket</h3>
+        <p style="text-align: center; color: var(--gray);">Veuillez saisir le code reçu après votre achat</p>
+        
+        <div id="ticketPackInfo" style="background: #f0f9ff; padding: 15px; border-radius: 10px; margin: 20px 0;"></div>
+        
+        <div class="form-group">
+            <label><i class="fas fa-key"></i> Code ticket (6 caractères)</label>
+            <input type="text" id="ticketCodeInput" class="ticket-input" placeholder="Ex: ABC123" maxlength="6" autocomplete="off" style="text-transform: uppercase;">
+        </div>
+        
+        <div id="ticketMessage" style="margin: 15px 0; display: none;"></div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button id="cancelTicketBtn" class="btn btn-outline" style="flex: 1;">
+                <i class="fas fa-times"></i> Annuler
+            </button>
+            <button id="validateTicketBtn" class="btn btn-primary" style="flex: 1;">
+                <i class="fas fa-check"></i> Valider le vote
+            </button>
+        </div>
+    </div>
+</div>
+
+    <script src="js/script.js"></script>
+    <script src="js/vote.js"></script>
+    <script src="js/shared-storage.js"></script>
+</body>
+</html>

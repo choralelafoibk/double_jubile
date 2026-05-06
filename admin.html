@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin The Voïx - Génération de Codes</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --rita-blue: #1E3A8A;
+            --rita-pink: #EC4899;
+            --chorale-yellow: #F59E0B;
+            --chorale-red: #EF4444;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+            --gray: #6B7280;
+            --border-radius: 10px;
+            --border-radius-lg: 20px;
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+            --transition-normal: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--rita-blue), var(--rita-pink));
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, var(--rita-blue), var(--chorale-yellow));
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .admin-header h2 {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .admin-subtitle {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .admin-content {
+            padding: 30px;
+        }
+
+        /* Section de génération */
+        .generation-section {
+            background: var(--light);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            color: var(--rita-blue);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+        }
+
+        .section-title i {
+            color: var(--rita-pink);
+        }
+
+        .generation-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--rita-blue);
+            font-weight: 600;
+        }
+
+        .form-group label i {
+            margin-right: 8px;
+            color: var(--rita-pink);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            transition: var(--transition-normal);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--rita-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, var(--chorale-yellow), var(--chorale-red));
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Codes générés */
+        .codes-section {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            border: 2px solid var(--light);
+        }
+
+        .codes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .codes-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border: 2px solid var(--rita-blue);
+            background: var(--white);
+            color: var(--rita-blue);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-normal);
+        }
+
+        .action-btn:hover {
+            background: var(--rita-blue);
+            color: var(--white);
+        }
+
+        .codes-list {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 2px solid var(--light);
+            border-radius: var(--border-radius);
+        }
+
+        .code-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--light);
+            transition: var(--transition-normal);
+        }
+
+        .code-item:hover {
+            background: var(--light);
+        }
+
+        .code-item:last-child {
+            border-bottom: none;
+        }
+
+        .code-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .code-value {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--rita-blue);
+            background: var(--light);
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .code-details {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .code-status {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-unused {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-used {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        /* Statistiques */
+        .stats-section {
+            background: linear-gradient(135deg, var(--rita-blue), var(--rita-pink));
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            margin-top: 30px;
+            color: var(--white);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--chorale-yellow);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Modal de confirmation */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            width: 100%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-icon {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--chorale-yellow);
+            margin-bottom: 20px;
+        }
+
+        /* Message */
+        .message {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin: 15px 0;
+            display: none;
+        }
+
+        .message.success {
+            background: #D4EDDA;
+            color: #155724;
+            border: 1px solid #C3E6CB;
+        }
+
+        .message.error {
+            background: #F8D7DA;
+            color: #721C24;
+            border: 1px solid #F5C6CB;
+        }
+
+        .message.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-header h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .generation-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .codes-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .codes-actions {
+                flex-direction: column;
+            }
+            
+            .code-item {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .code-info {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        /* Protection par mot de passe */
+        .password-protection {
+            max-width: 400px;
+            margin: 100px auto;
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .password-form {
+            margin-top: 30px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--light);
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .password-btn {
+            background: linear-gradient(135deg, var(--rita-blue), var(--rita-pink));
+            color: var(--white);
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .password-input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+        }
+
+        .password-input {
+            padding-right: 40px !important; /* Espace pour l'œil */
+        }
+    </style>
+</head>
+<body>
+    <!-- Protection par mot de passe -->
+    <div class="password-protection" id="passwordProtection">
+        <div class="modal-icon">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h2>Accès Administrateur</h2>
+        <p>Veuillez entrer le mot de passe pour accéder au système de génération de codes</p>
+        <div class="password-form">
+            <div class="password-input-group">
+                <input type="password" class="password-input" id="adminPassword" placeholder="Mot de passe" autocomplete="off">
+                <button type="button" class="toggle-password" id="toggleAdminPassword">
+                    <i class="fas fa-eye"></i>
+                </button>
+            </div>
+            <button class="password-btn" id="submitPassword">
+                <i class="fas fa-unlock"></i> Accéder
+            </button>
+        </div>
+        <div id="passwordMessage" class="message" style="display: none;"></div>
+    </div>
+
+    <!-- Interface Admin (cachée par défaut) -->
+    <div class="admin-container" id="adminInterface" style="display: none;">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1>
+                <i class="fas fa-key"></i>
+                Panneau Administrateur - The Voïx
+            </h1>
+            <h2>Gestion des codes de vote - Édition 2028</h2>
+            <div class="admin-subtitle">
+                <i class="fas fa-user-shield"></i>
+                Connecté en tant que : Alex KOUEVI
+            </div>
+            <button onclick="logoutAdmin()" style="background: var(--chorale-red); color: white; border: none; padding: 8px 15px; border-radius: 5px; margin-top: 10px; cursor: pointer;">
+                <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </button>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="admin-content">
+            <!-- Section de génération -->
+            <div class="generation-section">
+                <h3 class="section-title">
+                    <i class="fas fa-magic"></i>
+                    Génération de codes
+                </h3>
+                
+                <div class="generation-form">
+                    <div class="form-group">
+                        <label for="codeType"><i class="fas fa-tag"></i> Type de pack</label>
+                        <select id="codeType">
+                            <option value="simple">Vote Simple (1 vote - 200 FCFA)</option>
+                            <option value="decouverte">Pack Découverte (3 votes - 500 FCFA)</option>
+                            <option value="passion">Pack Passion (10 votes - 1 500 FCFA)</option>
+                            <option value="jubile">Pack Jubilé (25 votes - 3 000 FCFA)</option>
+                            <option value="custom">Personnalisé</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="customVotesGroup" style="display: none;">
+                        <label for="customVotes"><i class="fas fa-vote-yea"></i> Nombre de votes personnalisé</label>
+                        <input type="number" id="customVotes" min="1" max="100" value="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codeQuantity"><i class="fas fa-hashtag"></i> Nombre de codes à générer</label>
+                        <input type="number" id="codeQuantity" min="1" max="100" value="10">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="codePrice"><i class="fas fa-franc-sign"></i> Prix par code (FCFA)</label>
+                        <input type="number" id="codePrice" min="100" max="10000" value="200">
+                    </div>
+                </div>
+
+                <button class="generate-btn" id="generateCodesBtn">
+                    <i class="fas fa-bolt"></i>
+                    Générer les codes
+                </button>
+            </div>
+
+            <!-- Section des codes générés -->
+            <div class="codes-section">
+                <div class="codes-header">
+                    <h3 class="section-title">
+                        <i class="fas fa-list"></i>
+                        Codes générés
+                    </h3>
+                    <div class="codes-actions">
+                        <button class="action-btn" id="exportBtn">
+                            <i class="fas fa-file-export"></i> Exporter
+                        </button>
+                        <button class="action-btn" id="printBtn">
+                            <i class="fas fa-print"></i> Imprimer
+                        </button>
+                        <button class="action-btn" id="clearBtn">
+                            <i class="fas fa-trash"></i> Tout effacer
+                        </button>
+                        <button class="action-btn" id="resetVotesBtn">
+                            <i class="fas fa-undo"></i> Réinitialiser votes
+                        </button>
+                        <button class="action-btn" onclick="fixDisplayIssues()">
+                            <i class="fas fa-sync"></i> Actualiser et numéroter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="codes-list" id="codesList">
+                    <!-- Les codes seront affichés ici -->
+                    <div class="no-codes">Aucun code généré pour le moment</div>
+                </div>
+            </div>
+
+            <!-- Section statistiques -->
+            <div class="stats-section">
+                <h3 class="section-title" style="color: white;">
+                    <i class="fas fa-chart-bar"></i>
+                    Statistiques
+                </h3>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="stat-value" id="totalCodes">0</div>
+                        <div class="stat-label">Codes générés</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-vote-yea"></i>
+                        </div>
+                        <div class="stat-value" id="totalVotes">0</div>
+                        <div class="stat-label">Votes disponibles</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-franc-sign"></i>
+                        </div>
+                        <div class="stat-value" id="totalRevenue">0</div>
+                        <div class="stat-label">FCFA potentiels</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-value" id="usedCodes">0</div>
+                        <div class="stat-label">Codes utilisés</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="realtime-monitor">
+        <h3><i class="fas fa-chart-line"></i> Monitoring Temps Réel</h3>
+        <div id="voteActivity">
+            <!-- Afficher les votes en temps réel -->
+        </div>
+        <div id="topCandidates">
+            <!-- Top 3 des candidats -->
+        </div>
+        <div id="revenueCounter">
+            <!-- Revenus générés -->
+        </div>
+    </div>
+
+    <!-- Modal de confirmation -->
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 id="modalTitle">Codes générés avec succès !</h3>
+            <div class="modal-body" id="modalBody">
+                <!-- Contenu dynamique -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Protection contre l'inspection
+    setInterval(() => {
+     if (document.hidden && adminState.isAuthenticated) {
+            // Déconnecter si l'onglet n'est plus actif
+            showPasswordProtection();
+        }
+    }, 1000);
+
+    // Empêcher le clic droit
+    document.addEventListener('contextmenu', function(e) {
+     if (adminState.isAuthenticated) {
+            e.preventDefault();
+            return false;
+        }
+    });
+    </script>
+    
+    <script src="js/shared-storage.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

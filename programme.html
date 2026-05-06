@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Programme complet du Jubilé 2027-2028 - 50 ans de l'Association Sainte Rita et 25 ans de la Chorale La Foi">
+    <title>Programme | Jubilé 2027-2028</title>
+    
+    <!-- jsPDF pour la génération PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/programme.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-image">SR</div>
+                    <div class="logo-text">
+                        <div class="logo-title">Jubilé 2027-2028</div>
+                        <div class="logo-subtitle">50 ans · 25 ans</div>
+                    </div>
+                </a>
+
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="histoire.html">Histoire</a></li>
+                        <li><a href="programme.html" class="active">Programme</a></li>
+                        <li><a href="evenements.html">Événements</a></li>
+                        <li><a href="vote.html">Vote</a></li>
+                        <li><a href="actualites.html">Actualités</a></li>
+                        <li><a href="galerie.html">Galerie</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Programme -->
+    <section class="programme-hero">
+        <div class="container">
+            <h1>Programme 2027-2028</h1>
+            <p>Deux années de célébrations exceptionnelles</p>
+            <div class="programme-period">
+                <span class="period-badge active" data-year="2027">2027 - 25 ans Chorale La Foi</span>
+                <span class="period-badge" data-year="2028">2028 - 50 ans Sainte Rita</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtres -->
+    <section class="section filtres-section">
+        <div class="container">
+            <div class="filtres">
+                <button class="filtre-btn active" data-filtre="all">Tous les événements</button>
+                <button class="filtre-btn" data-filtre="2027">Année 2027</button>
+                <button class="filtre-btn" data-filtre="2028">Année 2028</button>
+                <button class="filtre-btn" data-filtre="musique">Événements musicaux</button>
+                <button class="filtre-btn" data-filtre="sport">Festivals football</button>
+                <button class="filtre-btn" data-filtre="spirituel">Célébrations spirituelles</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calendrier -->
+    <section class="section calendrier-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Calendrier des Événements</h2>
+                <p>Ne manquez aucun moment de cette célébration exceptionnelle</p>
+            </div>
+
+            <!-- Année 2027 -->
+            <div class="calendrier-annee" id="annee-2027">
+                <h3 class="annee-title annee-2027-title">📅 2027 - 25 ans de la Chorale La Foi</h3>
+                <div class="mois-grid">
+                    <!-- Février 2027 -->
+                    <div class="mois-card" data-mois="fevrier" data-annee="2027">
+                        <div class="mois-header">
+                            <h4>Février 2027</h4>
+                            <span class="mois-badge">Lancement</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="spirituel">
+                                <div class="event-date">15 Février 2027</div>
+                                <div class="event-content">
+                                    <h5>Messe d'ouverture du Jubilé</h5>
+                                    <p>Cérémonie d'ouverture officielle des célébrations avec la participation de toutes les chorales invitées</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Église Sainte Maria Goretti, Bè-Kpota</span>
+                                    <span class="event-time"><i class="fas fa-clock"></i> 09h00</span>
+                                    <a href="evenements.html#messe-ouverture" class="event-link">Détails →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mars-Mai 2027 -->
+                    <div class="mois-card" data-mois="mars-mai" data-annee="2027">
+                        <div class="mois-header">
+                            <h4>Mars - Mai 2027</h4>
+                            <span class="mois-badge">Préparations</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">Mars - Mai 2027</div>
+                                <div class="event-content">
+                                    <h5>Ateliers "Café Mémoire"</h5>
+                                    <p>Rencontres mensuelles avec les anciens membres pour partager les souvenirs et collecter des archives</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Local de l'association</span>
+                                </div>
+                            </div>
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">Avril 2027</div>
+                                <div class="event-content">
+                                    <h5>Collecte d'archives historiques</h5>
+                                    <p>Numérisation des photos et documents anciens - Appel à contributions</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> En ligne et au local</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mai 2027 -->
+                    <div class="mois-card" data-mois="mai" data-annee="2027">
+                        <div class="mois-header">
+                            <h4>Mai 2027</h4>
+                            <span class="mois-badge sport">Football</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="sport">
+                                <div class="event-date">20-21 Mai 2027</div>
+                                <div class="event-content">
+                                    <h5>Festival "Coupe de la Foi"</h5>
+                                    <p>Tournoi de football communautaire - Équipes par pupitres, mouvements, chorales et associations</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Terrain du Lycée de Bè-Kpota</span>
+                                    <a href="evenements.html#coupe-2027" class="event-link">S'inscrire →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Juillet 2027 -->
+                    <div class="mois-card" data-mois="juillet" data-annee="2027">
+                        <div class="mois-header">
+                            <h4>Juillet 2027</h4>
+                            <span class="mois-badge musique">Concours</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">15-30 Juillet 2027</div>
+                                <div class="event-content">
+                                    <h5>Concours "The Voïx 2027"</h5>
+                                    <p>Édition gratuite - Présélections en ligne et auditions</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> En ligne et salle paroissiale</span>
+                                    <a href="vote.html" class="event-link">Participer →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Septembre 2027 -->
+                    <div class="mois-card" data-mois="septembre" data-annee="2027">
+                        <div class="mois-header">
+                            <h4>Septembre 2027</h4>
+                            <span class="mois-badge musique">Concert</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">10 Septembre 2027</div>
+                                <div class="event-content">
+                                    <h5>Finale "The Voïx 2027"</h5>
+                                    <p>Grande finale du concours vocal avec les 10 meilleurs candidats</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Grande salle de l'Église</span>
+                                    <a href="vote.html" class="event-link">Voter →</a>
+                                </div>
+                            </div>
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">25 Septembre 2027</div>
+                                <div class="event-content">
+                                    <h5>Flashmob choral</h5>
+                                    <p>Performance surprise dans les lieux publics de Lomé</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Place du marché et Grand Marché</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Décembre 2027 -->
+                    <div class="mois-card" data-mois="decembre" data-annee="2027">
+                        <div class="mois-header">
+                            <h4>Décembre 2027</h4>
+                            <span class="mois-badge spirituel">Noël</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="spirituel">
+                                <div class="event-date">24 Décembre 2027</div>
+                                <div class="event-content">
+                                    <h5>Concert de Noël Spécial</h5>
+                                    <p>Célébration des 25 ans avec chants traditionnels de Noël et nouveautés</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Église Sainte Maria Goretti</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Année 2028 -->
+            <div class="calendrier-annee" id="annee-2028">
+                <h3 class="annee-title annee-2028-title">📅 2028 - 50 ans de l'Association Sainte Rita & 25 ans de la Chorale La Foi</h3>
+                <div class="mois-grid">
+                    <!-- Janvier-Février 2028 -->
+                    <div class="mois-card" data-mois="janvier-fevrier" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Janvier - Février 2028</h4>
+                            <span class="mois-badge">Préparations</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">Janvier 2028</div>
+                                <div class="event-content">
+                                    <h5>Exposition "Boîte à souvenirs"</h5>
+                                    <p>Objets symboliques apportés par les membres - Exposition temporaire</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Salle polyvalente</span>
+                                </div>
+                            </div>
+                            <div class="event-item" data-categorie="spirituel">
+                                <div class="event-date">15 Février 2028</div>
+                                <div class="event-content">
+                                    <h5>Lancement des inscriptions "The Voïx 2028"</h5>
+                                    <p>Ouverture des inscriptions pour l'édition spéciale avec votes payants</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> En ligne</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mars 2028 -->
+                    <div class="mois-card" data-mois="mars" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Mars 2028</h4>
+                            <span class="mois-badge">Écologie</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="spirituel">
+                                <div class="event-date">21 Mars 2028</div>
+                                <div class="event-content">
+                                    <h5>Plantation "25 arbres pour 25 ans"</h5>
+                                    <p>Cérémonie symbolique de plantation d'arbres pour marquer l'héritage</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Parc communal de Bè</span>
+                                </div>
+                            </div>
+                            <div class="event-item" data-categorie="culture">
+                                <div class="event-date">25 Mars 2028</div>
+                                <div class="event-content">
+                                    <h5>Miss Bè-Kpota 2028</h5>
+                                    <p>Concours de beauté, intelligence et leadership des jeunes femmes du quartier</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Salle des fêtes</span>
+                                    <a href="evenements.html#miss-be-kpota" class="event-link">Candidater →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Avril 2028 -->
+                    <div class="mois-card" data-mois="avril" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Avril 2028</h4>
+                            <span class="mois-badge spirituel">Pâques</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="spirituel">
+                                <div class="event-date">14 Avril 2028</div>
+                                <div class="event-content">
+                                    <h5>Chemin de croix musical</h5>
+                                    <p>Chorale aux 14 stations avec chants adaptés et méditations</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Parcours dans le quartier</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mai 2028 -->
+                    <div class="mois-card" data-mois="mai" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Mai 2028</h4>
+                            <span class="mois-badge musique">Concert</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">15 Mai 2028</div>
+                                <div class="event-content">
+                                    <h5>Concert acoustique "Back to Basics"</h5>
+                                    <p>Sans sono, seulement voix et piano - Retour aux sources</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Parc de la Paix</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Juin 2028 -->
+                    <div class="mois-card" data-mois="juin" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Juin 2028</h4>
+                            <span class="mois-badge sport">Football</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="sport">
+                                <div class="event-date">16-17 Juin 2028</div>
+                                <div class="event-content">
+                                    <h5>Festival "Jubilé Cup 2028"</h5>
+                                    <p>Tournoi élargi avec match des légendes et tournoi enfants</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Stade municipal</span>
+                                    <a href="evenements.html#jubile-cup" class="event-link">S'inscrire →</a>
+                                </div>
+                            </div>
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">30 Juin 2028</div>
+                                <div class="event-content">
+                                    <h5>Finale "The Voïx 2028"</h5>
+                                    <p>Édition spéciale avec votes payants et jury professionnel</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Grande salle de l'Église</span>
+                                    <a href="vote.html" class="event-link">Voter →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Juillet 2028 -->
+                    <div class="mois-card" data-mois="juillet" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Juillet 2028</h4>
+                            <span class="mois-badge musique">Tournée</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="musique">
+                                <div class="event-date">Tout Juillet 2028</div>
+                                <div class="event-content">
+                                    <h5>Tournée "Concerts-apéros"</h5>
+                                    <p>5 concerts intimistes dans les maisons des membres</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Chez les membres volontaires</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Septembre 2028 -->
+                    <div class="mois-card" data-mois="septembre" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Septembre 2028</h4>
+                            <span class="mois-badge musique">Jubilé</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item highlight" data-categorie="spirituel">
+                                <div class="event-date">23-29 Septembre 2028</div>
+                                <div class="event-content">
+                                    <h5>⭐ Semaine du Jubilé ⭐</h5>
+                                    <p>7 jours de célébrations culminantes : Messe d'action de grâce, Concert exceptionnel, Banquet, Lancement de l'album, Cérémonie de clôture</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Divers lieux</span>
+                                    <a href="evenements.html#semaine-jubile" class="event-link">Programme complet →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Octobre-Décembre 2028 -->
+                    <div class="mois-card" data-mois="octobre-decembre" data-annee="2028">
+                        <div class="mois-header">
+                            <h4>Octobre - Décembre 2028</h4>
+                            <span class="mois-badge">Clôture</span>
+                        </div>
+                        <div class="mois-events">
+                            <div class="event-item" data-categorie="spirituel">
+                                <div class="event-date">24 Décembre 2028</div>
+                                <div class="event-content">
+                                    <h5>Concert de clôture du Jubilé</h5>
+                                    <p>Dernier concert des célébrations - Soirée de clôture mémorable</p>
+                                    <span class="event-lieu"><i class="fas fa-map-marker-alt"></i> Église Sainte Maria Goretti</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Téléchargement -->
+    <section class="section download-section">
+        <div class="container">
+            <div class="download-card">
+                <div class="download-content">
+                    <h3>Télécharger le programme complet</h3>
+                    <p>Obtenez la version PDF du programme avec tous les détails, horaires et lieux.</p>
+                    
+                    <div class="download-info">
+                        <div class="info-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div>
+                                <h5>PDF Complet</h5>
+                                <p>Programme détaillé 2027-2028</p>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div>
+                                <h5>Calendrier intégrable</h5>
+                                <p>Importez les événements dans votre agenda</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="download-btns">
+                        <button id="downloadPDFBtn" class="btn btn-primary">
+                            <i class="fas fa-download"></i> Télécharger PDF
+                        </button>
+                        <button id="downloadICSBtn" class="btn btn-secondary">
+                            <i class="fas fa-calendar-plus"></i> Ajouter à mon agenda
+                        </button>
+                    </div>
+                    
+                    <div class="file-details">
+                        <p><i class="fas fa-info-circle"></i> PDF généré dynamiquement • Mise à jour : Mars 2026</p>
+                    </div>
+                </div>
+                <div class="download-image">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-title">Jubilé 2027-2028</div>
+                        <div class="logo-subtitle">50 ans Sainte Rita · 25 ans Chorale La Foi</div>
+                    </div>
+                    <p>Suivez notre calendrier pour ne rien manquer des célébrations !</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Événements à venir</h4>
+                    <ul>
+                        <li><a href="evenements.html#coupe-2027">🏆 Coupe de la Foi 2027</a></li>
+                        <li><a href="evenements.html#the-voix">🎤 Concours The Voïx</a></li>
+                        <li><a href="evenements.html#jubile-cup">⚽ Jubilé Cup 2028</a></li>
+                        <li><a href="evenements.html#semaine-jubile">✨ Semaine du Jubilé</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Renseignements</h4>
+                    <p><i class="fas fa-info-circle"></i> Pour plus d'informations sur les événements</p>
+                    <p><i class="fas fa-envelope"></i> choralelafoi@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +228 79 28 82 09</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Recevoir les rappels</h4>
+                    <div class="footer-social-icons">
+                        <a href="#" class="social-icon" aria-label="Notifications"><i class="fas fa-bell"></i></a>
+                        <a href="https://wa.me/22879288209" class="social-icon" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="social-icon" aria-label="Newsletter"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025-2028 Jubilé Association Sainte Rita & Chorale La Foi. Tous droits réservés</p>
+                <p>Programme mis à jour le ${new Date().toLocaleDateString('fr-FR')}</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/script.js"></script>
+    <script src="js/programme.js"></script>
+</body>
+</html>

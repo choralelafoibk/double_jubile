@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Suivez toutes les actualités du Jubilé 2027-2028 : préparatifs, concerts, concours The Voïx, événements sportifs et culturels.">
+    <meta name="keywords" content="Jubilé, actualités, Sainte Rita, Chorale La Foi, The Voïx, Coupe de la Foi, concert, Miss Bè-Kpota">
+    <title>Actualités | Suivez les nouvelles du Jubilé 2027-2028</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/actualites.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <div class="logo-image">SR</div>
+                    <div class="logo-text">
+                        <div class="logo-title">Jubilé 2027-2028</div>
+                        <div class="logo-subtitle">50 ans · 25 ans</div>
+                    </div>
+                </a>
+
+                <nav class="nav-menu" id="navMenu">
+                    <ul class="nav-links">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li><a href="histoire.html">Histoire</a></li>
+                        <li><a href="programme.html">Programme</a></li>
+                        <li><a href="evenements.html">Événements</a></li>
+                        <li><a href="vote.html">Vote</a></li>
+                        <li><a href="actualites.html" class="active">Actualités</a></li>
+                        <li><a href="galerie.html">Galerie</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Actualités avec animation -->
+    <section class="actualites-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1><i class="fas fa-newspaper"></i> Actualités</h1>
+                <p class="hero-subtitle">Toutes les nouvelles des préparatifs du Jubilé 2027-2028</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="articleCount">12</span>
+                        <span class="stat-label">Articles publiés</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="preparatifsCount">24</span>
+                        <span class="stat-label">Mois de préparatifs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="joursRestants">0</span>
+                        <span class="stat-label">Jours avant le 1er event</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtres Catégories -->
+    <section class="section filtres-section">
+        <div class="container">
+            <div class="filtres-categories">
+                <button class="categorie-btn active" data-categorie="all">📰 Toutes</button>
+                <button class="categorie-btn" data-categorie="preparatifs">🎯 Préparatifs</button>
+                <button class="categorie-btn" data-categorie="the-voix">🎤 The Voïx</button>
+                <button class="categorie-btn" data-categorie="football">⚽ Festivals Football</button>
+                <button class="categorie-btn" data-categorie="musique">🎵 Concerts & Musique</button>
+                <button class="categorie-btn" data-categorie="spiritualite">🙏 Spiritualité</button>
+                <button class="categorie-btn" data-categorie="foire">🛍️ Miabe Foire</button>
+                <button class="categorie-btn" data-categorie="culture">👑 Culture & Beauté</button>
+                <button class="categorie-btn" data-categorie="communauté">🤝 Communauté</button>
+            </div>
+
+            <div class="recherche-barre">
+                <div class="recherche-input">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="rechercheInput" placeholder="Rechercher un article...">
+                </div>
+                <div class="tri-options">
+                    <span>Trier par :</span>
+                    <select id="triSelect">
+                        <option value="recent">Plus récent</option>
+                        <option value="ancien">Plus ancien</option>
+                        <option value="populaire">Plus populaire</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles -->
+    <section class="section articles-section">
+        <div class="container">
+            <div class="articles-grid" id="articleGrid">
+                <!-- Article 1 -->
+                <article class="article-card" data-categorie="preparatifs" data-date="2026-02-01" data-popularite="245">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/0a1f44/white?text=Lancement+Jubilé" alt="Lancement des préparatifs">
+                        <div class="article-badge">🎯 Préparatifs</div>
+                        <div class="article-date">1 Fév 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Lancement officiel des préparatifs du Jubilé</h3>
+                        <p class="article-excerpt">Alex KOUEVI et le comité de pilotage ont officiellement lancé les préparatifs des célébrations des 50 ans de l'Association Sainte Rita et 25 ans de la Chorale La Foi.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Alex KOUEVI</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 12 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 245 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">lancement</span>
+                            <span class="tag">comité</span>
+                            <span class="tag">planification</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="1">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 2 -->
+                <article class="article-card" data-categorie="the-voix" data-date="2026-02-10" data-popularite="512">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/e83e8c/white?text=The+Voïx" alt="Annonce du concours The Voïx">
+                        <div class="article-badge">🎤 The Voïx</div>
+                        <div class="article-date">10 Fév 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Le concours "The Voïx" dévoilé : deux éditions exceptionnelles</h3>
+                        <p class="article-excerpt">Découvrez les détails des deux éditions du concours vocal : 2027 gratuit et 2028 avec votes payants. Inscriptions ouvertes dès maintenant.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Culture</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 28 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 512 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">concours</span>
+                            <span class="tag">musique</span>
+                            <span class="tag">talent</span>
+                            <span class="tag">vote</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="2">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 3 -->
+                <article class="article-card" data-categorie="football" data-date="2026-03-05" data-popularite="387">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/28a745/white?text=Coupe+de+la+Foi" alt="Annonce Coupe de la Foi">
+                        <div class="article-badge">⚽ Football</div>
+                        <div class="article-date">5 Mars 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Coupe de la Foi 2027 : le tournoi football qui unit la communauté</h3>
+                        <p class="article-excerpt">Premier festival sportif du Jubilé annoncé : la Coupe de la Foi réunira 8-12 équipes par pupitres, chorales, associations et mouvements.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Sport</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 19 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 387 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">football</span>
+                            <span class="tag">tournoi</span>
+                            <span class="tag">communauté</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="3">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 4 -->
+                <article class="article-card" data-categorie="foire" data-date="2026-04-01" data-popularite="312">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/20c997/white?text=Miabe+Foire+2027" alt="Annonce Miabe Foire 2027">
+                        <div class="article-badge">🛍️ Miabe Foire</div>
+                        <div class="article-date">1 Avr 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Miabe Foire 2027 : Première foire économique de Bè-Kpota</h3>
+                        <p class="article-excerpt">Lancement de la première foire commerciale locale pour promouvoir artisans et petites entreprises du quartier. Réservation des stands ouverte.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Économique</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 16 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 312 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">foire</span>
+                            <span class="tag">économie</span>
+                            <span class="tag">artisans</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="4">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 5 -->
+                <article class="article-card" data-categorie="musique" data-date="2026-04-20" data-popularite="623">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/dc3545/white?text=Album+Anniversaire" alt="Préparation album anniversaire">
+                        <div class="article-badge">🎵 Musique</div>
+                        <div class="article-date">20 Avr 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Album anniversaire : enregistrement des plus grands succès</h3>
+                        <p class="article-excerpt">La chorale a commencé l'enregistrement de l'album commémoratif qui regroupera les plus beaux chants des 25 dernières années.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Chorale La Foi</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 35 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 623 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">album</span>
+                            <span class="tag">enregistrement</span>
+                            <span class="tag">musique sacrée</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="5">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 6 -->
+                <article class="article-card" data-categorie="football" data-date="2026-05-01" data-popularite="398">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/ffc107/white?text=Jubilé+Cup+2028" alt="Annonce Jubilé Cup 2028">
+                        <div class="article-badge">⚽ Football</div>
+                        <div class="article-date">1 Mai 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Jubilé Cup 2028 : L'apogée des célébrations sportives</h3>
+                        <p class="article-excerpt">Tournoi final incluant match des légendes et compétition féminine. Appel aux bénévoles et inscriptions des équipes ouvertes.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Sport</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 21 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 398 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">jubilé cup</span>
+                            <span class="tag">finale</span>
+                            <span class="tag">légendes</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="6">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 7 -->
+                <article class="article-card" data-categorie="spiritualite" data-date="2026-05-15" data-popularite="298">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/6f42c1/white?text=Retraite+Spirituelle" alt="Retraite spirituelle">
+                        <div class="article-badge">🙏 Spiritualité</div>
+                        <div class="article-date">15 Mai 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Retraite spirituelle "25 ans dans la foi" : les premières dates</h3>
+                        <p class="article-excerpt">Une retraite spéciale sera organisée pour les membres de la chorale et de l'association pour méditer sur le parcours spirituel.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Spirituelle</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 14 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 298 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">retraite</span>
+                            <span class="tag">spiritualité</span>
+                            <span class="tag">foi</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="7">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 8 -->
+                <article class="article-card" data-categorie="musique" data-date="2026-06-01" data-popularite="456">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/e83e8c/white?text=Concert+Jubilé" alt="Annonce Concert Jubilé">
+                        <div class="article-badge">🎵 Musique</div>
+                        <div class="article-date">1 Juin 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Concert Jubilé 2028 : Programme dévoilé</h3>
+                        <p class="article-excerpt">Découvrez le programme du concert exceptionnel incluant hymne du Jubilé, création 2028 et finale orchestrale. Billeterie ouvre en janvier 2028.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Culture</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 24 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 456 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">concert</span>
+                            <span class="tag">programme</span>
+                            <span class="tag">billeterie</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="8">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 9 -->
+                <article class="article-card" data-categorie="foire" data-date="2026-06-10" data-popularite="389">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/20c997/white?text=Miabe+Foire+2028" alt="Annonce Miabe Foire 2028">
+                        <div class="article-badge">🛍️ Miabe Foire</div>
+                        <div class="article-date">10 Juin 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Miabe Foire 2028 : Édition élargie avec invités spéciaux</h3>
+                        <p class="article-excerpt">Deuxième édition avec exposants du grand marché, rencontres B2B et conférences. Appel aux conférenciers et exposants.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Économique</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 18 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 389 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">foire 2028</span>
+                            <span class="tag">invités spéciaux</span>
+                            <span class="tag">B2B</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="9">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 10 -->
+                <article class="article-card" data-categorie="communauté" data-date="2026-06-10" data-popularite="426">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/0a1f44/white?text=Mémoire+Vivante" alt="Projet Mémoire Vivante">
+                        <div class="article-badge">🤝 Communauté</div>
+                        <div class="article-date">10 Juin 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Projet "Mémoire Vivante" : collecte des témoignages des fondateurs</h3>
+                        <p class="article-excerpt">Lancement de la collecte des témoignages vidéo des membres fondateurs pour préserver l'histoire de l'association et de la chorale.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Histoire</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 22 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 426 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">mémoire</span>
+                            <span class="tag">témoignages</span>
+                            <span class="tag">histoire</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="10">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 11 -->
+                <article class="article-card" data-categorie="culture" data-date="2026-07-01" data-popularite="521">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/ffc107/white?text=Miss+Bè-Kpota" alt="Annonce Miss Bè-Kpota">
+                        <div class="article-badge">👑 Culture & Beauté</div>
+                        <div class="article-date">1 Juil 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Miss Bè-Kpota 2028 : Premier concours de beauté local</h3>
+                        <p class="article-excerpt">Lancement du premier concours Miss Bè-Kpota pour célébrer élégance, intelligence et leadership des jeunes filles de la paroisse.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Commission Culture</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 31 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 521 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">miss be-kpota</span>
+                            <span class="tag">concours beauté</span>
+                            <span class="tag">leadership</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="11">Lire l'article complet →</a>
+                    </div>
+                </article>
+
+                <!-- Article 12 -->
+                <article class="article-card" data-categorie="spiritualite" data-date="2026-08-01" data-popularite="587">
+                    <div class="article-image">
+                        <img src="https://placehold.co/600x400/6f42c1/white?text=Semaine+Jubilé" alt="Annonce Semaine du Jubilé">
+                        <div class="article-badge">🙏 Spiritualité</div>
+                        <div class="article-date">1 Août 2026</div>
+                    </div>
+                    <div class="article-content">
+                        <h3>Semaine du Jubilé 2028 : Programme des 7 jours exceptionnels</h3>
+                        <p class="article-excerpt">Découvrez le programme complet de la semaine culminante : conférences, répétition solennelle et Mega Concert Anniversaire.</p>
+                        <div class="article-meta">
+                            <span class="meta-item"><i class="fas fa-user"></i> Par Comité de Pilotage</span>
+                            <span class="meta-item"><i class="fas fa-comments"></i> 27 commentaires</span>
+                            <span class="meta-item"><i class="fas fa-eye"></i> 587 vues</span>
+                        </div>
+                        <div class="article-tags">
+                            <span class="tag">semaine jubilé</span>
+                            <span class="tag">conférences</span>
+                            <span class="tag">mega concert</span>
+                        </div>
+                        <a href="#" class="btn-article" data-article="12">Lire l'article complet →</a>
+                    </div>
+                </article>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="page-btn prev" disabled>
+                    <i class="fas fa-chevron-left"></i> Précédent
+                </button>
+                <div class="page-numbers">
+                    <button class="page-number active">1</button>
+                    <button class="page-number">2</button>
+                    <button class="page-number">3</button>
+                </div>
+                <button class="page-btn next">
+                    Suivant <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section newsletter-section">
+        <div class="container">
+            <div class="newsletter-card">
+                <div class="newsletter-content">
+                    <h3>Restez informés</h3>
+                    <p>Inscrivez-vous à notre newsletter pour recevoir les dernières actualités du Jubilé directement dans votre boîte mail.</p>
+
+                    <form id="newsletterForm" class="newsletter-form">
+                        <div class="form-group">
+                            <input type="email" id="newsletterEmail" placeholder="Votre adresse email" required>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i> S'abonner
+                            </button>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" id="newsletterConsent" required>
+                            <label for="newsletterConsent">
+                                J'accepte de recevoir les actualités du Jubilé par email
+                            </label>
+                        </div>
+                    </form>
+
+                    <p class="newsletter-note"><small>Nous ne partageons jamais votre email. Désabonnement possible à tout moment.</small></p>
+                </div>
+                <div class="newsletter-image">
+                    <i class="fas fa-envelope-open-text"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-title">Actualités du Jubilé</div>
+                        <div class="logo-subtitle">Suivez toute l'actualité</div>
+                    </div>
+                    <p>Restez connectés aux dernières nouvelles des célébrations 2027-2028</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Catégories</h4>
+                    <ul>
+                        <li><a href="#" data-categorie="preparatifs">🎯 Préparatifs</a></li>
+                        <li><a href="#" data-categorie="the-voix">🎤 The Voïx</a></li>
+                        <li><a href="#" data-categorie="football">⚽ Festivals Football</a></li>
+                        <li><a href="#" data-categorie="musique">🎵 Concerts & Musique</a></li>
+                        <li><a href="#" data-categorie="foire">🛍️ Miabe Foire</a></li>
+                        <li><a href="#" data-categorie="culture">👑 Culture & Beauté</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h4>Proposer un article</h4>
+                    <p>Vous avez une actualité à partager ?</p>
+                    <p><i class="fas fa-envelope"></i> choralelafoi@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> +228 79 28 82 09</p>
+                </div>
+                <div class="footer-social">
+                    <h4>Partager les articles</h4>
+                    <div class="footer-social-icons">
+                        <a href="https://www.facebook.com/share/1CjrMTYc5J/" class="social-icon" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.tiktok.com/@chorale.la.foi.bk1" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://wa.me/22879288209" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025-2028 Actualités du Jubilé - Association Sainte Rita & Chorale La Foi</p>
+                <p><small>Programme mis à jour en Mars 2026</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal Article Complet -->
+    <div class="modal" id="articleModal">
+        <div class="modal-content article-modal">
+            <button class="modal-close">&times;</button>
+            <div class="article-modal-header">
+                <div class="article-modal-badge">Préparatifs</div>
+                <h2 id="modalArticleTitle">Titre de l'article</h2>
+                <div class="article-modal-meta">
+                    <span><i class="fas fa-user"></i> <span id="modalArticleAuthor">Auteur</span></span>
+                    <span><i class="fas fa-calendar-alt"></i> <span id="modalArticleDate">Date</span></span>
+                    <span><i class="fas fa-eye"></i> <span id="modalArticleViews">0</span> vues</span>
+                </div>
+            </div>
+            <div class="article-modal-body">
+                <div class="article-modal-image">
+                    <img id="modalArticleImage" src="" alt="">
+                </div>
+                <div class="article-modal-content" id="modalArticleContent"></div>
+            </div>
+            <div class="article-modal-footer">
+                <div class="article-tags" id="modalArticleTags"></div>
+                <div class="article-share">
+                    <span>Partager :</span>
+                    <div class="share-buttons">
+                        <button class="share-btn facebook"><i class="fab fa-facebook-f"></i></button>
+                        <button class="share-btn whatsapp"><i class="fab fa-whatsapp"></i></button>
+                        <button class="share-btn email"><i class="fas fa-envelope"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Commentaires -->
+            <div class="article-comments">
+                <h3>Commentaires (<span id="commentsCount">0</span>)</h3>
+                <div class="comments-list" id="commentsList"></div>
+                <form class="comment-form" id="commentForm">
+                    <h4>Ajouter un commentaire</h4>
+                    <div class="form-group">
+                        <input type="text" id="commentName" placeholder="Votre nom" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="commentEmail" placeholder="Votre email (ne sera pas publié)" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="commentText" placeholder="Votre commentaire..." rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Publier mon commentaire
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script src="js/actualites.js"></script>
+</body>
+</html>
