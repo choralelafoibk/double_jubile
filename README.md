@@ -41,10 +41,10 @@ Ce site présente le programme des célébrations du double jubilé qui se déro
 
 ## 📞 Contact
 
-**Coordinateurs du projet :** Alex KOUEVI, Angelo EKUE, REV. Père Paul TMK
-**Email :** choralelafoi@gmail.com
-**Paroisse Maria Goretti** - Bè-Kpota, Lomé, Togo
-**Contact** (+228) 79 28 82 09 / 91 60 09 45
+- **Coordinateurs du projet :** Alex KOUEVI, Angelo EKUE, REV. Père Paul TMK
+- **Email :** choralelafoi@gmail.com
+- **Paroisse Maria Goretti** - Bè-Kpota, Lomé, Togo
+- **Numéros** (+228) 79 28 82 09 / 91 60 09 45
 
 ---
 
