@@ -3,7 +3,7 @@
 
 Bienvenue sur le site officiel du double jubilé de la Chorale La Foi de Bè-Kpota (Lomé, Togo).
 
-
+---
 
 ## 📅 À propos du projet
 
@@ -13,7 +13,7 @@ Ce site présente le programme des célébrations du double jubilé qui se déro
 - 🕯️ **50 ans** de l'Association Sainte Rita (fondée en décembre 1978)
 - 🎶 **25 ans** de la Chorale "La Foi" (fondée en mars 2003)
 
-
+---
 
 ## 📂 Contenu du site
 
@@ -23,7 +23,7 @@ Ce site présente le programme des célébrations du double jubilé qui se déro
 - Les photos et vidéos souvenirs
 - Les informations pratiques (lieux, horaires)
 
-
+---
 
 ## 🤝 Commissions impliquées
 
@@ -37,7 +37,7 @@ Ce site présente le programme des célébrations du double jubilé qui se déro
 | Protocole & Hospitalité | Accueil, restauration, cadeaux |
 | Sportive & Loisirs | Jeux, sorties, plantations |
 
-
+---
 
 ## 📞 Contact
 
