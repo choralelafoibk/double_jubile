@@ -14,7 +14,7 @@ const CONFIG = {
     voteEndDate: new Date("2028-12-31T23:59:59").getTime(),
     WHATSAPP_NUMBER: "22879288209",
     GMAIL_ADDRESS: "choralelafoi@gmail.com",
-    PAYMENT_NUMBER: "22898025505"
+    PAYMENT_NUMBER: "22879288209"
 };
 
 const PACK_MAPPING = {
@@ -1091,16 +1091,19 @@ function checkLoggedInUser() {
             appState.currentUser = JSON.parse(savedUser);
             updateUserDisplay();
             
-            // Vérifier si l'utilisateur est un candidat 2027 connecté
-            if (appState.currentUser.type === "CANDIDAT" && appState.currentUser.edition === "2027") {
-                const inscriptionSection = document.querySelector('.inscription-candidat-section');
-                if (inscriptionSection && !inscriptionSection.getAttribute('data-original-content')) {
-                    inscriptionSection.setAttribute('data-original-content', inscriptionSection.innerHTML);
-                    replaceSectionWithWelcomeMessage({
-                        prenom: appState.currentUser.prenom,
-                        nom: appState.currentUser.nom
-                    });
-                }
+            // Si c'est un candidat 2028, pré-remplir le formulaire
+            if (appState.currentUser.type === "CANDIDAT" && appState.currentUser.edition === "2028") {
+                setTimeout(() => {
+                    const nomField = document.getElementById('candidateNom2028');
+                    const prenomField = document.getElementById('candidatePrenom2028');
+                    const emailField = document.getElementById('candidateEmail2028');
+                    const telephoneField = document.getElementById('candidateTelephone2028');
+                    
+                    if (nomField) nomField.value = appState.currentUser.nom;
+                    if (prenomField) prenomField.value = appState.currentUser.prenom;
+                    if (emailField) emailField.value = appState.currentUser.email;
+                    if (telephoneField) telephoneField.value = appState.currentUser.phone;
+                }, 100);
             }
         }
     } catch (error) {
@@ -1145,36 +1148,67 @@ function switchAuthTab(tab) {
 }
 
 function handleLogin() {
+    console.log("🔑 Tentative de connexion édition 2028...");
+    
     const email = document.getElementById('loginEmail')?.value.trim();
     const password = document.getElementById('loginPassword')?.value;
+    
     if (!email || !password) {
         showMessage("Veuillez remplir tous les champs", "error");
         return;
     }
     
     const users = getUsers();
+    // Rechercher l'utilisateur par email et mot de passe
     const user = users.find(u => u.email === email && u.password === btoa(password));
-    if (user) {
-        appState.currentUser = user;
-        localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(user));
-        showMessage(`Bienvenue ${user.prenom} ${user.nom} !`, "success");
-        hideAuthPage();
-        updateUserDisplay();
-        
-        if (user.type === "VOTANT") {
-            setTimeout(() => {
-                const achatSection = document.getElementById('achat-votes-section');
-                if (achatSection) {
-                    achatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 1000);
-        }
-    } else {
+    
+    if (!user) {
         showMessage("Email ou mot de passe incorrect", "error");
+        return;
+    }
+    
+    // Vérifier si le compte est pour l'édition 2028
+    if (user.edition !== "2028") {
+        showMessage("Ce compte n'est pas enregistré pour l'édition 2028", "error");
+        return;
+    }
+    
+    // Connexion réussie
+    appState.currentUser = user;
+    localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(user));
+    showMessage(`Bienvenue ${user.prenom} ${user.nom} !`, "success");
+    hideAuthPage();
+    
+    // Mettre à jour l'affichage selon le type de compte
+    updateUserDisplay();
+    
+    // Redirection spécifique selon le type de compte
+    if (user.type === "VOTANT") {
+        console.log("✅ Votant connecté - redirection vers les packs de votes");
+        setTimeout(() => {
+            const achatSection = document.getElementById('achat-votes-section');
+            if (achatSection) {
+                achatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                achatSection.style.boxShadow = '0 0 20px rgba(30, 58, 138, 0.3)';
+                setTimeout(() => {
+                    achatSection.style.boxShadow = '';
+                }, 3000);
+            }
+        }, 500);
+    } else if (user.type === "CANDIDAT") {
+        console.log("✅ Candidat connecté - redirection vers le formulaire de candidature");
+        setTimeout(() => {
+            const candidateDashboard = document.getElementById('candidateDashboard2028');
+            if (candidateDashboard && candidateDashboard.style.display === 'block') {
+                candidateDashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 500);
     }
 }
 
 function handleRegister() {
+    console.log("📝 Tentative d'inscription édition 2028...");
+    
     const nom = document.getElementById('registerNom')?.value.trim();
     const prenom = document.getElementById('registerPrenom')?.value.trim();
     const email = document.getElementById('registerEmail')?.value.trim();
@@ -1192,24 +1226,44 @@ function handleRegister() {
         return;
     }
     
+    if (password.length < 6) {
+        showMessage("Le mot de passe doit contenir au moins 6 caractères", "error");
+        return;
+    }
+    
     const users = getUsers();
     if (users.find(u => u.email === email)) {
         showMessage(`Un compte existe déjà avec l'email ${email}`, "error");
         return;
     }
     
-    let userType = appState.selectedRole === "candidat" ? "CANDIDAT" : "VOTANT";
+    // Déterminer le type de compte (CANDIDAT ou VOTANT)
+    let userType = "";
+    let userRole = "";
+    
+    if (appState.selectedRole === "candidat") {
+        userType = "CANDIDAT";
+        userRole = "candidat";
+    } else if (appState.selectedRole === "votant") {
+        userType = "VOTANT";
+        userRole = "votant";
+    } else {
+        showMessage("Veuillez sélectionner un type de compte", "error");
+        return;
+    }
+    
     const newUser = {
         id: Date.now().toString(),
-        nom,
-        prenom,
-        email,
-        phone,
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        phone: phone,
         password: btoa(password),
         type: userType,
-        role: appState.selectedRole,
+        role: userRole,
+        edition: "2028",
         createdAt: new Date().toISOString(),
-        edition: "2028"
+        candidatureSoumise: false
     };
     
     users.push(newUser);
@@ -1217,17 +1271,33 @@ function handleRegister() {
     appState.currentUser = newUser;
     localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(newUser));
     
-    showMessage(`Compte ${userType} créé avec succès !`, "success");
+    showMessage(`Compte ${userType} créé avec succès pour l'édition 2028 !`, "success");
     hideAuthPage();
+    
+    // Mettre à jour l'affichage
     updateUserDisplay();
     
+    // Redirection selon le type de compte
     if (userType === "VOTANT") {
+        console.log("✅ Compte votant créé - redirection vers les packs de votes");
         setTimeout(() => {
             const achatSection = document.getElementById('achat-votes-section');
             if (achatSection) {
                 achatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                achatSection.style.boxShadow = '0 0 20px rgba(30, 58, 138, 0.3)';
+                setTimeout(() => {
+                    achatSection.style.boxShadow = '';
+                }, 3000);
             }
-        }, 1000);
+        }, 500);
+    } else if (userType === "CANDIDAT") {
+        console.log("✅ Compte candidat créé - le formulaire de candidature est affiché");
+        setTimeout(() => {
+            const candidateDashboard = document.getElementById('candidateDashboard2028');
+            if (candidateDashboard && candidateDashboard.style.display === 'block') {
+                candidateDashboard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }, 500);
     }
 }
 
@@ -1237,25 +1307,37 @@ function updateUserDisplay() {
     const voterDashboard = document.getElementById('voterDashboard2028');
     
     if (!appState.currentUser) {
+        // Aucun utilisateur connecté - afficher la section de connexion/inscription
         if (authLoginSection) authLoginSection.style.display = 'block';
         if (candidateDashboard) candidateDashboard.style.display = 'none';
         if (voterDashboard) voterDashboard.style.display = 'none';
+        console.log("👤 Aucun utilisateur connecté");
     } else {
+        // Utilisateur connecté - cacher la section d'authentification
         if (authLoginSection) authLoginSection.style.display = 'none';
+        
         const userType = appState.currentUser.type;
+        console.log(`👤 Utilisateur connecté : ${appState.currentUser.prenom} ${appState.currentUser.nom} (${userType})`);
+        
         if (userType === "VOTANT") {
+            // Afficher le dashboard votant
             if (voterDashboard) {
                 voterDashboard.style.display = 'block';
                 const voterName = document.getElementById('voterName');
                 if (voterName) voterName.textContent = `${appState.currentUser.prenom} ${appState.currentUser.nom}`;
+                console.log("✅ Dashboard VOTANT affiché");
             }
             if (candidateDashboard) candidateDashboard.style.display = 'none';
-        } else if (userType === "CANDIDAT") {
+        } 
+        else if (userType === "CANDIDAT") {
+            // Afficher le dashboard candidat
             if (candidateDashboard) {
                 candidateDashboard.style.display = 'block';
                 const candidateName = document.getElementById('candidateName');
                 if (candidateName) candidateName.textContent = `${appState.currentUser.prenom} ${appState.currentUser.nom}`;
+                console.log("✅ Dashboard CANDIDAT affiché");
                 
+                // Pré-remplir les champs du formulaire candidat avec les infos du compte
                 const nomField = document.getElementById('candidateNom2028');
                 const prenomField = document.getElementById('candidatePrenom2028');
                 const emailField = document.getElementById('candidateEmail2028');
@@ -1273,10 +1355,11 @@ function updateUserDisplay() {
 
 function handleLogout() {
     if (confirm("Voulez-vous vous déconnecter ?")) {
+        const userName = appState.currentUser ? `${appState.currentUser.prenom} ${appState.currentUser.nom}` : "";
         appState.currentUser = null;
         localStorage.removeItem(CONFIG.currentUserKey);
         updateUserDisplay();
-        showMessage("✅ Déconnexion réussie", "success");
+        showMessage(`✅ Déconnexion réussie${userName ? `, ${userName}` : ""}`, "success");
     }
 }
 
