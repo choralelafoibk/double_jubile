@@ -202,6 +202,7 @@ body {
 
 .edition-btn {
     background: rgba(255, 255, 255, 0.2);
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     border: 2px solid transparent;
     border-radius: var(--border-radius-lg);
@@ -1406,6 +1407,42 @@ body {
     color: var(--white);
 }
 
+/* ==================================================
+     SECRET ADMIN RESET (CSS)
+     - Le bouton de réinitialisation est caché par défaut.
+     - Pour l'afficher uniquement pour toi :
+         dans la console du navigateur, exécute :
+             document.body.classList.add('show-secret-reset')
+         Pour le masquer :
+             document.body.classList.remove('show-secret-reset')
+     - Le bouton déclenche la fonction JavaScript `resetCandidatesToDefault()` déjà présente dans `js/vote.js`.
+================================================== */
+.secret-reset {
+        position: fixed;
+        bottom: 18px;
+        right: 18px;
+        display: none; /* caché par défaut */
+        align-items: center;
+        gap: 10px;
+        background: linear-gradient(135deg, #b91c1c, #ef4444);
+        color: white;
+        border-radius: 999px;
+        padding: 10px 16px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+        z-index: 11000;
+        cursor: pointer;
+        border: none;
+        font-weight: 700;
+        transition: transform .12s ease, box-shadow .12s ease;
+}
+.secret-reset i { margin-right: 6px; }
+.secret-reset:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.45); }
+
+/* Affiche le bouton seulement si la classe est ajoutée sur <body> */
+body.show-secret-reset .secret-reset { display: inline-flex !important; }
+/* Sécurité visuelle : s'assurer qu'il reste caché pour tous les autres */
+body:not(.show-secret-reset) .secret-reset { display: none !important; }
+
 .btn-danger {
     background: linear-gradient(135deg, var(--red), #dc2626);
     color: white;
@@ -1754,10 +1791,55 @@ body {
     background: var(--gray);
     color: white;
     border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s ease;
+}
+
+/* Utility Classes for Inline Styles */
+.hidden {
+    display: none;
+}
+
+.btn-full-width {
+    width: 100%;
+}
+
+.btn-with-top-margin {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.modal-flex-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-flex-container button {
+    flex: 1;
+}
+
+.ticket-pack-info {
+    background: #f0f9ff;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.ticket-code-input {
+    text-align: center;
+    letter-spacing: 3px;
+}
+
+.ticket-message {
+    margin: 15px 0;
+    display: none;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
 }
 
 .btn-secondary:hover {

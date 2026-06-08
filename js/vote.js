@@ -42,161 +42,134 @@ let appState = {
 };
 
 // ============================================
-// API DE VÉRIFICATION DES TICKETS
+// API DE VÉRIFICATION DES TICKETS (BACKEND + FALLBACK LOCAL)
 // ============================================
 
+const BACKEND_BASE = window.BACKEND_BASE || 'http://localhost:3000';
+
 const TicketAPI = {
-    verifyTicket: function(code, packName, expectedPrice, expectedVotes) {
-        return new Promise((resolve) => {
-            try {
-                const adminData = localStorage.getItem(CONFIG.adminStorageKey);
-                if (!adminData) {
-                    resolve({ valid: false, error: "Aucun ticket disponible" });
-                    return;
-                }
-                
-                const data = JSON.parse(adminData);
-                const codesByPack = data.codesByPack || {};
-                
-                let foundCode = null;
-                let foundPackType = null;
-                
-                for (const [packType, codes] of Object.entries(codesByPack)) {
-                    const codeData = codes.find(c => c.code === code.toUpperCase());
-                    if (codeData) {
-                        foundCode = codeData;
-                        foundPackType = packType;
-                        break;
-                    }
-                }
-                
-                if (!foundCode) {
-                    resolve({ valid: false, error: "❌ Code ticket invalide" });
-                    return;
-                }
-                
-                if (foundCode.used === true) {
-                    resolve({ valid: false, error: "❌ Ce code a déjà été utilisé" });
-                    return;
-                }
-                
+    async verifyTicket(code, packName, expectedPrice, expectedVotes) {
+        const upper = (code || '').toUpperCase();
+        // Try backend first
+        try {
+            const res = await fetch(`${BACKEND_BASE}/api/tickets/${upper}`);
+            if (res.ok) {
+                const json = await res.json();
+                if (!json.valid) return { valid: false, error: json.error || 'Code invalide' };
+                // check pack compatibility
                 const expectedPackType = PACK_BY_NAME[packName]?.type || packName.toLowerCase();
-                
-                if (foundPackType !== expectedPackType) {
-                    const packNames = {
-                        simple: "Vote Simple",
-                        decouverte: "Pack Découverte",
-                        passion: "Pack Passion",
-                        jubile: "Pack Jubilé"
-                    };
-                    resolve({ 
-                        valid: false, 
-                        error: `❌ Ce ticket est pour le pack "${packNames[foundPackType]}"` 
-                    });
-                    return;
+                if (json.ticket.pack_type !== expectedPackType) {
+                    const names = { simple: 'Vote Simple', decouverte: 'Pack Découverte', passion: 'Pack Passion', jubile: 'Pack Jubilé' };
+                    return { valid: false, error: `❌ Ce ticket est pour le pack "${names[json.ticket.pack_type]}"` };
                 }
-                
-                resolve({
-                    valid: true,
-                    codeData: foundCode,
-                    votes: foundCode.votes,
-                    price: foundCode.price,
-                    packType: foundPackType
-                });
-                
-            } catch (error) {
-                resolve({ valid: false, error: "Erreur système" });
+                return { valid: true, codeData: json.ticket, votes: json.ticket.votes, price: json.ticket.price, packType: json.ticket.pack_type };
             }
-        });
+        } catch (e) {
+            console.warn('Backend verify failed, falling back to localStorage', e);
+        }
+
+        // Fallback: localStorage
+        try {
+            const adminData = localStorage.getItem(CONFIG.adminStorageKey);
+            if (!adminData) return { valid: false, error: 'Aucun ticket disponible' };
+            const data = JSON.parse(adminData);
+            const codesByPack = data.codesByPack || {};
+            let foundCode = null, foundPackType = null;
+            for (const [packType, codes] of Object.entries(codesByPack)) {
+                const codeData = codes.find(c => c.code === upper);
+                if (codeData) { foundCode = codeData; foundPackType = packType; break; }
+            }
+            if (!foundCode) return { valid: false, error: '❌ Code ticket invalide' };
+            if (foundCode.used === true) return { valid: false, error: '❌ Ce code a déjà été utilisé' };
+            const expectedPackType = PACK_BY_NAME[packName]?.type || packName.toLowerCase();
+            if (foundPackType !== expectedPackType) return { valid: false, error: `❌ Ce ticket est pour le pack "${foundPackType}"` };
+            return { valid: true, codeData: foundCode, votes: foundCode.votes, price: foundCode.price, packType: foundPackType };
+        } catch (err) {
+            return { valid: false, error: 'Erreur système' };
+        }
     },
-    
-    useTicket: function(code, userId, candidateId, candidateName) {
-        return new Promise((resolve) => {
-            try {
-                const adminData = localStorage.getItem(CONFIG.adminStorageKey);
-                if (!adminData) {
-                    resolve({ success: false, error: "Données admin non trouvées" });
-                    return;
-                }
-                
-                let data = JSON.parse(adminData);
-                let found = false;
-                let ticketData = null;
-                let packType = null;
-                
-                for (const [type, codes] of Object.entries(data.codesByPack)) {
-                    const codeIndex = codes.findIndex(c => c.code === code.toUpperCase());
-                    if (codeIndex !== -1 && !codes[codeIndex].used) {
-                        codes[codeIndex].used = true;
-                        codes[codeIndex].usedAt = new Date().toISOString();
-                        codes[codeIndex].usedBy = userId;
-                        codes[codeIndex].usedForCandidate = candidateId;
-                        ticketData = codes[codeIndex];
-                        packType = type;
-                        found = true;
-                        break;
+
+    async useTicket(code, userId, candidateId, candidateName) {
+        const upper = (code || '').toUpperCase();
+        // Try backend
+        try {
+            const res = await fetch(`${BACKEND_BASE}/api/tickets/use`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: upper, userId, candidateId, candidateName, userName: appState.currentUser ? `${appState.currentUser.prenom} ${appState.currentUser.nom}` : null })
+            });
+            if (res.ok) {
+                const json = await res.json();
+                if (json.success) {
+                    // Update local candidate list for UI
+                    let candidates = JSON.parse(localStorage.getItem(CONFIG.candidatesKey) || '[]');
+                    const candidateIndex = candidates.findIndex(c => c.id === candidateId);
+                    if (candidateIndex !== -1) {
+                        candidates[candidateIndex].votes = (candidates[candidateIndex].votes || 0) + json.votes;
+                        localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(candidates));
+                        appState.candidates = candidates;
                     }
+                    return { success: true, votes: json.votes, price: json.price, packName: json.packName };
                 }
-                
-                if (!found) {
-                    resolve({ success: false, error: "Ticket non trouvé ou déjà utilisé" });
-                    return;
-                }
-                
-                localStorage.setItem(CONFIG.adminStorageKey, JSON.stringify(data));
-                
-                const votesToAdd = ticketData.votes;
-                let candidates = JSON.parse(localStorage.getItem(CONFIG.candidatesKey) || '[]');
-                const candidateIndex = candidates.findIndex(c => c.id === candidateId);
-                
-                if (candidateIndex !== -1) {
-                    candidates[candidateIndex].votes = (candidates[candidateIndex].votes || 0) + votesToAdd;
-                    localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(candidates));
-                    appState.candidates = candidates;
-                }
-                
-                const voteRecord = {
-                    id: Date.now().toString(),
-                    ticketCode: code.toUpperCase(),
-                    candidateId: candidateId,
-                    candidateName: candidateName,
-                    votes: votesToAdd,
-                    price: ticketData.price,
-                    packType: packType,
-                    packName: this.getPackName(packType),
-                    userId: userId,
-                    userName: appState.currentUser ? `${appState.currentUser.prenom} ${appState.currentUser.nom}` : "Anonymous",
-                    timestamp: new Date().toISOString()
-                };
-                
-                const votesHistory = JSON.parse(localStorage.getItem(CONFIG.voteStorageKey) || '[]');
-                votesHistory.push(voteRecord);
-                localStorage.setItem(CONFIG.voteStorageKey, JSON.stringify(votesHistory));
-                
-                resolve({ success: true, votes: votesToAdd, price: ticketData.price, packName: this.getPackName(packType) });
-                
-            } catch (error) {
-                resolve({ success: false, error: "Erreur système" });
+                return { success: false, error: json.error || 'Erreur serveur' };
             }
-        });
+        } catch (e) {
+            console.warn('Backend useTicket failed, falling back to localStorage', e);
+        }
+
+        // Fallback: localStorage logic
+        try {
+            const adminData = localStorage.getItem(CONFIG.adminStorageKey);
+            if (!adminData) return { success: false, error: 'Données admin non trouvées' };
+            let data = JSON.parse(adminData);
+            let found = false, ticketData = null, packType = null;
+            for (const [type, codes] of Object.entries(data.codesByPack)) {
+                const codeIndex = codes.findIndex(c => c.code === upper);
+                if (codeIndex !== -1 && !codes[codeIndex].used) {
+                    codes[codeIndex].used = true;
+                    codes[codeIndex].usedAt = new Date().toISOString();
+                    codes[codeIndex].usedBy = userId;
+                    codes[codeIndex].usedForCandidate = candidateId;
+                    ticketData = codes[codeIndex]; packType = type; found = true; break;
+                }
+            }
+            if (!found) return { success: false, error: 'Ticket non trouvé ou déjà utilisé' };
+            localStorage.setItem(CONFIG.adminStorageKey, JSON.stringify(data));
+            const votesToAdd = ticketData.votes;
+            let candidates = JSON.parse(localStorage.getItem(CONFIG.candidatesKey) || '[]');
+            const candidateIndex = candidates.findIndex(c => c.id === candidateId);
+            if (candidateIndex !== -1) {
+                candidates[candidateIndex].votes = (candidates[candidateIndex].votes || 0) + votesToAdd;
+                localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(candidates));
+                appState.candidates = candidates;
+            }
+            const voteRecord = { id: Date.now().toString(), ticketCode: upper, candidateId, candidateName, votes: votesToAdd, price: ticketData.price, packType, packName: this.getPackName(packType), userId, userName: appState.currentUser ? `${appState.currentUser.prenom} ${appState.currentUser.nom}` : 'Anonymous', timestamp: new Date().toISOString() };
+            const votesHistory = JSON.parse(localStorage.getItem(CONFIG.voteStorageKey) || '[]'); votesHistory.push(voteRecord); localStorage.setItem(CONFIG.voteStorageKey, JSON.stringify(votesHistory));
+            return { success: true, votes: votesToAdd, price: ticketData.price, packName: this.getPackName(packType) };
+        } catch (error) {
+            return { success: false, error: 'Erreur système' };
+        }
     },
-    
-    getPackName: function(packType) {
+
+    getPackName(packType) {
         const names = { simple: "Vote Simple", decouverte: "Pack Découverte", passion: "Pack Passion", jubile: "Pack Jubilé" };
         return names[packType] || packType;
     },
-    
-    getStats: function() {
+
+    async getStats() {
+        try {
+            const res = await fetch(`${BACKEND_BASE}/api/stats`);
+            if (res.ok) {
+                const json = await res.json();
+                return { total: json.total || 0, used: json.used || 0, available: json.available || 0 };
+            }
+        } catch (e) {
+            // fallback local
+        }
         try {
             const adminData = localStorage.getItem(CONFIG.adminStorageKey);
             if (!adminData) return { total: 0, used: 0, available: 0 };
-            const data = JSON.parse(adminData);
-            const codesByPack = data.codesByPack || {};
-            let total = 0, used = 0;
-            for (const codes of Object.values(codesByPack)) {
-                total += codes.length;
-                used += codes.filter(c => c.used).length;
-            }
+            const data = JSON.parse(adminData); const codesByPack = data.codesByPack || {};
+            let total = 0, used = 0; for (const codes of Object.values(codesByPack)) { total += codes.length; used += codes.filter(c => c.used).length; }
             return { total, used, available: total - used };
         } catch (error) {
             return { total: 0, used: 0, available: 0 };
@@ -220,10 +193,17 @@ document.addEventListener('DOMContentLoaded', function() {
     setupRealTimeUpdates();
     setupMobileMenu();
     
+    // Sauvegarder la section d'inscription 2027 avant toute modification dynamique
+    const inscriptionSection = document.querySelector('.inscription-candidat-section');
+    if (inscriptionSection && !inscriptionSection.getAttribute('data-original-content')) {
+        inscriptionSection.setAttribute('data-original-content', inscriptionSection.innerHTML);
+    }
+    
     switchEdition('2027');
     
-    const stats = TicketAPI.getStats();
-    console.log(`📊 Tickets disponibles: ${stats.available}/${stats.total}`);
+    TicketAPI.getStats()
+        .then(stats => console.log(`📊 Tickets disponibles: ${stats.available}/${stats.total}`))
+        .catch(err => console.warn('Impossible de récupérer les stats des tickets', err));
 });
 
 function getDefaultCandidates() {
@@ -513,13 +493,12 @@ function showRecapCandidature2027(candidature) {
                 </div>
             </div>
             
-            <div style="background: #fef3c7; border-radius: 15px; padding: 20px; margin-bottom: 20px; text-align: center;">
-                <div style="font-size: 24px; margin-bottom: 10px;">💰</div>
-                <h3 style="color: #92400e; margin-bottom: 10px;">Frais d'inscription : 5 000 FCFA</h3>
-                <p style="color: #92400e; margin-bottom: 10px;">Les frais d'inscription sont à envoyer après validation de votre dossier</p>
+            <div style="background: #d1fae5; border-radius: 15px; padding: 20px; margin-bottom: 20px; text-align: center;">
+                <div style="font-size: 24px; margin-bottom: 10px;">🎉</div>
+                <h3 style="color: #065f46; margin-bottom: 10px;">Inscription gratuite 2027</h3>
+                <p style="color: #065f46; margin-bottom: 10px;">Votre participation à l'édition 2027 est gratuite. Nous vous souhaitons plein de réussite et une belle performance !</p>
                 <div style="background: white; border-radius: 10px; padding: 15px; margin-top: 10px;">
-                    <p><strong>📱 Numéro de paiement :</strong> +228 ${CONFIG.PAYMENT_NUMBER}</p>
-                    <p><strong>💳 Méthodes acceptées :</strong> Flooz, Mixx By Yas, Mobile Money</p>
+                    <p><strong>📱 Besoin d'aide ?</strong> Contactez-nous au <strong>+228 ${CONFIG.PAYMENT_NUMBER}</strong></p>
                 </div>
             </div>
             
@@ -584,8 +563,10 @@ Chant : ${candidature.chant}
 📝 Biographie :
 ${candidature.biographie}
 
-💰 FRAIS D'INSCRIPTION : 5 000 FCFA
-Numéro de paiement : +228 ${CONFIG.PAYMENT_NUMBER}
+� ÉDITION GRATUITE 2027
+Aucune frais d'inscription n'est exigée pour cette édition.
+
+📞 Pour assistance : +228 ${CONFIG.PAYMENT_NUMBER}
 
 ---
 Soumis le : ${new Date().toLocaleString('fr-FR')}`;
@@ -648,15 +629,15 @@ function replaceSectionWithWelcomeMessage(candidature) {
                 <i class="fas fa-microphone-alt"></i>
             </div>
             <h2 style="font-size: 28px; margin-bottom: 10px;">Bienvenue ${candidature.prenom} ${candidature.nom} !</h2>
-            <p style="font-size: 18px; margin-bottom: 20px; opacity: 0.95;">Votre candidature a été enregistrée avec succès.</p>
+            <p style="font-size: 18px; margin-bottom: 20px; opacity: 0.95;">Votre candidature à l'édition 2027 a bien été reçue.</p>
             
             <div style="background: rgba(255,255,255,0.15); border-radius: 15px; padding: 20px; margin: 20px 0; text-align: left;">
-                <h3 style="margin-bottom: 15px;"><i class="fas fa-info-circle"></i> Prochaines étapes :</h3>
+                <h3 style="margin-bottom: 15px;"><i class="fas fa-heart"></i> Bravo et bonne chance !</h3>
                 <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 12px;">✅ <strong>1.</strong> Un email de confirmation a été ouvert</li>
-                    <li style="margin-bottom: 12px;">💰 <strong>2.</strong> Envoyez les frais d'inscription (5 000 FCFA) au <strong>+228 ${CONFIG.PAYMENT_NUMBER}</strong></li>
-                    <li style="margin-bottom: 12px;">📱 <strong>3.</strong> Envoyez la capture d'écran sur WhatsApp</li>
-                    <li>⏳ <strong>4.</strong> Votre dossier sera traité sous 48h</li>
+                    <li style="margin-bottom: 12px;">✅ Votre inscription est gratuite pour l'édition 2027.</li>
+                    <li style="margin-bottom: 12px;">💫 Préparez votre meilleure prestation, nous sommes heureux de vous avoir parmi les candidats.</li>
+                    <li style="margin-bottom: 12px;">📩 Notre équipe vous contactera bientôt pour la suite du concours.</li>
+                    <li>🎶 Restez confiant et donnez le meilleur de vous-même !</li>
                 </ul>
             </div>
             
@@ -703,6 +684,7 @@ function logout2027AndRestoreSection() {
             inscriptionSection.innerHTML = originalContent;
             // Réattacher les événements après restauration
             reattach2027Events();
+            retourBoutons2027();
         }
     }
     
@@ -775,12 +757,12 @@ function showPaymentReminderModal(candidature) {
             <h2 style="color: #1E3A8A;">Inscription confirmée !</h2>
             <p style="margin: 15px 0;">Merci ${candidature.prenom} pour votre candidature.</p>
             
-            <div style="background: #fef3c7; border-radius: 15px; padding: 20px; margin: 20px 0;">
-                <p><strong>💰 Frais d'inscription : 5 000 FCFA</strong></p>
-                <p>📱 Envoyez au : <strong>+228 ${CONFIG.PAYMENT_NUMBER}</strong></p>
-                <p>📝 Référence : <strong>THEVOIX_${candidature.nom}</strong></p>
+            <div style="background: #d1fae5; border-radius: 15px; padding: 20px; margin: 20px 0;">
+                <p><strong>✨ Inscription gratuite 2027</strong></p>
+                <p>Votre candidature est bien reçue pour l'édition 2027 gratuite.</p>
+                <p>Nous vous souhaitons beaucoup de réussite et une magnifique performance !</p>
                 <hr>
-                <p><i class="fas fa-whatsapp"></i> Envoyez la capture sur WhatsApp</p>
+                <p><i class="fas fa-phone"></i> Assistance : <strong>+228 ${CONFIG.PAYMENT_NUMBER}</strong></p>
             </div>
             
             <button id="closeModalBtn" style="background: linear-gradient(135deg, #1E3A8A, #EC4899); color: white; border: none; padding: 12px 35px; border-radius: 50px; cursor: pointer; font-weight: bold;">
@@ -847,6 +829,7 @@ function logout2027() {
 
 function handlePackSelection(packName, votes, price) {
     if (!appState.currentUser) {
+        appState.selectedRole = 'votant';
         showMessage("Veuillez vous connecter pour voter", "error");
         showAuthPage('votant');
         return;

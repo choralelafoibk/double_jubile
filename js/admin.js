@@ -8,6 +8,8 @@ const ADMIN_CONFIG = {
     usedCodesKey: "theVoixUsedCodes"
 };
 
+const BACKEND_BASE = window.BACKEND_BASE || 'http://localhost:3000';
+
 // ============================================
 // VERROUILLAGE APRÈS 5 MINUTES D'INACTIVITÉ
 // ============================================
@@ -410,7 +412,7 @@ function updatePriceByType(type) {
     }
 }
 
-function generateCodes() {
+async function generateCodes() {
     if (!adminState.isAuthenticated) {
         showAdminMessage('Connectez-vous d\'abord', 'error');
         return;
@@ -489,22 +491,43 @@ function generateCodes() {
         existingCodes.push(code);
     }
     
-    // Ajouter au pack correspondant
+    // Try backend generation first (requires admin password)
+    try {
+        const resp = await fetch(`${BACKEND_BASE}/api/admin/generate-codes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: ADMIN_CONFIG.password, packType: type, count: quantity, votes, price })
+        });
+        if (resp.ok) {
+            const json = await resp.json();
+            const created = json.created || [];
+            const mapped = created.map(c => ({ code: c.code, votes: c.votes, price: c.price, type: type, packName: getPackName(type), votesPerCode: c.votes, pricePerCode: c.price, generatedAt: new Date().toISOString(), used: false, usedAt: null, usedBy: null }));
+            if (!adminState.codesByPack[type]) adminState.codesByPack[type] = [];
+            adminState.codesByPack[type].push(...mapped);
+            saveAdminData();
+            displayGeneratedCodes(mapped, type);
+            updateAdminStats();
+            showGenerationConfirmation(mapped, votes, price, type);
+            document.getElementById('codeQuantity').value = 10;
+            return;
+        }
+    } catch (e) {
+        console.warn('Backend generate-codes failed, falling back to local generation', e);
+    }
+
+    // Fallback local generation
     if (!adminState.codesByPack[type]) {
         adminState.codesByPack[type] = [];
     }
     adminState.codesByPack[type].push(...newCodes);
     
-    // Sauvegarder
+    // Sauvegarder localement
     saveAdminData();
-    
     // Mettre à jour l'affichage
     displayGeneratedCodes(newCodes, type);
     updateAdminStats();
-    
     // Afficher confirmation
     showGenerationConfirmation(newCodes, votes, price, type);
-    
     // Réinitialiser le formulaire
     document.getElementById('codeQuantity').value = 10;
 }
@@ -1231,48 +1254,56 @@ function clearAllCodes() {
     }
 }
 
-function resetAllCandidatesVotes() {
+async function resetAllCandidatesVotes() {
     if (confirm('Remettre à zéro les votes de TOUS les candidats ? Cette action est irréversible.')) {
+        // Try backend reset first
         try {
-            // Réinitialiser les votes des candidats
+            const resp = await fetch(`${BACKEND_BASE}/api/admin/reset-votes`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: ADMIN_CONFIG.password })
+            });
+            if (resp.ok) {
+                const json = await resp.json();
+                if (json.success) {
+                    // Mirror changes locally
+                    const candidatesKey = "theVoixCandidates_v2";
+                    const candidates = JSON.parse(localStorage.getItem(candidatesKey) || '[]');
+                    candidates.forEach(candidate => { candidate.votes = 0; });
+                    localStorage.setItem(candidatesKey, JSON.stringify(candidates));
+                    localStorage.setItem('theVoixVotes', JSON.stringify([]));
+                    for (const packType in adminState.codesByPack) {
+                        adminState.codesByPack[packType].forEach(code => {
+                            code.used = false; code.usedAt = null; code.usedBy = null; code.usedForCandidate = null;
+                        });
+                    }
+                    saveAdminData(); updateAdminStats();
+                    showAdminMessage(`Votes remis à zéro pour ${candidates.length} candidat(s)`, 'success');
+                    return;
+                }
+            }
+        } catch (e) {
+            console.warn('Backend reset failed, falling back to local reset', e);
+        }
+
+        // Fallback local reset
+        try {
             const candidatesKey = "theVoixCandidates_v2";
             const candidates = JSON.parse(localStorage.getItem(candidatesKey) || '[]');
-            
             if (candidates.length === 0) {
                 showAdminMessage('Aucun candidat trouvé', 'warning');
                 return;
             }
-            
-            // Remettre tous les votes à zéro
-            candidates.forEach(candidate => {
-                candidate.votes = 0;
-            });
-            
-            // Sauvegarder les candidats avec votes à zéro
+            candidates.forEach(candidate => { candidate.votes = 0; });
             localStorage.setItem(candidatesKey, JSON.stringify(candidates));
-            
-            // Effacer aussi l'historique des votes
             const votesKey = "theVoixVotes";
             localStorage.setItem(votesKey, JSON.stringify([]));
-            
-            // Marquer tous les codes comme non utilisés
             for (const packType in adminState.codesByPack) {
                 adminState.codesByPack[packType].forEach(code => {
-                    code.used = false;
-                    code.usedAt = null;
-                    code.usedBy = null;
-                    code.usedForCandidate = null;
+                    code.used = false; code.usedAt = null; code.usedBy = null; code.usedForCandidate = null;
                 });
             }
-            
-            // Sauvegarder les données admin
-            saveAdminData();
-            
-            // Mettre à jour les statistiques
-            updateAdminStats();
-            
+            saveAdminData(); updateAdminStats();
             showAdminMessage(`Votes remis à zéro pour ${candidates.length} candidat(s)`, 'success');
-            
         } catch (error) {
             console.error('Erreur lors de la réinitialisation:', error);
             showAdminMessage('Erreur lors de la réinitialisation', 'error');

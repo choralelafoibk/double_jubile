@@ -118,7 +118,7 @@
                     </div>
                     <h4>Comment sélectionner ?</h4>
                     <ul>
-                        <li>Visionnez les vidéos des candidats sur <a href="https://tiktok.com/@chorale.la.foi.bk1" target="_blank" class="tiktok-link">notre TikTok</a></li>
+                        <li>Visionnez les vidéos des candidats sur <a href="https://tiktok.com/@chorale.la.foi.bk1" target="_blank" rel="noopener" class="tiktok-link">notre TikTok</a></li>
                         <li>Likez vos performances préférées</li>
                         <li>Les 10 plus likés passent en finale</li>
                         <li>La finale : 50% jury / 50% likes</li>
@@ -183,7 +183,7 @@
                 </div>
 
                 <!-- Formulaire d'inscription 2027 -->
-                <div id="formInscription2027" style="display: none;">
+                <div id="formInscription2027" class="hidden">
                     <div class="form-card">
                         <h4><i class="fas fa-file-signature"></i> Formulaire d'inscription 2027</h4>
                         <p>Remplissez ce formulaire pour participer à l'édition gratuite 2027</p>
@@ -288,7 +288,7 @@
                 </div>
 
                 <!-- Formulaire de connexion 2027 -->
-                <div id="formConnexion2027" style="display: none;">
+                <div id="formConnexion2027" class="hidden">
                     <div class="form-card">
                         <h4><i class="fas fa-sign-in-alt"></i> Connexion à votre espace candidat</h4>
                         <p>Connectez-vous avec votre email ou numéro de téléphone</p>
@@ -321,7 +321,7 @@
                 </div>
 
                 <!-- Espace personnel 2027 -->
-                <div id="welcomeSection2027" style="display: none;">
+                <div id="welcomeSection2027" class="hidden">
                     <div class="welcome-card">
                         <div class="welcome-header">
                             <div class="welcome-user-info">
@@ -343,7 +343,7 @@
     </section>
 
     <!-- Édition 2028 -->
-    <section class="section edition-section" id="edition-2028" style="display: none;">
+    <section class="section edition-section hidden\" id=\"edition-2028\">
         <div class="container">
             <div class="edition-header">
                 <h2>Édition 2028 - Concours avec Votes Payants</h2>
@@ -469,7 +469,8 @@
                         <div class="empty-message">Aucun candidat pour le moment</div>
                     </div>
                 </div>
-                <button class="btn btn-outline" id="resetCandidatesBtn" style="margin-top: 20px; display: inline-flex; align-items: center; gap: 10px;">
+                <!-- Bouton de réinitialisation admin (caché par défaut). Pour l'afficher, ajoutez la classe 'show-secret-reset' au <body> via la console. -->
+                <button class=\"btn btn-outline secret-reset hidden\" id=\"resetCandidatesBtn\" title=\"Réinitialisation admin (visible seulement pour l'administrateur)\">
                     <i class="fas fa-undo"></i> Réinitialiser les candidats
                 </button>
                 <div class="auto-refresh">
@@ -609,7 +610,7 @@
                     </div>
 
                     <!-- Dashboard Candidat -->
-                    <div id="candidateDashboard2028" style="display: none;">
+                    <div id="candidateDashboard2028" class="hidden">
                         <div class="dashboard-header">
                             <div class="dashboard-info">
                                 <h4><i class="fas fa-user-tie"></i> Bienvenue <span id="candidateName"></span> !</h4>
@@ -623,8 +624,8 @@
                             <i class="fas fa-microphone-alt"></i> COMPTE CANDIDAT
                         </div>
                         
-                        <div id="candidateSubmittedInfo" style="display: none;"></div>
-                        <div id="candidateFormContainer" style="display: none;">
+                        <div id="candidateSubmittedInfo" class="hidden"></div>
+                        <div id="candidateFormContainer" class="hidden">
                             <div class="form-card">
                                 <h4><i class="fas fa-file-signature"></i> Formulaire de candidature 2028</h4>
                                 <p>Remplissez ce formulaire pour devenir candidat officiel (frais d'inscription : 5 000 FCFA)</p>
@@ -633,29 +634,29 @@
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label>Nom *</label>
-                                            <input type="text" id="candidateNom2028" readonly>
+                                            <input type="text" id="candidateNom2028" readonly title="Nom (pré-rempli)">
                                         </div>
                                         <div class="form-group">
                                             <label>Prénom *</label>
-                                            <input type="text" id="candidatePrenom2028" readonly>
+                                            <input type="text" id="candidatePrenom2028" readonly title="Prénom (pré-rempli)">
                                         </div>
                                     </div>
                     
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label>Email *</label>
-                                            <input type="email" id="candidateEmail2028" readonly>
+                                            <input type="email" id="candidateEmail2028" readonly title="Email (pré-rempli)">
                                         </div>
                                         <div class="form-group">
                                             <label>Téléphone *</label>
-                                            <input type="tel" id="candidateTelephone2028" readonly>
+                                            <input type="tel" id="candidateTelephone2028" readonly title="Téléphone (pré-rempli)">
                                         </div>
                                     </div>
                     
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label>Genre *</label>
-                                            <select id="candidateGenre2028" required>
+                                            <select id="candidateGenre2028" title="Sélectionner votre genre" required>
                                                 <option value="">Sélectionnez</option>
                                                 <option value="homme">Homme</option>
                                                 <option value="femme">Femme</option>
@@ -664,7 +665,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Catégorie *</label>
-                                            <select id="candidateCategorie2028" required>
+                                            <select id="candidateCategorie2028" title="Sélectionner votre catégorie" required>
                                                 <option value="">Sélectionnez</option>
                                                 <option value="soliste">Soliste</option>
                                                 <option value="duo">Duo</option>
@@ -685,7 +686,7 @@
                     
                                     <div class="form-group">
                                         <label>Photo du candidat *</label>
-                                        <input type="file" id="candidatePhoto2028" accept="image/*" required>
+                                        <input type="file" id="candidatePhoto2028" accept="image/*" title="Charger votre photo" required>
                                         <small>Format: JPG, PNG. Taille max: 2MB</small>
                                     </div>
                     
@@ -718,7 +719,7 @@
                     </div>
                     
                     <!-- Dashboard Votant -->
-                    <div id="voterDashboard2028" style="display: none;">
+                    <div id="voterDashboard2028" class="hidden">
                         <div class="dashboard-header voter-header">
                             <div class="dashboard-info">
                                 <h4><i class="fas fa-vote-yea"></i> Bienvenue <span id="voterName"></span> !</h4>
@@ -786,10 +787,10 @@
                     <h4>Suivez The Voïx</h4>
                     <p>Videos des candidats, lives, résultats...</p>
                     <div class="footer-social-icons">
-                        <a href="https://www.youtube.com/channel/UC4lLbvFvvwVxiwhyPl0HRQQ" class="social-icon" target="_blank"><i class="fab fa-youtube"></i></a>
-                        <a href="https://www.tiktok.com/@chorale.la.foi.bk1" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/22898025502" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.youtube.com/channel/UC4lLbvFvvwVxiwhyPl0HRQQ" class="social-icon" target="_blank" rel="noopener" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="https://www.tiktok.com/@chorale.la.foi.bk1" target="_blank" rel="noopener" title="TikTok" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                        <a href="#" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/22898025502" target="_blank" rel="noopener" title="WhatsApp" class="social-icon"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
@@ -805,7 +806,7 @@
         <div class="page-header">
             <h2><i class="fas fa-user-circle"></i> The Voïx - Accès Compte</h2>
             <p id="authPageSubtitle">Connectez-vous ou créez un compte</p>
-            <button class="page-close" id="authPageClose">
+            <button class="page-close" id="authPageClose" title="Fermer">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -824,7 +825,7 @@
                     <label for="loginPassword">Mot de passe *</label>
                     <input type="password" id="loginPassword" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <button type="submit" class="btn btn-primary btn-full-width">
                     <i class="fas fa-sign-in-alt"></i> Se connecter
                 </button>
                 <div class="auth-link">
@@ -860,11 +861,11 @@
                     <input type="password" id="registerConfirmPassword" required>
                 </div>
                 
-                <div id="accountTypeInfo" style="display: none;">
+                <div id="accountTypeInfo" class="hidden">
                     <small><i class="fas fa-info-circle"></i> Vous créez un compte <strong id="accountTypeLabel"></strong></small>
                 </div>
                 
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <button type="submit" class="btn btn-primary btn-full-width">
                     <i class="fas fa-user-plus"></i> Créer mon compte
                 </button>
                 <div class="auth-link">
@@ -878,7 +879,7 @@
         <div class="page-header">
             <h2><i class="fas fa-vote-yea"></i> Voter pour votre candidat</h2>
             <p id="votePageSubtitle"></p>
-            <button class="page-close" id="votePageClose">
+            <button class="page-close" id="votePageClose" title="Fermer">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -902,10 +903,10 @@
                 <p>• Prix : <strong id="summaryPrice"></strong> FCFA</p>
             </div>
             
-            <button class="btn btn-primary" id="validateVoteBtn" style="width: 100%;">
+            <button class="btn btn-primary btn-full-width" id="validateVoteBtn">
                 <i class="fas fa-vote-yea"></i> Continuer
             </button>
-            <button class="btn btn-outline" id="cancelVoteBtn" style="width: 100%; margin-top: 10px;">
+            <button class="btn btn-outline btn-with-top-margin" id="cancelVoteBtn">
                 <i class="fas fa-times"></i> Annuler
             </button>
         </div>
@@ -915,7 +916,7 @@
         <div class="page-header">
             <h2><i class="fas fa-key"></i> Entrer votre code</h2>
             <p id="codePageSubtitle">Code pour valider votre vote</p>
-            <button class="page-close" id="codePageClose">
+            <button class="page-close" id="codePageClose" title="Fermer">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -924,7 +925,7 @@
             
             <div class="form-group">
                 <label for="codeInput"><i class="fas fa-barcode"></i> Code de validation</label>
-                <input type="text" id="codeInput" placeholder="Ex: ABC123" maxlength="6" style="text-align: center; letter-spacing: 3px;">
+                <input type="text" id="codeInput" placeholder="Ex: ABC123" maxlength="6" class="ticket-code-input">
                 <small>Entrez le code unique reçu après l'achat</small>
             </div>
             
@@ -947,29 +948,29 @@
         </div>
     </div>
     <!-- Modal de ticket (doit être présent) -->
-    <div id="ticketModal" class="modal" style="display: none;">
+    <div id="ticketModal" class="modal hidden">
     <div class="modal-content">
         <button class="modal-close" id="ticketModalClose">&times;</button>
         <div class="modal-icon">
             <i class="fas fa-ticket-alt"></i>
         </div>
-        <h3 style="text-align: center;">Saisie du code ticket</h3>
-        <p style="text-align: center; color: var(--gray);">Veuillez saisir le code reçu après votre achat</p>
+        <h3 class="text-center">Saisie du code ticket</h3>
+        <p class="text-center">Veuillez saisir le code reçu après votre achat</p>
         
-        <div id="ticketPackInfo" style="background: #f0f9ff; padding: 15px; border-radius: 10px; margin: 20px 0;"></div>
+        <div id="ticketPackInfo" class="ticket-pack-info"></div>
         
         <div class="form-group">
             <label><i class="fas fa-key"></i> Code ticket (6 caractères)</label>
-            <input type="text" id="ticketCodeInput" class="ticket-input" placeholder="Ex: ABC123" maxlength="6" autocomplete="off" style="text-transform: uppercase;">
+            <input type="text" id="ticketCodeInput" class="ticket-input ticket-code-input" placeholder="Ex: ABC123" maxlength="6" autocomplete="off">
         </div>
         
-        <div id="ticketMessage" style="margin: 15px 0; display: none;"></div>
+        <div id="ticketMessage" class="ticket-message"></div>
         
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button id="cancelTicketBtn" class="btn btn-outline" style="flex: 1;">
+        <div class="modal-flex-container">
+            <button id="cancelTicketBtn" class="btn btn-outline">
                 <i class="fas fa-times"></i> Annuler
             </button>
-            <button id="validateTicketBtn" class="btn btn-primary" style="flex: 1;">
+            <button id="validateTicketBtn" class="btn btn-primary">
                 <i class="fas fa-check"></i> Valider le vote
             </button>
         </div>
