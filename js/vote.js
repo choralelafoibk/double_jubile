@@ -201,9 +201,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     switchEdition('2027');
     
-    TicketAPI.getStats()
-        .then(stats => console.log(`📊 Tickets disponibles: ${stats.available}/${stats.total}`))
-        .catch(err => console.warn('Impossible de récupérer les stats des tickets', err));
+    const stats = TicketAPI.getStats();
+    console.log(`📊 Tickets disponibles: ${stats.available}/${stats.total}`);
 });
 
 function getDefaultCandidates() {
@@ -829,7 +828,6 @@ function logout2027() {
 
 function handlePackSelection(packName, votes, price) {
     if (!appState.currentUser) {
-        appState.selectedRole = 'votant';
         showMessage("Veuillez vous connecter pour voter", "error");
         showAuthPage('votant');
         return;

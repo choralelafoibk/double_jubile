@@ -1827,6 +1827,11 @@ body:not(.show-secret-reset) .secret-reset { display: none !important; }
 .ticket-code-input {
     text-align: center;
     letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.text-gray {
+    color: var(--gray);
 }
 
 .ticket-message {
