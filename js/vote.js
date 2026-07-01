@@ -50,13 +50,11 @@ const BACKEND_BASE = window.BACKEND_BASE || 'http://localhost:3000';
 const TicketAPI = {
     async verifyTicket(code, packName, expectedPrice, expectedVotes) {
         const upper = (code || '').toUpperCase();
-        // Try backend first
         try {
             const res = await fetch(`${BACKEND_BASE}/api/tickets/${upper}`);
             if (res.ok) {
                 const json = await res.json();
                 if (!json.valid) return { valid: false, error: json.error || 'Code invalide' };
-                // check pack compatibility
                 const expectedPackType = PACK_BY_NAME[packName]?.type || packName.toLowerCase();
                 if (json.ticket.pack_type !== expectedPackType) {
                     const names = { simple: 'Vote Simple', decouverte: 'Pack Découverte', passion: 'Pack Passion', jubile: 'Pack Jubilé' };
@@ -64,34 +62,15 @@ const TicketAPI = {
                 }
                 return { valid: true, codeData: json.ticket, votes: json.ticket.votes, price: json.ticket.price, packType: json.ticket.pack_type };
             }
+            return { valid: false, error: 'Erreur serveur - veuillez réessayer' };
         } catch (e) {
-            console.warn('Backend verify failed, falling back to localStorage', e);
-        }
-
-        // Fallback: localStorage
-        try {
-            const adminData = localStorage.getItem(CONFIG.adminStorageKey);
-            if (!adminData) return { valid: false, error: 'Aucun ticket disponible' };
-            const data = JSON.parse(adminData);
-            const codesByPack = data.codesByPack || {};
-            let foundCode = null, foundPackType = null;
-            for (const [packType, codes] of Object.entries(codesByPack)) {
-                const codeData = codes.find(c => c.code === upper);
-                if (codeData) { foundCode = codeData; foundPackType = packType; break; }
-            }
-            if (!foundCode) return { valid: false, error: '❌ Code ticket invalide' };
-            if (foundCode.used === true) return { valid: false, error: '❌ Ce code a déjà été utilisé' };
-            const expectedPackType = PACK_BY_NAME[packName]?.type || packName.toLowerCase();
-            if (foundPackType !== expectedPackType) return { valid: false, error: `❌ Ce ticket est pour le pack "${foundPackType}"` };
-            return { valid: true, codeData: foundCode, votes: foundCode.votes, price: foundCode.price, packType: foundPackType };
-        } catch (err) {
-            return { valid: false, error: 'Erreur système' };
+            console.error('❌ Erreur de connexion au backend:', e);
+            return { valid: false, error: '⚠️ Serveur indisponible. Veuillez vérifier votre connexion ou contacter l\'administrateur.' };
         }
     },
 
     async useTicket(code, userId, candidateId, candidateName) {
         const upper = (code || '').toUpperCase();
-        // Try backend
         try {
             const res = await fetch(`${BACKEND_BASE}/api/tickets/use`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -100,53 +79,14 @@ const TicketAPI = {
             if (res.ok) {
                 const json = await res.json();
                 if (json.success) {
-                    // Update local candidate list for UI
-                    let candidates = JSON.parse(localStorage.getItem(CONFIG.candidatesKey) || '[]');
-                    const candidateIndex = candidates.findIndex(c => c.id === candidateId);
-                    if (candidateIndex !== -1) {
-                        candidates[candidateIndex].votes = (candidates[candidateIndex].votes || 0) + json.votes;
-                        localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(candidates));
-                        appState.candidates = candidates;
-                    }
-                    return { success: true, votes: json.votes, price: json.price, packName: json.packName };
+                    return { success: true, votes: json.votes };
                 }
                 return { success: false, error: json.error || 'Erreur serveur' };
             }
+            return { success: false, error: 'Erreur serveur - veuillez réessayer' };
         } catch (e) {
-            console.warn('Backend useTicket failed, falling back to localStorage', e);
-        }
-
-        // Fallback: localStorage logic
-        try {
-            const adminData = localStorage.getItem(CONFIG.adminStorageKey);
-            if (!adminData) return { success: false, error: 'Données admin non trouvées' };
-            let data = JSON.parse(adminData);
-            let found = false, ticketData = null, packType = null;
-            for (const [type, codes] of Object.entries(data.codesByPack)) {
-                const codeIndex = codes.findIndex(c => c.code === upper);
-                if (codeIndex !== -1 && !codes[codeIndex].used) {
-                    codes[codeIndex].used = true;
-                    codes[codeIndex].usedAt = new Date().toISOString();
-                    codes[codeIndex].usedBy = userId;
-                    codes[codeIndex].usedForCandidate = candidateId;
-                    ticketData = codes[codeIndex]; packType = type; found = true; break;
-                }
-            }
-            if (!found) return { success: false, error: 'Ticket non trouvé ou déjà utilisé' };
-            localStorage.setItem(CONFIG.adminStorageKey, JSON.stringify(data));
-            const votesToAdd = ticketData.votes;
-            let candidates = JSON.parse(localStorage.getItem(CONFIG.candidatesKey) || '[]');
-            const candidateIndex = candidates.findIndex(c => c.id === candidateId);
-            if (candidateIndex !== -1) {
-                candidates[candidateIndex].votes = (candidates[candidateIndex].votes || 0) + votesToAdd;
-                localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(candidates));
-                appState.candidates = candidates;
-            }
-            const voteRecord = { id: Date.now().toString(), ticketCode: upper, candidateId, candidateName, votes: votesToAdd, price: ticketData.price, packType, packName: this.getPackName(packType), userId, userName: appState.currentUser ? `${appState.currentUser.prenom} ${appState.currentUser.nom}` : 'Anonymous', timestamp: new Date().toISOString() };
-            const votesHistory = JSON.parse(localStorage.getItem(CONFIG.voteStorageKey) || '[]'); votesHistory.push(voteRecord); localStorage.setItem(CONFIG.voteStorageKey, JSON.stringify(votesHistory));
-            return { success: true, votes: votesToAdd, price: ticketData.price, packName: this.getPackName(packType) };
-        } catch (error) {
-            return { success: false, error: 'Erreur système' };
+            console.error('❌ Erreur de connexion au backend:', e);
+            return { success: false, error: '⚠️ Serveur indisponible. Veuillez vérifier votre connexion ou contacter l\'administrateur.' };
         }
     },
 
@@ -162,16 +102,10 @@ const TicketAPI = {
                 const json = await res.json();
                 return { total: json.total || 0, used: json.used || 0, available: json.available || 0 };
             }
+            console.warn('Stats non disponibles');
+            return { total: 0, used: 0, available: 0 };
         } catch (e) {
-            // fallback local
-        }
-        try {
-            const adminData = localStorage.getItem(CONFIG.adminStorageKey);
-            if (!adminData) return { total: 0, used: 0, available: 0 };
-            const data = JSON.parse(adminData); const codesByPack = data.codesByPack || {};
-            let total = 0, used = 0; for (const codes of Object.values(codesByPack)) { total += codes.length; used += codes.filter(c => c.used).length; }
-            return { total, used, available: total - used };
-        } catch (error) {
+            console.error('❌ Impossible de récupérer les stats du serveur:', e);
             return { total: 0, used: 0, available: 0 };
         }
     }
