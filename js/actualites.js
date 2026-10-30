@@ -88,8 +88,186 @@ const articlesData = {
             </ul>
         `,
         comments: []
+    },
+    4: {
+        title: "Miabe Foire 2027 : Première foire économique de Bè-Kpota",
+        author: "Commission Économique",
+        date: "1 Avril 2026",
+        views: 312,
+        image: "https://placehold.co/800x400/20c997/white?text=Miabe+Foire+2027",
+        badge: "🛍️ Miabe Foire",
+        tags: ["foire", "économie", "artisans"],
+        content: `
+            <p>La première édition de la Miabe Foire met en lumière les artisans et petites entreprises du quartier.</p>
+            
+            <h3>Un marché pour soutenir l'économie locale</h3>
+            <p>Des stands seront réservés aux créateurs, commerçants et entrepreneurs de Bè-Kpota.</p>
+            
+            <h3>Réservations et informations</h3>
+            <ul>
+                <li><strong>Réservations :</strong> Ouvertes dès maintenant</li>
+                <li><strong>Public :</strong> Entrée libre</li>
+                <li><strong>Contact :</strong> commission.economie@jubile.com</li>
+            </ul>
+        `,
+        comments: []
+    },
+    5: {
+        title: "Album anniversaire : enregistrement des plus grands succès",
+        author: "Chorale La Foi",
+        date: "20 Avril 2026",
+        views: 623,
+        image: "https://placehold.co/800x400/dc3545/white?text=Album+Anniversaire",
+        badge: "🎵 Musique",
+        tags: ["album", "enregistrement", "musique sacrée"],
+        content: `
+            <p>La chorale commence l'enregistrement de l'album commémoratif du Jubilé.</p>
+            
+            <h3>Un projet musical exceptionnel</h3>
+            <p>Le disque rassemblera les chants les plus marquants des 25 dernières années.</p>
+            
+            <blockquote>
+                "Chaque note porte l'histoire de notre communauté et notre foi collective."<br>
+                <cite>- Chorale La Foi</cite>
+            </blockquote>
+        `,
+        comments: []
+    },
+    6: {
+        title: "Jubilé Cup 2028 : L'apogée des célébrations sportives",
+        author: "Commission Sport",
+        date: "1 Mai 2026",
+        views: 398,
+        image: "https://placehold.co/800x400/ffc107/white?text=Jubil%C3%A9+Cup+2028",
+        badge: "⚽ Football",
+        tags: ["jubilé cup", "finale", "légendes"],
+        content: `
+            <p>Le tournoi final du Jubilé réunira des équipes locales, des matchs de légendes et une compétition féminine.</p>
+            
+            <h3>Appel aux bénévoles</h3>
+            <p>Des volontaires sont recherchés pour l'accueil, la logistique et l'arbitrage.</p>
+            
+            <h3>Inscriptions</h3>
+            <p>Les équipes peuvent s'inscrire dès maintenant pour figurer dans le calendrier officiel.</p>
+        `,
+        comments: []
+    },
+    7: {
+        title: "Retraite spirituelle '25 ans dans la foi' : les premières dates",
+        author: "Commission Spirituelle",
+        date: "15 Mai 2026",
+        views: 298,
+        image: "https://placehold.co/800x400/6f42c1/white?text=Retraite+Spirituelle",
+        badge: "🙏 Spiritualité",
+        tags: ["retraite", "spiritualité", "foi"],
+        content: `
+            <p>Une retraite spéciale permettra aux membres de méditer sur le chemin de la foi qui a conduit au Jubilé.</p>
+            
+            <h3>Programme</h3>
+            <ul>
+                <li>Méditations guidées</li>
+                <li>Temps de prière</li>
+                <li>Ateliers de partage</li>
+            </ul>
+        `,
+        comments: []
+    },
+    8: {
+        title: "Concert Jubilé 2028 : Programme dévoilé",
+        author: "Commission Culture",
+        date: "1 Juin 2026",
+        views: 456,
+        image: "https://placehold.co/800x400/e83e8c/white?text=Concert+Jubil%C3%A9",
+        badge: "🎵 Musique",
+        tags: ["concert", "programme", "billeterie"],
+        content: `
+            <p>Le concert anniversaire proposera un programme riche en hymnes et créations inédites.</p>
+            
+            <h3>Temps forts</h3>
+            <ul>
+                <li>Hymne du Jubilé</li>
+                <li>Création 2028</li>
+                <li>Finale orchestrale</li>
+            </ul>
+        `,
+        comments: []
+    },
+    9: {
+        title: "Miabe Foire 2028 : Édition élargie avec invités spéciaux",
+        author: "Commission Économique",
+        date: "10 Juin 2026",
+        views: 389,
+        image: "https://placehold.co/800x400/20c997/white?text=Miabe+Foire+2028",
+        badge: "🛍️ Miabe Foire",
+        tags: ["foire 2028", "invités spéciaux", "B2B"],
+        content: `
+            <p>La deuxième édition de la Miabe Foire accueillera des exposants du grand marché et des conférences B2B.</p>
+            
+            <h3>Au programme</h3>
+            <ul>
+                <li>Rencontres professionnelles</li>
+                <li>Stands d'artisans</li>
+                <li>Conférences thématiques</li>
+            </ul>
+        `,
+        comments: []
+    },
+    10: {
+        title: "Projet 'Mémoire Vivante' : collecte des témoignages des fondateurs",
+        author: "Commission Histoire",
+        date: "10 Juin 2026",
+        views: 426,
+        image: "https://placehold.co/800x400/0a1f44/white?text=M%C3%A9moire+Vivante",
+        badge: "🤝 Communauté",
+        tags: ["mémoire", "témoignages", "histoire"],
+        content: `
+            <p>Le projet vise à recueillir les témoignages vidéo des membres fondateurs afin de préserver l'histoire de l'association.</p>
+            
+            <h3>Pourquoi participer ?</h3>
+            <p>Ces archives permettront de transmettre les valeurs et le parcours de la communauté aux générations futures.</p>
+        `,
+        comments: []
+    },
+    11: {
+        title: "Miss Bè-Kpota 2028 : Premier concours de beauté local",
+        author: "Commission Culture",
+        date: "1 Juillet 2026",
+        views: 521,
+        image: "https://placehold.co/800x400/ffc107/white?text=Miss+B%C3%A8-Kpota",
+        badge: "👑 Culture & Beauté",
+        tags: ["miss be-kpota", "concours beauté", "leadership"],
+        content: `
+            <p>Le concours Miss Bè-Kpota célèbrera l'élégance, l'intelligence et le leadership des jeunes filles de la paroisse.</p>
+            
+            <h3>Objectifs</h3>
+            <ul>
+                <li>Valoriser les talents féminins</li>
+                <li>Renforcer la confiance en soi</li>
+                <li>Promouvoir les valeurs locales</li>
+            </ul>
+        `,
+        comments: []
+    },
+    12: {
+        title: "Semaine du Jubilé 2028 : Programme des 7 jours exceptionnels",
+        author: "Comité de Pilotage",
+        date: "1 Août 2026",
+        views: 587,
+        image: "https://placehold.co/800x400/6f42c1/white?text=Semaine+Jubil%C3%A9",
+        badge: "🙏 Spiritualité",
+        tags: ["semaine jubilé", "conférences", "mega concert"],
+        content: `
+            <p>Découvrez le programme complet de la semaine culminante du Jubilé, avec des conférences et concerts mémorables.</p>
+            
+            <h3>Temps forts</h3>
+            <ul>
+                <li>Conférences spirituelles</li>
+                <li>Répétition solennelle</li>
+                <li>Mega Concert Anniversaire</li>
+            </ul>
+        `,
+        comments: []
     }
-    // Ajouter les autres articles ici...
 };
 
 // Variables globales
@@ -248,6 +426,7 @@ function filterAndDisplay() {
     // Réinitialiser la pagination
     currentPage = 1;
     updatePaginationDisplay(visibleArticles.length);
+    goToPage(currentPage);
 }
 
 function updatePaginationDisplay(totalArticles) {

@@ -292,7 +292,28 @@
             border-radius: var(--border-radius);
             padding: 20px;
             text-align: center;
+            -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
+        }
+
+        .hidden,
+        .admin-hidden,
+        .custom-votes-group {
+            display: none !important;
+        }
+
+        .logout-admin-btn {
+            background: var(--chorale-red);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .section-title-light {
+            color: white;
         }
 
         .stat-icon {
@@ -505,7 +526,7 @@
         <div class="password-form">
             <div class="password-input-group">
                 <input type="password" class="password-input" id="adminPassword" placeholder="Mot de passe" autocomplete="off">
-                <button type="button" class="toggle-password" id="toggleAdminPassword">
+                <button type="button" class="toggle-password" id="toggleAdminPassword" title="Afficher ou masquer le mot de passe" aria-label="Afficher ou masquer le mot de passe">
                     <i class="fas fa-eye"></i>
                 </button>
             </div>
@@ -513,11 +534,11 @@
                 <i class="fas fa-unlock"></i> Accéder
             </button>
         </div>
-        <div id="passwordMessage" class="message" style="display: none;"></div>
+        <div id="passwordMessage" class="message hidden"></div>
     </div>
 
     <!-- Interface Admin (cachée par défaut) -->
-    <div class="admin-container" id="adminInterface" style="display: none;">
+    <div class="admin-container admin-hidden" id="adminInterface">
         <!-- Header -->
         <div class="admin-header">
             <h1>
@@ -529,7 +550,7 @@
                 <i class="fas fa-user-shield"></i>
                 Connecté en tant que : Alex KOUEVI
             </div>
-            <button onclick="logoutAdmin()" style="background: var(--chorale-red); color: white; border: none; padding: 8px 15px; border-radius: 5px; margin-top: 10px; cursor: pointer;">
+            <button onclick="logoutAdmin()" class="logout-admin-btn">
                 <i class="fas fa-sign-out-alt"></i> Déconnexion
             </button>
         </div>
@@ -555,7 +576,7 @@
                         </select>
                     </div>
 
-                    <div class="form-group" id="customVotesGroup" style="display: none;">
+                    <div class="form-group custom-votes-group" id="customVotesGroup">
                         <label for="customVotes"><i class="fas fa-vote-yea"></i> Nombre de votes personnalisé</label>
                         <input type="number" id="customVotes" min="1" max="100" value="1">
                     </div>
@@ -611,7 +632,7 @@
 
             <!-- Section statistiques -->
             <div class="stats-section">
-                <h3 class="section-title" style="color: white;">
+                <h3 class="section-title section-title-light">
                     <i class="fas fa-chart-bar"></i>
                     Statistiques
                 </h3>

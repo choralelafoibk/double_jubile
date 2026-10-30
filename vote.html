@@ -473,6 +473,11 @@
                 <button class="btn btn-outline secret-reset hidden btn-with-top-margin" id="resetCandidatesBtn" title="Réinitialisation admin (visible seulement pour l'administrateur)">
                     <i class="fas fa-undo"></i> Réinitialiser les candidats
                 </button>
+                <!-- Bouton de test pour récupérer les stats depuis le backend (manuel) -->
+                <button class="btn btn-outline btn-with-top-margin" id="checkStatsBtn" title="Tester la connexion au backend">
+                    <i class="fas fa-server"></i> Tester stats backend
+                </button>
+                <div id="statsResult"></div>
                 <div class="auto-refresh">
                     <i class="fas fa-sync-alt"></i> Mise à jour automatique
                 </div>
@@ -625,7 +630,11 @@
                         </div>
                         
                         <div id="candidateSubmittedInfo" class="hidden"></div>
-                        <div id="candidateFormContainer" class="hidden">
+                            <div class="candidate-form-toggle-wrapper">
+                                <button id="toggleCandidateFormPreview" class="btn btn-outline" type="button">Afficher/Cacher formulaire 2028 (préview)</button>
+                                <button id="toggleCandidateDashboardPreview" class="btn btn-outline" type="button">Afficher/Cacher dashboard candidat (dev)</button>
+                            </div>
+                            <div id="candidateFormContainer" class="hidden">
                             <div class="form-card">
                                 <h4><i class="fas fa-file-signature"></i> Formulaire de candidature 2028</h4>
                                 <p>Remplissez ce formulaire pour devenir candidat officiel (frais d'inscription : 5 000 FCFA)</p>
@@ -634,22 +643,22 @@
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="candidateNom2028">Nom *</label>
-                                            <input type="text" id="candidateNom2028" readonly placeholder="Nom" title="Nom du candidat">
+                                            <input type="text" id="candidateNom2028" placeholder="Nom" title="Nom du candidat">
                                         </div>
                                         <div class="form-group">
                                             <label for="candidatePrenom2028">Prénom *</label>
-                                            <input type="text" id="candidatePrenom2028" readonly placeholder="Prénom" title="Prénom du candidat">
+                                            <input type="text" id="candidatePrenom2028" placeholder="Prénom" title="Prénom du candidat">
                                         </div>
                                     </div>
                     
                                     <div class="form-row">
                                         <div class="form-group">
                                             <label for="candidateEmail2028">Email *</label>
-                                            <input type="email" id="candidateEmail2028" readonly placeholder="Email" title="Email du candidat">
+                                            <input type="email" id="candidateEmail2028" placeholder="Email" title="Email du candidat">
                                         </div>
                                         <div class="form-group">
                                             <label for="candidateTelephone2028">Téléphone *</label>
-                                            <input type="tel" id="candidateTelephone2028" readonly placeholder="Téléphone" title="Téléphone du candidat">
+                                            <input type="tel" id="candidateTelephone2028" placeholder="Téléphone" title="Téléphone du candidat">
                                         </div>
                                     </div>
                     
@@ -837,28 +846,97 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="registerNom">Nom *</label>
-                        <input type="text" id="registerNom" required>
+                        <input type="text" id="registerNom">
                     </div>
                     <div class="form-group">
                         <label for="registerPrenom">Prénom *</label>
-                        <input type="text" id="registerPrenom" required>
+                        <input type="text" id="registerPrenom">
                     </div>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="registerNaissance">Date de naissance</label>
+                        <input type="date" id="registerNaissance">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerSexe">Sexe</label>
+                        <select id="registerSexe">
+                            <option value="">Sélectionnez</option>
+                            <option value="homme">Homme</option>
+                            <option value="femme">Femme</option>
+                            <option value="autre">Autre</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group">
-                    <label for="registerEmail">Email *</label>
-                    <input type="email" id="registerEmail" required>
+                    <label for="registerPhone">Téléphone WhatsApp *</label>
+                    <input type="tel" id="registerPhone">
+                </div>
+
+                <div class="form-group">
+                    <label for="registerEmail">Adresse e-mail *</label>
+                    <input type="email" id="registerEmail">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="registerVille">Ville</label>
+                        <input type="text" id="registerVille">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerNomScene">Nom artistique</label>
+                        <input type="text" id="registerNomScene">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerCategorie">Catégorie de talent</label>
+                    <select id="registerCategorie">
+                        <option value="">Sélectionnez</option>
+                        <option value="soliste">Soliste</option>
+                        <option value="duo">Duo</option>
+                        <option value="groupe">Groupe</option>
+                        <option value="instrumental">Instrumental</option>
+                        <option value="rap">Rap</option>
+                        <option value="gospel">Gospel</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerTalentDescription">Courte description du talent</label>
+                    <textarea id="registerTalentDescription" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="registerPhoto">Photo de profil</label>
+                    <input type="file" id="registerPhoto" accept="image/*">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="registerPassword">Mot de passe *</label>
+                        <input type="password" id="registerPassword">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirmer le mot de passe *</label>
+                        <input type="password" id="registerConfirmPassword">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="registerReglement">
+                        J'accepte le règlement du concours
+                    </label>
                 </div>
                 <div class="form-group">
-                    <label for="registerPhone">Téléphone *</label>
-                    <input type="tel" id="registerPhone" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword">Mot de passe *</label>
-                    <input type="password" id="registerPassword" required>
-                </div>
-                <div class="form-group">
-                    <label for="registerConfirmPassword">Confirmer le mot de passe *</label>
-                    <input type="password" id="registerConfirmPassword" required>
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="registerVraiInfos">
+                        Je confirme que toutes les informations fournies sont vraies
+                    </label>
                 </div>
                 
                 <div id="accountTypeInfo" class="hidden">

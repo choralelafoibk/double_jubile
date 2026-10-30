@@ -399,6 +399,21 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+/* Candidate form toggle wrapper (debug) */
+.candidate-form-toggle-wrapper {
+    margin-bottom: 10px;
+}
+
+.candidate-form-toggle-wrapper .btn + .btn {
+    margin-left: 8px;
+}
+
+/* Résultat des stats backend (remplace l'usage d'un style inline) */
+#statsResult {
+    margin-top: 10px;
+    color: #333;
+}
+
 .jury-photo {
     width: 80px;
     height: 80px;

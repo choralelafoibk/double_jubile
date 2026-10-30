@@ -1,4 +1,4 @@
-// vote.js - Version finale avec remplacement de la section après inscription
+// vote.js - Version complète avec Gmail pour les deux éditions
 
 // ============================================
 // CONFIGURATION
@@ -14,8 +14,13 @@ const CONFIG = {
     voteEndDate: new Date("2028-12-31T23:59:59").getTime(),
     WHATSAPP_NUMBER: "22879288209",
     GMAIL_ADDRESS: "choralelafoi@gmail.com",
-    PAYMENT_NUMBER: "22879288209"
+    PAYMENT_NUMBER: "22879288209",
+    T_MONEY_NUMBER: "91600945",
+    FLOOZ_NUMBER: "79288209"
 };
+
+// Clé secrète locale pour la réinitialisation
+CONFIG.resetSecret = 'JUBILE_RESET_2028';
 
 const PACK_MAPPING = {
     "simple": { name: "Vote Simple", votes: 1, price: 200 },
@@ -126,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     setupRealTimeUpdates();
     setupMobileMenu();
+    setupSecretResetObserver();
     
     // Sauvegarder la section d'inscription 2027 avant toute modification dynamique
     const inscriptionSection = document.querySelector('.inscription-candidat-section');
@@ -135,8 +141,19 @@ document.addEventListener('DOMContentLoaded', function() {
     
     switchEdition('2027');
     
-    const stats = TicketAPI.getStats();
-    console.log(`📊 Tickets disponibles: ${stats.available}/${stats.total}`);
+    // Ne pas appeler le backend par défaut
+    (async () => {
+        if (window.BACKEND_BASE) {
+            try {
+                const stats = await TicketAPI.getStats();
+                console.log(`📊 Tickets disponibles: ${stats.available}/${stats.total}`);
+            } catch (e) {
+                console.log('ℹ️ Impossible de récupérer les stats (backend)', e);
+            }
+        } else {
+            console.log('ℹ️ Backend non configuré — stats désactivées (mode hors-ligne)');
+        }
+    })();
 });
 
 function getDefaultCandidates() {
@@ -165,8 +182,8 @@ function initializeStorage() {
 function loadCandidates() {
     try {
         const saved = localStorage.getItem(CONFIG.candidatesKey);
-        const loaded = saved ? JSON.parse(saved) : [];
-        if (!Array.isArray(loaded) || loaded.length === 0) {
+        const loaded = saved ? JSON.parse(saved) : null;
+        if (!Array.isArray(loaded)) {
             const defaultCandidates = getDefaultCandidates();
             appState.candidates = defaultCandidates;
             localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(defaultCandidates));
@@ -261,13 +278,13 @@ function switchEdition(edition) {
 function showMessage(text, type, duration = 5000) {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
-    notification.innerHTML = `<div class="notification-content">${type === 'success' ? '✅' : '❌'} ${text}</div>`;
+    notification.innerHTML = `<div class="notification-content">${type === 'success' ? '✅' : type === 'info' ? 'ℹ️' : '❌'} ${text}</div>`;
     document.body.appendChild(notification);
     setTimeout(() => notification.remove(), duration);
 }
 
 // ============================================
-// FORMULAIRE CANDIDATURE 2027 - AVEC REMPLACEMENT DE SECTION
+// FORMULAIRE CANDIDATURE 2027
 // ============================================
 
 function showCandidatureForm() {
@@ -435,7 +452,7 @@ function showRecapCandidature2027(candidature) {
                 </div>
             </div>
             
-            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 25px;">
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 25px; flex-wrap: wrap;">
                 <button id="btnModifierCandidature2027" style="padding: 12px 30px; background: #e2e8f0; border: none; border-radius: 50px; cursor: pointer; font-weight: 600;">
                     <i class="fas fa-edit"></i> Modifier
                 </button>
@@ -467,95 +484,88 @@ function confirmAndSendCandidature2027() {
         return;
     }
     
+    // Sauvegarder dans localStorage
     const candidatures = JSON.parse(localStorage.getItem(CONFIG.candidatures2027Key) || '[]');
     candidatures.push(candidature);
     localStorage.setItem(CONFIG.candidatures2027Key, JSON.stringify(candidatures));
     
-    // Email
-    const subject = encodeURIComponent(`CANDIDATURE THE VOÏX 2027 - ${candidature.prenom} ${candidature.nom}`);
-    
+    // Préparer l'email
     const categories = {
         'soliste': 'Soliste',
         'duo': 'Duo',
         'groupe': 'Groupe'
     };
     
-    const emailBody = 
-        `CANDIDATURE THE VOÏX 2027
+    const genres = {
+        'homme': 'Homme',
+        'femme': 'Femme',
+        'autre': 'Autre'
+    };
+    
+    const subject = encodeURIComponent(`CANDIDATURE THE VOÏX 2027 - ${candidature.prenom} ${candidature.nom}`);
+    
+    const emailBody = `CANDIDATURE THE VOÏX 2027
 ==========================================
 
 👤 INFORMATIONS PERSONNELLES
 Nom : ${candidature.nom.toUpperCase()} ${candidature.prenom}
+Genre : ${genres[candidature.genre] || candidature.genre}
 Email : ${candidature.email}
 Téléphone : ${candidature.telephone}
 
 🎵 INFORMATIONS ARTISTIQUES
 Catégorie : ${categories[candidature.categorie] || candidature.categorie}
-Chant : ${candidature.chant}
+Chant à interpréter : ${candidature.chant}
 
 📝 Biographie :
 ${candidature.biographie}
 
-� ÉDITION GRATUITE 2027
-Aucune frais d'inscription n'est exigée pour cette édition.
+📅 ÉDITION GRATUITE 2027
+Aucun frais d'inscription n'est exigé pour cette édition.
 
 📞 Pour assistance : +228 ${CONFIG.PAYMENT_NUMBER}
 
 ---
-Soumis le : ${new Date().toLocaleString('fr-FR')}`;
-    
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONFIG.GMAIL_ADDRESS}&su=${subject}&body=${encodeURIComponent(emailBody)}`;
-    window.open(gmailUrl, '_blank');
-    
-    // Créer le compte utilisateur
-    const users = JSON.parse(localStorage.getItem(CONFIG.userStorageKey) || '[]');
-    const existingUser = users.find(u => u.email === candidature.email);
-    
-    if (!existingUser) {
-        const newUser = {
-            id: Date.now().toString(),
-            nom: candidature.nom,
-            prenom: candidature.prenom,
-            email: candidature.email,
-            phone: candidature.telephone,
-            password: btoa(candidature.password),
-            type: "CANDIDAT",
-            role: "candidat",
-            createdAt: new Date().toISOString(),
-            edition: "2027",
-            candidatureSoumise: true
-        };
-        users.push(newUser);
-        localStorage.setItem(CONFIG.userStorageKey, JSON.stringify(users));
-        appState.currentUser = newUser;
-        localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(newUser));
-    }
-    
-    // REMPLACER TOUTE LA SECTION PAR LE MESSAGE DE BIENVENUE
-    replaceSectionWithWelcomeMessage(candidature);
-    
-    appState.pendingCandidature = null;
-    
-    // Afficher le modal de confirmation
-    showPaymentReminderModal(candidature);
-}
+Candidature soumise le : ${new Date().toLocaleString('fr-FR')}`;
 
-function replaceSectionWithWelcomeMessage(candidature) {
-    console.log("🎉 Remplacement de la section par le message de bienvenue");
+    // Ouvrir Gmail pour envoyer la candidature
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONFIG.GMAIL_ADDRESS}&su=${subject}&body=${encodeURIComponent(emailBody)}`;
     
-    // Trouver le conteneur principal de la section d'inscription
-    const inscriptionSection = document.querySelector('.inscription-candidat-section');
-    if (!inscriptionSection) {
-        console.error("Section .inscription-candidat-section non trouvée");
-        return;
+    // Ouvrir Gmail dans un nouvel onglet
+    const win = window.open(gmailUrl, '_blank');
+    
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+        // Fallback si le popup est bloqué
+        const a = document.createElement('a');
+        a.href = gmailUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        console.log('Gmail URL (fallback):', gmailUrl);
+        showMessage("📧 Si Gmail ne s'ouvre pas, cliquez sur le lien dans la console", "info", 5000);
+    } else {
+        showMessage("📧 Ouverture de Gmail... Envoyez votre candidature", "info", 3000);
     }
     
     // Sauvegarder le contenu original pour pouvoir le restaurer lors de la déconnexion
-    if (!inscriptionSection.getAttribute('data-original-content')) {
+    const inscriptionSection = document.querySelector('.inscription-candidat-section');
+    if (inscriptionSection && !inscriptionSection.getAttribute('data-original-content')) {
         inscriptionSection.setAttribute('data-original-content', inscriptionSection.innerHTML);
     }
     
-    // Remplacer par le message de bienvenue
+    // Remplacer par le message de bienvenue APRÈS l'ouverture de Gmail
+    setTimeout(() => {
+        replaceWithWelcome2027(candidature);
+    }, 500);
+}
+
+function replaceWithWelcome2027(candidature) {
+    const inscriptionSection = document.querySelector('.inscription-candidat-section');
+    if (!inscriptionSection) return;
+    
     inscriptionSection.innerHTML = `
         <div class="welcome-card" style="background: linear-gradient(135deg, #1E3A8A, #EC4899); border-radius: 20px; padding: 40px; text-align: center; color: white; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
             <div style="font-size: 80px; margin-bottom: 20px;">
@@ -574,14 +584,16 @@ function replaceSectionWithWelcomeMessage(candidature) {
                 </ul>
             </div>
             
-            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+            <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
                 <button id="logoutFromWelcome2027" class="btn" style="background: white; color: #1E3A8A; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: bold;">
                     <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </button>
+                <a href="https://mail.google.com/" target="_blank" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white; padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: bold; text-decoration: none;">
+                    <i class="fas fa-envelope"></i> Voir ma candidature
+                </a>
             </div>
         </div>
         
-        <!-- Ajouter un style pour le bouton -->
         <style>
             .welcome-card .btn:hover {
                 transform: translateY(-2px);
@@ -597,25 +609,19 @@ function replaceSectionWithWelcomeMessage(candidature) {
             logout2027AndRestoreSection();
         });
     }
-    
-    // Mettre à jour l'affichage utilisateur
-    updateUserDisplay();
 }
 
 function logout2027AndRestoreSection() {
     console.log("🚪 Déconnexion et restauration de la section originale");
     
-    // Déconnecter l'utilisateur
     appState.currentUser = null;
     localStorage.removeItem(CONFIG.currentUserKey);
     
-    // Restaurer la section originale
     const inscriptionSection = document.querySelector('.inscription-candidat-section');
     if (inscriptionSection) {
         const originalContent = inscriptionSection.getAttribute('data-original-content');
         if (originalContent) {
             inscriptionSection.innerHTML = originalContent;
-            // Réattacher les événements après restauration
             reattach2027Events();
             retourBoutons2027();
         }
@@ -625,7 +631,6 @@ function logout2027AndRestoreSection() {
 }
 
 function reattach2027Events() {
-    // Réattacher les événements pour l'édition 2027 après restauration
     const btnInscription = document.getElementById('btnInscription2027');
     if (btnInscription) {
         btnInscription.removeEventListener('click', showCandidatureForm);
@@ -669,52 +674,6 @@ function reattach2027Events() {
     }
 }
 
-function showPaymentReminderModal(candidature) {
-    const modal = document.createElement('div');
-    modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.85);
-        z-index: 10001;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `;
-    
-    modal.innerHTML = `
-        <div style="background: white; border-radius: 30px; max-width: 450px; width: 90%; padding: 35px; text-align: center;">
-            <div style="font-size: 60px; margin-bottom: 15px;">🎉</div>
-            <h2 style="color: #1E3A8A;">Inscription confirmée !</h2>
-            <p style="margin: 15px 0;">Merci ${candidature.prenom} pour votre candidature.</p>
-            
-            <div style="background: #d1fae5; border-radius: 15px; padding: 20px; margin: 20px 0;">
-                <p><strong>✨ Inscription gratuite 2027</strong></p>
-                <p>Votre candidature est bien reçue pour l'édition 2027 gratuite.</p>
-                <p>Nous vous souhaitons beaucoup de réussite et une magnifique performance !</p>
-                <hr>
-                <p><i class="fas fa-phone"></i> Assistance : <strong>+228 ${CONFIG.PAYMENT_NUMBER}</strong></p>
-            </div>
-            
-            <button id="closeModalBtn" style="background: linear-gradient(135deg, #1E3A8A, #EC4899); color: white; border: none; padding: 12px 35px; border-radius: 50px; cursor: pointer; font-weight: bold;">
-                J'ai compris
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
-        modal.remove();
-    });
-    
-    setTimeout(() => {
-        if (document.body.contains(modal)) modal.remove();
-    }, 8000);
-}
-
 function handleLogin2027(event) {
     event.preventDefault();
     console.log("🔑 Connexion 2027");
@@ -735,13 +694,12 @@ function handleLogin2027(event) {
         localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(user));
         showMessage(`Bienvenue ${user.prenom} ${user.nom} !`, "success");
         
-        // Remplacer la section par le message de bienvenue
         const inscriptionSection = document.querySelector('.inscription-candidat-section');
         if (inscriptionSection && !inscriptionSection.getAttribute('data-original-content')) {
             inscriptionSection.setAttribute('data-original-content', inscriptionSection.innerHTML);
         }
         
-        replaceSectionWithWelcomeMessage({
+        replaceWithWelcome2027({
             prenom: user.prenom,
             nom: user.nom
         });
@@ -757,7 +715,7 @@ function logout2027() {
 }
 
 // ============================================
-// GESTION DES PACKS DE VOTES ET AUTRES FONCTIONS
+// GESTION DES PACKS DE VOTES
 // ============================================
 
 function handlePackSelection(packName, votes, price) {
@@ -1006,7 +964,6 @@ function checkLoggedInUser() {
             appState.currentUser = JSON.parse(savedUser);
             updateUserDisplay();
             
-            // Si c'est un candidat 2028, pré-remplir le formulaire
             if (appState.currentUser.type === "CANDIDAT" && appState.currentUser.edition === "2028") {
                 setTimeout(() => {
                     const nomField = document.getElementById('candidateNom2028');
@@ -1074,7 +1031,6 @@ function handleLogin() {
     }
     
     const users = getUsers();
-    // Rechercher l'utilisateur par email et mot de passe
     const user = users.find(u => u.email === email && u.password === btoa(password));
     
     if (!user) {
@@ -1082,36 +1038,28 @@ function handleLogin() {
         return;
     }
     
-    // Vérifier si le compte est pour l'édition 2028
     if (user.edition !== "2028") {
         showMessage("Ce compte n'est pas enregistré pour l'édition 2028", "error");
         return;
     }
     
-    // Connexion réussie
     appState.currentUser = user;
     localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(user));
     showMessage(`Bienvenue ${user.prenom} ${user.nom} !`, "success");
     hideAuthPage();
     
-    // Mettre à jour l'affichage selon le type de compte
     updateUserDisplay();
     
-    // Redirection spécifique selon le type de compte
     if (user.type === "VOTANT") {
-        console.log("✅ Votant connecté - redirection vers les packs de votes");
+        console.log("✅ Votant connecté");
         setTimeout(() => {
             const achatSection = document.getElementById('achat-votes-section');
             if (achatSection) {
                 achatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                achatSection.style.boxShadow = '0 0 20px rgba(30, 58, 138, 0.3)';
-                setTimeout(() => {
-                    achatSection.style.boxShadow = '';
-                }, 3000);
             }
         }, 500);
     } else if (user.type === "CANDIDAT") {
-        console.log("✅ Candidat connecté - redirection vers le formulaire de candidature");
+        console.log("✅ Candidat connecté");
         setTimeout(() => {
             const candidateDashboard = document.getElementById('candidateDashboard2028');
             if (candidateDashboard && candidateDashboard.style.display === 'block') {
@@ -1126,21 +1074,37 @@ function handleRegister() {
     
     const nom = document.getElementById('registerNom')?.value.trim();
     const prenom = document.getElementById('registerPrenom')?.value.trim();
-    const email = document.getElementById('registerEmail')?.value.trim();
+    const naissance = document.getElementById('registerNaissance')?.value || '';
+    const sexe = document.getElementById('registerSexe')?.value || '';
     const phone = document.getElementById('registerPhone')?.value.trim();
+    const email = document.getElementById('registerEmail')?.value.trim();
+    const ville = document.getElementById('registerVille')?.value.trim() || '';
+    const nomScene = document.getElementById('registerNomScene')?.value.trim() || '';
+    const categorie = document.getElementById('registerCategorie')?.value || '';
+    const talentDescription = document.getElementById('registerTalentDescription')?.value.trim() || '';
+    const photoInput = document.getElementById('registerPhoto');
+    const photoName = photoInput && photoInput.files && photoInput.files[0] ? photoInput.files[0].name : null;
     const password = document.getElementById('registerPassword')?.value;
     const confirmPassword = document.getElementById('registerConfirmPassword')?.value;
-    
+    const reglementAccepted = document.getElementById('registerReglement')?.checked || false;
+    const vraiInfos = document.getElementById('registerVraiInfos')?.checked || false;
+
     if (!nom || !prenom || !email || !phone || !password || !confirmPassword) {
-        showMessage("Veuillez remplir tous les champs", "error");
+        showMessage("Veuillez remplir tous les champs obligatoires", "error");
         return;
     }
-    
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showMessage("Veuillez entrer une adresse email valide", "error");
+        return;
+    }
+
     if (password !== confirmPassword) {
         showMessage("Les mots de passe ne correspondent pas", "error");
         return;
     }
-    
+
     if (password.length < 6) {
         showMessage("Le mot de passe doit contenir au moins 6 caractères", "error");
         return;
@@ -1152,7 +1116,6 @@ function handleRegister() {
         return;
     }
     
-    // Déterminer le type de compte (CANDIDAT ou VOTANT)
     let userType = "";
     let userRole = "";
     
@@ -1166,13 +1129,42 @@ function handleRegister() {
         showMessage("Veuillez sélectionner un type de compte", "error");
         return;
     }
+
+    // Si création d'un compte candidat, valider les champs spécifiques
+    if (appState.selectedRole === 'candidat') {
+        if (!naissance || !sexe || !ville || !nomScene || !categorie || !talentDescription) {
+            showMessage('Veuillez remplir tous les champs du profil candidat', 'error');
+            return;
+        }
+        if (!photoName) {
+            showMessage('Veuillez téléverser une photo de profil', 'error');
+            return;
+        }
+        if (!reglementAccepted) {
+            showMessage('Veuillez accepter le règlement du concours', 'error');
+            return;
+        }
+        if (!vraiInfos) {
+            showMessage('Veuillez confirmer que les informations sont exactes', 'error');
+            return;
+        }
+    }
     
     const newUser = {
         id: Date.now().toString(),
         nom: nom,
         prenom: prenom,
+        naissance: naissance || null,
+        sexe: sexe || null,
         email: email,
         phone: phone,
+        ville: ville || null,
+        nomScene: nomScene || null,
+        categorie: categorie || null,
+        talentDescription: talentDescription || null,
+        photoName: photoName || null,
+        reglementAccepted: reglementAccepted,
+        vraiInfos: vraiInfos,
         password: btoa(password),
         type: userType,
         role: userRole,
@@ -1185,28 +1177,56 @@ function handleRegister() {
     saveUsers(users);
     appState.currentUser = newUser;
     localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(newUser));
+
+    if (newUser.type === 'CANDIDAT' && newUser.edition === '2028') {
+        try {
+            const candidates = JSON.parse(localStorage.getItem(CONFIG.candidatesKey) || '[]');
+            const exists = candidates.find(c => c.email === newUser.email || c.id === newUser.id);
+            if (!exists) {
+                const placeholder = {
+                    id: newUser.id,
+                    nom: newUser.nom || '',
+                    prenom: newUser.prenom || '',
+                    naissance: newUser.naissance || null,
+                    sexe: newUser.sexe || null,
+                    email: newUser.email || newUser.phone || null,
+                    phone: newUser.phone || null,
+                    ville: newUser.ville || null,
+                    nomScene: newUser.nomScene || null,
+                    categorie: newUser.categorie || null,
+                    talentDescription: newUser.talentDescription || null,
+                    votes: 0,
+                    photo: newUser.photoName || null,
+                    status: 'pending',
+                    edition: '2028',
+                    createdAt: newUser.createdAt
+                };
+                candidates.push(placeholder);
+                localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(candidates));
+                appState.candidates = candidates;
+                updateCandidateSelect();
+                updateClassement();
+            }
+        } catch (e) {
+            console.error('Erreur lors de l ajout du candidat placeholder:', e);
+        }
+    }
     
     showMessage(`Compte ${userType} créé avec succès pour l'édition 2028 !`, "success");
     hideAuthPage();
     
-    // Mettre à jour l'affichage
     updateUserDisplay();
     
-    // Redirection selon le type de compte
     if (userType === "VOTANT") {
-        console.log("✅ Compte votant créé - redirection vers les packs de votes");
+        console.log("✅ Compte votant créé");
         setTimeout(() => {
             const achatSection = document.getElementById('achat-votes-section');
             if (achatSection) {
                 achatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                achatSection.style.boxShadow = '0 0 20px rgba(30, 58, 138, 0.3)';
-                setTimeout(() => {
-                    achatSection.style.boxShadow = '';
-                }, 3000);
             }
         }, 500);
     } else if (userType === "CANDIDAT") {
-        console.log("✅ Compte candidat créé - le formulaire de candidature est affiché");
+        console.log("✅ Compte candidat créé");
         setTimeout(() => {
             const candidateDashboard = document.getElementById('candidateDashboard2028');
             if (candidateDashboard && candidateDashboard.style.display === 'block') {
@@ -1214,7 +1234,304 @@ function handleRegister() {
             }
         }, 500);
     }
+
+    setTimeout(() => {
+        showMessage(`Félicitations ${newUser.prenom} ${newUser.nom} ! Votre compte a été créé.`, 'success', 6000);
+    }, 700);
 }
+
+// ============================================
+// GESTIONNAIRE CANDIDATURE 2028 - AVEC PAIEMENT
+// ============================================
+
+function handleCandidateApplication2028(event) {
+    // Empêcher le rechargement de la page
+    event.preventDefault();
+    event.stopPropagation();
+    
+    console.log("📝 TRAITEMENT CANDIDATURE 2028 DÉMARRÉ");
+    
+    // Récupérer tous les champs du formulaire 2028
+    const nomInput = document.getElementById('candidateNom2028');
+    const prenomInput = document.getElementById('candidatePrenom2028');
+    const emailInput = document.getElementById('candidateEmail2028');
+    const phoneInput = document.getElementById('candidateTelephone2028');
+    const genreInput = document.getElementById('candidateGenre2028');
+    const categorieInput = document.getElementById('candidateCategorie2028');
+    const chantInput = document.getElementById('candidateChant2028');
+    const bioInput = document.getElementById('candidateBiographie2028');
+    const photoInput = document.getElementById('candidatePhoto2028');
+    const reglementInput = document.getElementById('candidateReglement2028');
+
+    // Vérifier que tous les éléments existent
+    if (!nomInput || !prenomInput || !emailInput || !phoneInput || !genreInput || 
+        !categorieInput || !chantInput || !bioInput || !reglementInput) {
+        console.error("❌ Certains champs du formulaire sont introuvables");
+        showMessage("Erreur technique : champs du formulaire manquants", "error");
+        return;
+    }
+
+    // Récupérer les valeurs
+    const nom = nomInput.value.trim() || '';
+    const prenom = prenomInput.value.trim() || '';
+    const email = emailInput.value.trim() || '';
+    const phone = phoneInput.value.trim() || '';
+    const genre = genreInput.value || '';
+    const categorie = categorieInput.value || '';
+    const chant = chantInput.value.trim() || '';
+    const bio = bioInput.value.trim() || '';
+    const reglement = reglementInput.checked;
+
+    // Vérification des champs obligatoires
+    if (!nom || !prenom || !email || !phone || !genre || !categorie || !chant || !bio) {
+        showMessage('Veuillez remplir tous les champs obligatoires', 'error');
+        return;
+    }
+
+    if (!reglement) {
+        showMessage('Veuillez accepter le règlement du concours', 'error');
+        return;
+    }
+
+    // Vérification de l'email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showMessage('Veuillez entrer un email valide', 'error');
+        return;
+    }
+
+    // Vérification du téléphone
+    const phoneRegex = /^[0-9]{8,}$/;
+    const cleanPhone = phone.replace(/[\s\-+()]/g, '');
+    if (!phoneRegex.test(cleanPhone)) {
+        showMessage('Veuillez entrer un numéro de téléphone valide (8 chiffres minimum)', 'error');
+        return;
+    }
+
+    // Créer l'objet candidat
+    const candidate = {
+        id: Date.now().toString(),
+        nom: nom,
+        prenom: prenom,
+        email: email,
+        phone: phone,
+        genre: genre,
+        categorie: categorie,
+        chant: chant,
+        biographie: bio,
+        photoName: photoInput && photoInput.files && photoInput.files[0] ? photoInput.files[0].name : null,
+        votes: 0,
+        status: 'submitted',
+        edition: '2028',
+        frais_inscription: 5000,
+        createdAt: new Date().toISOString()
+    };
+
+    console.log("✅ Candidat créé:", candidate);
+
+    // Sauvegarder dans localStorage
+    try {
+        const candidates = JSON.parse(localStorage.getItem(CONFIG.candidatesKey) || '[]');
+        candidates.push(candidate);
+        localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(candidates));
+        appState.candidates = candidates;
+        updateCandidateSelect();
+        updateClassement();
+        console.log("✅ Candidat sauvegardé dans localStorage");
+    } catch (e) {
+        console.error('❌ Erreur en sauvegardant le candidat 2028:', e);
+        showMessage('Erreur lors de la sauvegarde', 'error');
+        return;
+    }
+
+    // ============================================
+    // PRÉPARATION ET ENVOI DE L'EMAIL VERS GMAIL
+    // ============================================
+    
+    console.log("📧 Préparation de l'email pour Gmail...");
+    
+    // Mapping des catégories et genres
+    const categories = {
+        'soliste': '🎤 Soliste',
+        'duo': '👥 Duo',
+        'groupe': '👨‍👩‍👧‍👦 Groupe'
+    };
+    
+    const genres = {
+        'homme': 'Homme',
+        'femme': 'Femme',
+        'autre': 'Autre'
+    };
+
+    // Construction du sujet
+    const subject = encodeURIComponent(`CANDIDATURE THE VOÏX 2028 - ${prenom} ${nom}`);
+
+    // Construction du corps de l'email avec informations de paiement
+    const emailBody = `CANDIDATURE THE VOÏX 2028 (Édition avec votes payants)
+=========================================================
+
+👤 INFORMATIONS PERSONNELLES
+─────────────────────────────
+Nom complet : ${nom.toUpperCase()} ${prenom}
+Genre : ${genres[genre] || genre}
+Email : ${email}
+Téléphone : ${phone}
+
+🎵 INFORMATIONS ARTISTIQUES
+─────────────────────────────
+Catégorie : ${categories[categorie] || categorie}
+Chant à interpréter : "${chant}"
+
+📝 BIOGRAPHIE MUSICALE
+─────────────────────────────
+${bio}
+
+🖼️ PHOTO DU CANDIDAT
+─────────────────────────────
+${candidate.photoName || 'Non fournie'}
+
+💰 FRAIS D'INSCRIPTION : 5 000 FCFA
+─────────────────────────────
+📱 MODES DE PAIEMENT ACCEPTÉS :
+
+1️⃣ T-MONEY
+   📞 Numéro : 91 60 09 45
+   💰 Montant : 5 000 FCFA
+
+2️⃣ FLOOZ
+   📞 Numéro : 79 28 82 09
+   💰 Montant : 5 000 FCFA
+
+📸 PROCÉDURE DE PAIEMENT :
+1. Effectuez le transfert de 5 000 FCFA via T-money ou Flooz
+2. Faites une capture d'écran de la confirmation de paiement
+3. Envoyez la capture sur WhatsApp au : +228 79 28 82 09
+
+⚠️ IMPORTANT :
+- Votre candidature ne sera validée qu'après réception du paiement
+- Un reçu vous sera envoyé par email après validation
+- Délai de validation : 24 à 48 heures
+
+📋 STATUT DE LA CANDIDATURE
+─────────────────────────────
+✅ Candidature soumise le : ${new Date().toLocaleString('fr-FR', { 
+    day: '2-digit', 
+    month: '2-digit', 
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+})}
+
+📞 Pour assistance : +228 79 28 82 09 (WhatsApp)
+
+---
+Ce message a été généré automatiquement depuis le site The Voïx.
+Veuillez conserver une copie de cet email pour vos archives.`;
+
+    // Construction de l'URL Gmail
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONFIG.GMAIL_ADDRESS}&su=${subject}&body=${encodeURIComponent(emailBody)}`;
+    
+    console.log("📧 URL Gmail générée avec succès");
+    
+    // Ouvrir Gmail dans un nouvel onglet
+    const win = window.open(gmailUrl, '_blank');
+    
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+        // Fallback si le popup est bloqué
+        console.log("⚠️ Popup bloqué, utilisation du fallback");
+        const a = document.createElement('a');
+        a.href = gmailUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        console.log('📧 Gmail URL (fallback):', gmailUrl);
+        showMessage("📧 Si Gmail ne s'ouvre pas, cliquez sur le lien dans la console", "info", 5000);
+    } else {
+        console.log("✅ Gmail ouvert avec succès");
+        showMessage("📧 Ouverture de Gmail... Envoyez votre candidature", "info", 3000);
+    }
+
+    // Afficher le message de bienvenue APRÈS l'ouverture de Gmail
+    setTimeout(() => {
+        console.log("🎉 Affichage du message de bienvenue 2028");
+        
+        // Remplacer le formulaire par le message de bienvenue
+        const candidateFormContainer = document.getElementById('candidateFormContainer');
+        if (candidateFormContainer) {
+            candidateFormContainer.innerHTML = `
+                <div class="welcome-card" style="background: linear-gradient(135deg, #1E3A8A, #EC4899); border-radius: 20px; padding: 40px; text-align: center; color: white; box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+                    <div style="font-size: 80px; margin-bottom: 20px;">
+                        <i class="fas fa-microphone-alt"></i>
+                    </div>
+                    <h2 style="font-size: 28px; margin-bottom: 10px;">Félicitations ${prenom} ${nom} !</h2>
+                    <p style="font-size: 18px; margin-bottom: 20px; opacity: 0.95;">Votre candidature pour l'édition 2028 a bien été reçue.</p>
+                    
+                    <div style="background: rgba(255,255,255,0.15); border-radius: 15px; padding: 20px; margin: 20px 0; text-align: left;">
+                        <h3 style="margin-bottom: 15px;"><i class="fas fa-star"></i> Prochaines étapes :</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 12px;">✅ Votre dossier a été transmis à l'équipe d'organisation.</li>
+                            <li style="margin-bottom: 12px; background: rgba(255,215,0,0.2); padding: 10px; border-radius: 8px;">
+                                <strong>💰 Paiement des frais d'inscription (5 000 FCFA)</strong><br>
+                                <span style="font-size: 14px;">
+                                    📱 T-money : 91 60 09 45<br>
+                                    📱 Flooz : 79 28 82 09
+                                </span>
+                            </li>
+                            <li style="margin-bottom: 12px;">📸 Envoyez la capture de paiement sur WhatsApp au +228 79 28 82 09</li>
+                            <li>📩 Vous recevrez une confirmation sous 48h.</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px; flex-wrap: wrap;">
+                        <a href="https://mail.google.com/" target="_blank" class="btn" style="background: rgba(255,255,255,0.2); color: white; border: 2px solid white; padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: bold; text-decoration: none;">
+                            <i class="fas fa-envelope"></i> Voir ma candidature
+                        </a>
+                        <a href="https://wa.me/22879288209" target="_blank" class="btn" style="background: #25D366; color: white; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: bold; text-decoration: none;">
+                            <i class="fab fa-whatsapp"></i> Envoyer le paiement
+                        </a>
+                        <button id="logoutFromWelcome2028" class="btn" style="background: white; color: #1E3A8A; border: none; padding: 12px 30px; border-radius: 50px; cursor: pointer; font-weight: bold;">
+                            <i class="fas fa-sign-out-alt"></i> Déconnexion
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Attacher l'événement de déconnexion
+            const logoutBtn = document.getElementById('logoutFromWelcome2028');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    handleLogout();
+                    location.reload();
+                });
+            }
+            console.log("✅ Message de bienvenue affiché");
+        } else {
+            console.warn("⚠️ candidateFormContainer non trouvé");
+        }
+        
+        // Marquer que la candidature a été soumise
+        if (appState.currentUser) {
+            appState.currentUser.candidatureSoumise = true;
+            const users = getUsers();
+            const userIndex = users.findIndex(u => u.id === appState.currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex].candidatureSoumise = true;
+                saveUsers(users);
+            }
+            localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(appState.currentUser));
+        }
+        
+        showMessage(`✅ Candidature envoyée. Merci ${prenom} ${nom} !`, 'success', 6000);
+        console.log("🎉 Processus terminé avec succès");
+    }, 500);
+}
+
+// ============================================
+// AFFICHAGE UTILISATEUR ET DÉCONNEXION
+// ============================================
 
 function updateUserDisplay() {
     const authLoginSection = document.getElementById('authLoginSection2028');
@@ -1222,20 +1539,17 @@ function updateUserDisplay() {
     const voterDashboard = document.getElementById('voterDashboard2028');
     
     if (!appState.currentUser) {
-        // Aucun utilisateur connecté - afficher la section de connexion/inscription
         if (authLoginSection) authLoginSection.style.display = 'block';
         if (candidateDashboard) candidateDashboard.style.display = 'none';
         if (voterDashboard) voterDashboard.style.display = 'none';
         console.log("👤 Aucun utilisateur connecté");
     } else {
-        // Utilisateur connecté - cacher la section d'authentification
         if (authLoginSection) authLoginSection.style.display = 'none';
         
         const userType = appState.currentUser.type;
         console.log(`👤 Utilisateur connecté : ${appState.currentUser.prenom} ${appState.currentUser.nom} (${userType})`);
         
         if (userType === "VOTANT") {
-            // Afficher le dashboard votant
             if (voterDashboard) {
                 voterDashboard.style.display = 'block';
                 const voterName = document.getElementById('voterName');
@@ -1245,14 +1559,12 @@ function updateUserDisplay() {
             if (candidateDashboard) candidateDashboard.style.display = 'none';
         } 
         else if (userType === "CANDIDAT") {
-            // Afficher le dashboard candidat
             if (candidateDashboard) {
                 candidateDashboard.style.display = 'block';
                 const candidateName = document.getElementById('candidateName');
                 if (candidateName) candidateName.textContent = `${appState.currentUser.prenom} ${appState.currentUser.nom}`;
                 console.log("✅ Dashboard CANDIDAT affiché");
                 
-                // Pré-remplir les champs du formulaire candidat avec les infos du compte
                 const nomField = document.getElementById('candidateNom2028');
                 const prenomField = document.getElementById('candidatePrenom2028');
                 const emailField = document.getElementById('candidateEmail2028');
@@ -1278,6 +1590,10 @@ function handleLogout() {
     }
 }
 
+// ============================================
+// RÉINITIALISATION DES CANDIDATS (ADMIN)
+// ============================================
+
 function resetCandidatesToDefault() {
     const defaultCandidates = getDefaultCandidates();
     localStorage.setItem(CONFIG.candidatesKey, JSON.stringify(defaultCandidates));
@@ -1285,6 +1601,69 @@ function resetCandidatesToDefault() {
     updateCandidateSelect();
     updateClassement();
     showMessage('✅ Tous les candidats ont été réinitialisés', 'success');
+}
+
+function clearAllCandidates() {
+    localStorage.setItem(CONFIG.candidatesKey, JSON.stringify([]));
+    appState.candidates = [];
+    updateCandidateSelect();
+    updateClassement();
+    showMessage('✅ Tous les candidats ont été effacés', 'success');
+}
+
+function secureResetCandidates() {
+    try {
+        const input = prompt('Code de réinitialisation (administrateur) :');
+        if (input === null) return;
+        if (String(input).trim() === String(CONFIG.resetSecret)) {
+            const action = prompt("Code validé. Tapez 'DEFAUT' pour remettre les candidats par défaut, ou 'EFFACER' pour supprimer tous les candidats définitivement.");
+            if (!action) {
+                showMessage('Action annulée', 'error');
+                return;
+            }
+            const act = String(action).trim().toUpperCase();
+            if (act === 'DEFAUT') {
+                if (confirm('Confirmer : remettre la liste par défaut (4 candidats) ?')) {
+                    resetCandidatesToDefault();
+                }
+            } else if (act === 'EFFACER') {
+                if (confirm('CONFIRMATION FINALE : effacer tous les candidats définitivement ?')) {
+                    clearAllCandidates();
+                }
+            } else {
+                showMessage('Action non reconnue. Opération annulée.', 'error');
+            }
+        } else {
+            showMessage('Code incorrect ou non autorisé', 'error', 4000);
+            console.warn('Tentative de réinitialisation avec code incorrect');
+        }
+    } catch (e) {
+        console.error('Erreur lors de la réinitialisation sécurisée :', e);
+        showMessage('Erreur lors de la réinitialisation', 'error');
+    }
+}
+
+async function checkBackendStats() {
+    const resultEl = document.getElementById('statsResult');
+    if (!window.BACKEND_BASE) {
+        const msg = 'Backend non configuré. Définir window.BACKEND_BASE (ex: http://localhost:3000) puis réessayer.';
+        if (resultEl) resultEl.textContent = msg;
+        showMessage('Backend non configuré — voir la console', 'error', 5000);
+        console.log(msg);
+        return;
+    }
+
+    try {
+        const stats = await TicketAPI.getStats();
+        const text = `📊 Tickets disponibles: ${stats.available}/${stats.total} — utilisés: ${stats.used || 0}`;
+        if (resultEl) resultEl.textContent = text;
+        showMessage('✅ Stats récupérées', 'success', 3000);
+        console.log('Stats backend:', stats);
+    } catch (e) {
+        if (resultEl) resultEl.textContent = 'Erreur récupération stats: ' + (e.message || e);
+        showMessage('Erreur récupération des stats', 'error', 5000);
+        console.error('Erreur getStats():', e);
+    }
 }
 
 // ============================================
@@ -1323,6 +1702,50 @@ function setupEventListeners() {
     document.querySelectorAll('.logout-btn').forEach(btn => {
         btn.addEventListener('click', handleLogout);
     });
+
+    // Debug: toggle preview of candidate form (useful during development)
+    const toggleCandidateFormPreviewBtn = document.getElementById('toggleCandidateFormPreview');
+    if (toggleCandidateFormPreviewBtn) {
+        toggleCandidateFormPreviewBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const candidateFormContainer = document.getElementById('candidateFormContainer');
+            if (!candidateFormContainer) {
+                console.warn('⚠️ candidateFormContainer introuvable');
+                return;
+            }
+            if (candidateFormContainer.classList.contains('hidden')) {
+                candidateFormContainer.classList.remove('hidden');
+                candidateFormContainer.style.display = 'block';
+                console.log('🔧 Aperçu du formulaire 2028 activé');
+            } else {
+                candidateFormContainer.classList.add('hidden');
+                candidateFormContainer.style.display = '';
+                console.log('🔧 Aperçu du formulaire 2028 désactivé');
+            }
+        });
+    }
+
+    // Debug: toggle entire candidate dashboard visibility (dev only)
+    const toggleCandidateDashboardBtn = document.getElementById('toggleCandidateDashboardPreview');
+    if (toggleCandidateDashboardBtn) {
+        toggleCandidateDashboardBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const candidateDashboard = document.getElementById('candidateDashboard2028');
+            if (!candidateDashboard) {
+                console.warn('⚠️ candidateDashboard2028 introuvable');
+                return;
+            }
+            if (candidateDashboard.classList.contains('hidden')) {
+                candidateDashboard.classList.remove('hidden');
+                candidateDashboard.style.display = 'block';
+                console.log('🔧 Dashboard candidat affiché (dev)');
+            } else {
+                candidateDashboard.classList.add('hidden');
+                candidateDashboard.style.display = '';
+                console.log('🔧 Dashboard candidat caché (dev)');
+            }
+        });
+    }
     
     const validateVoteBtn = document.getElementById('validateVoteBtn');
     if (validateVoteBtn) {
@@ -1331,7 +1754,18 @@ function setupEventListeners() {
     
     const resetCandidatesBtn = document.getElementById('resetCandidatesBtn');
     if (resetCandidatesBtn) {
-        resetCandidatesBtn.addEventListener('click', resetCandidatesToDefault);
+        resetCandidatesBtn.addEventListener('click', secureResetCandidates);
+        if (document.body.classList.contains('show-secret-reset')) {
+            resetCandidatesBtn.classList.remove('hidden');
+        }
+    }
+
+    const checkStatsBtn = document.getElementById('checkStatsBtn');
+    if (checkStatsBtn) {
+        checkStatsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            checkBackendStats();
+        });
     }
     
     const cancelVoteBtn = document.getElementById('cancelVoteBtn');
@@ -1417,6 +1851,42 @@ function setupEventListeners() {
     if (logoutBtn2027) {
         logoutBtn2027.addEventListener('click', logout2027);
     }
+
+    // Formulaire candidature 2028 - AVEC RÉATTACHEMENT
+    const candidateAppForm = document.getElementById('candidateApplicationForm2028');
+    if (candidateAppForm) {
+        console.log("🔗 Formulaire 2028 trouvé, attachement de l'événement");
+        
+        // Supprimer les anciens écouteurs en clonant
+        const newForm = candidateAppForm.cloneNode(true);
+        candidateAppForm.parentNode.replaceChild(newForm, candidateAppForm);
+        
+        // Ajouter le nouvel écouteur
+        newForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log("🔄 FORMULAIRE 2028 SOUMIS !");
+            handleCandidateApplication2028(e);
+        });
+        console.log("✅ Événement 2028 attaché avec succès");
+    } else {
+        console.warn("⚠️ Formulaire 2028 non trouvé au chargement");
+        // Réessayer après un délai
+        setTimeout(() => {
+            const form = document.getElementById('candidateApplicationForm2028');
+            if (form) {
+                console.log("🔗 Formulaire 2028 trouvé après délai");
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log("🔄 FORMULAIRE 2028 SOUMIS (après délai)");
+                    handleCandidateApplication2028(e);
+                });
+            } else {
+                console.error("❌ Formulaire 2028 toujours non trouvé");
+            }
+        }, 2000);
+    }
     
     const modalClose = document.getElementById('ticketModalClose');
     if (modalClose) {
@@ -1453,7 +1923,49 @@ function setupEventListeners() {
     console.log("🎉 Tous les événements configurés !");
 }
 
+// ============================================
+// OBSERVER POUR LE BOUTON SECRET RESET
+// ============================================
+
+function setupSecretResetObserver() {
+    try {
+        const resetBtn = document.getElementById('resetCandidatesBtn');
+        if (!resetBtn) return;
+
+        if (document.body.classList.contains('show-secret-reset')) {
+            resetBtn.classList.remove('hidden');
+        } else {
+            resetBtn.classList.add('hidden');
+        }
+
+        const observer = new MutationObserver(mutations => {
+            for (const m of mutations) {
+                if (m.type === 'attributes' && m.attributeName === 'class') {
+                    if (document.body.classList.contains('show-secret-reset')) {
+                        resetBtn.classList.remove('hidden');
+                    } else {
+                        resetBtn.classList.add('hidden');
+                    }
+                }
+            }
+        });
+
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        window._secretResetObserver = observer;
+    } catch (e) {
+        console.error('Erreur setupSecretResetObserver:', e);
+    }
+}
+
+// ============================================
+// EXPOSITION DES FONCTIONS POUR LA CONSOLE
+// ============================================
+
 window.TicketAPI = TicketAPI;
 window.appState = appState;
 window.showCandidatureForm = showCandidatureForm;
 window.validateTicketAndVote = validateTicketAndVote;
+window.resetCandidatesToDefault = resetCandidatesToDefault;
+window.clearAllCandidates = clearAllCandidates;
+window.secureResetCandidates = secureResetCandidates;
+window.checkBackendStats = checkBackendStats;

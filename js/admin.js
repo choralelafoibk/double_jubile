@@ -10,168 +10,9 @@ const ADMIN_CONFIG = {
 
 const BACKEND_BASE = window.BACKEND_BASE || 'http://localhost:3000';
 
-// ============================================
-// VERROUILLAGE APRÈS 5 MINUTES D'INACTIVITÉ
-// ============================================
-
 let adminInactivityTimer;
-const INACTIVITY_TIMEOUT = 5 * 60 * 1000; // 5 minutes en millisecondes
+const INACTIVITY_TIMEOUT = 5 * 60 * 1000;
 
-// Réinitialiser le timer d'inactivité
-function resetAdminInactivityTimer() {
-    console.log("🔄 Timer d'inactivité réinitialisé");
-    
-    // Arrêter le timer existant
-    clearTimeout(adminInactivityTimer);
-    
-    // Démarrer un nouveau timer seulement si l'admin est connecté
-    if (adminState.isAuthenticated) {
-        adminInactivityTimer = setTimeout(() => {
-            console.log("⏰ Timer déclenché - Vérification inactivité...");
-            checkAndLockAdmin();
-        }, INACTIVITY_TIMEOUT);
-    }
-}
-
-// Vérifier et verrouiller l'admin
-function checkAndLockAdmin() {
-    if (adminState.isAuthenticated) {
-        console.log("🔒 Verrouillage automatique après 5 minutes d'inactivité");
-        
-        // Sauvegarder l'état si nécessaire
-        saveAdminData();
-        
-        // Déconnecter
-        adminState.isAuthenticated = false;
-        
-        // Cacher l'interface admin
-        document.getElementById('adminInterface').style.display = 'none';
-        
-        // Afficher la protection par mot de passe
-        const passwordProtection = document.getElementById('passwordProtection');
-        passwordProtection.style.display = 'block';
-        
-        // Message d'information
-        const messageDiv = document.getElementById('passwordMessage');
-        if (messageDiv) {
-            messageDiv.className = 'message error show';
-            messageDiv.innerHTML = `
-                <div style="text-align: center;">
-                    <h4 style="margin-bottom: 10px;">🔒 Session expirée</h4>
-                    <p>Déconnexion automatique après 5 minutes d'inactivité</p>
-                    <p><small>Pour votre sécurité, veuillez vous reconnecter</small></p>
-                </div>
-            `;
-            messageDiv.style.display = 'block';
-            
-            // Cacher le message après 5 secondes
-            setTimeout(() => {
-                messageDiv.style.display = 'none';
-            }, 5000);
-        }
-        
-        // Réinitialiser le champ mot de passe
-        const passwordInput = document.getElementById('adminPassword');
-        if (passwordInput) {
-            passwordInput.value = '';
-            passwordInput.focus();
-        }
-    }
-}
-
-// Configurer la surveillance d'activité
-function setupAdminActivityMonitoring() {
-    console.log("👁️ Surveillance d'activité activée");
-    
-    // ÉVÉNEMENTS qui réinitialisent le timer (activité utilisateur)
-    const activityEvents = [
-        'mousemove', 'mousedown', 'click', 'scroll',
-        'keypress', 'keydown', 'touchstart', 'touchmove'
-    ];
-    
-    // Ajouter des écouteurs pour tous les événements d'activité
-    activityEvents.forEach(event => {
-        document.addEventListener(event, resetAdminInactivityTimer, { passive: true });
-    });
-    
-    // Événements de focus (quand l'utilisateur revient sur l'onglet)
-    document.addEventListener('visibilitychange', function() {
-        if (!document.hidden && adminState.isAuthenticated) {
-            console.log("📱 Utilisateur de retour sur l'onglet");
-            resetAdminInactivityTimer();
-        }
-    });
-    
-    // Démarrer le timer initial
-    resetAdminInactivityTimer();
-    
-    // Afficher une notification discrète
-    showAdminMessage('🔒 Sécurité activée : Verrouillage après 5 minutes d\'inactivité', 'info', 3000);
-}
-
-// MODIFIER initializeAdmin() :
-function initializeAdmin() {
-    checkAdminAuth();
-    setupAdminEventListeners();
-    
-    if (adminState.isAuthenticated) {
-        loadAdminData();
-        setupAdminActivityMonitoring(); // AJOUTER CETTE LIGNE
-    }
-}
-
-// MODIFIER handleAdminLogin() pour démarrer la surveillance après connexion :
-function handleAdminLogin() {
-    const passwordInput = document.getElementById('adminPassword');
-    const messageDiv = document.getElementById('passwordMessage');
-    
-    if (!passwordInput) return;
-    
-    const password = passwordInput.value.trim();
-    
-    if (password === ADMIN_CONFIG.password) {
-        adminState.isAuthenticated = true;
-        
-        // NE PAS SAUVEGARDER dans localStorage (pas de session permanente)
-        
-        showAdminInterface();
-        loadAdminData();
-        
-        // DÉMARRER LA SURVEILLANCE APRÈS CONNEXION
-        setupAdminActivityMonitoring();
-        
-        if (messageDiv) {
-            messageDiv.className = 'message success show';
-            messageDiv.innerHTML = `
-                <div style="text-align: center;">
-                    <h4 style="margin-bottom: 10px;">🔓 Connexion réussie</h4>
-                    <p>Sécurité activée : Verrouillage après 5 minutes d'inactivité</p>
-                </div>
-            `;
-            messageDiv.style.display = 'block';
-            setTimeout(() => messageDiv.style.display = 'none', 3000);
-        }
-    } else {
-        // ... code existant pour erreur ...
-    }
-}
-
-// MODIFIER logoutAdmin() pour nettoyer le timer :
-window.logoutAdmin = function() {
-    // Arrêter le timer d'inactivité
-    clearTimeout(adminInactivityTimer);
-    
-    adminState.isAuthenticated = false;
-    
-    // Nettoyer le localStorage
-    localStorage.removeItem('theVoixAdminAuth');
-    localStorage.removeItem('theVoixAdminAuthTime');
-    
-    // Recharger la page pour réinitialiser tout
-    location.reload();
-};
-
-// État de l'application
 let adminState = {
     isAuthenticated: false,
     codesByPack: {
@@ -190,148 +31,96 @@ let adminState = {
     }
 };
 
-// Initialisation
-document.addEventListener('DOMContentLoaded', function() {
-    initializeAdmin();
-});
+function resetAdminInactivityTimer() {
+    clearTimeout(adminInactivityTimer);
 
-function initializeAdmin() {
-    checkAdminAuth();
-    setupAdminEventListeners();
-    
     if (adminState.isAuthenticated) {
-        loadAdminData();
+        adminInactivityTimer = setTimeout(() => {
+            checkAndLockAdmin();
+        }, INACTIVITY_TIMEOUT);
     }
 }
 
-// AJOUTER CES FONCTIONS
-let inactivityTimer;
+function checkAndLockAdmin() {
+    if (!adminState.isAuthenticated) return;
 
-function resetInactivityTimer() {
-    clearTimeout(inactivityTimer);
-    if (adminState.isAuthenticated) {
-        inactivityTimer = setTimeout(logoutAdminForInactivity, 5 * 60 * 1000); // 5 minutes
+    saveAdminData();
+    adminState.isAuthenticated = false;
+
+    const adminInterface = document.getElementById('adminInterface');
+    const passwordProtection = document.getElementById('passwordProtection');
+    if (adminInterface) adminInterface.style.display = 'none';
+    if (passwordProtection) passwordProtection.style.display = 'block';
+
+    const messageDiv = document.getElementById('passwordMessage');
+    if (messageDiv) {
+        messageDiv.className = 'message error show';
+        messageDiv.innerHTML = `
+            <div style="text-align: center;">
+                <h4 style="margin-bottom: 10px;">🔒 Session expirée</h4>
+                <p>Déconnexion automatique après 5 minutes d'inactivité</p>
+                <p><small>Pour votre sécurité, veuillez vous reconnecter</small></p>
+            </div>
+        `;
+        messageDiv.style.display = 'block';
+        setTimeout(() => {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    const passwordInput = document.getElementById('adminPassword');
+    if (passwordInput) {
+        passwordInput.value = '';
+        passwordInput.focus();
     }
 }
 
-function logoutAdminForInactivity() {
-    if (adminState.isAuthenticated) {
-        showAdminMessage('Session expirée après 5 minutes d\'inactivité', 'error');
-        logoutAdmin();
-    }
-}
+function setupAdminActivityMonitoring() {
+    const activityEvents = ['mousemove', 'mousedown', 'click', 'scroll', 'keypress', 'keydown', 'touchstart', 'touchmove'];
 
-function setupActivityMonitoring() {
-    // Redémarrer le timer sur toute interaction
-    ['mousemove', 'keypress', 'click', 'scroll'].forEach(event => {
-        document.addEventListener(event, resetInactivityTimer);
+    activityEvents.forEach(event => {
+        document.addEventListener(event, resetAdminInactivityTimer, { passive: true });
     });
-    
-    // Démarrer le timer initial
-    resetInactivityTimer();
+
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden && adminState.isAuthenticated) {
+            resetAdminInactivityTimer();
+        }
+    });
+
+    resetAdminInactivityTimer();
 }
 
-// MODIFIER initializeAdmin() pour inclure :
+function checkAdminAuth() {
+    const passwordProtection = document.getElementById('passwordProtection');
+    const adminInterface = document.getElementById('adminInterface');
+    if (passwordProtection) passwordProtection.style.display = 'block';
+    if (adminInterface) adminInterface.style.display = 'none';
+
+    const passwordInput = document.getElementById('adminPassword');
+    if (passwordInput) {
+        setTimeout(() => passwordInput.focus(), 100);
+    }
+}
+
+function showPasswordProtection() {
+    checkAdminAuth();
+}
+
+function showAdminInterface() {
+    const passwordProtection = document.getElementById('passwordProtection');
+    const adminInterface = document.getElementById('adminInterface');
+    if (passwordProtection) passwordProtection.style.display = 'none';
+    if (adminInterface) adminInterface.style.display = 'block';
+    updateAdminStats();
+}
+
 function initializeAdmin() {
     checkAdminAuth();
     setupAdminEventListeners();
     setupAutoLogout();
-    setupActivityMonitoring(); // AJOUTER CETTE LIGNE
-    
-    if (adminState.isAuthenticated) {
-        loadAdminData();
-    }
-}
+    setupAdminActivityMonitoring();
 
-function checkAdminAuth() {
-    // Toujours montrer la protection par mot de passe
-    // Pas de sauvegarde de session dans localStorage
-    showPasswordProtection();
-}
-
-function showPasswordProtection() {
-    document.getElementById('passwordProtection').style.display = 'block';
-    document.getElementById('adminInterface').style.display = 'none';
-    
-    setTimeout(() => {
-        const passwordInput = document.getElementById('adminPassword');
-        if (passwordInput) passwordInput.focus();
-    }, 100);
-}
-
-function showAdminInterface() {
-    document.getElementById('passwordProtection').style.display = 'none';
-    document.getElementById('adminInterface').style.display = 'block';
-    updateAdminStats();
-}
-
-function setupAdminEventListeners() {
-    // Mot de passe
-    document.getElementById('submitPassword')?.addEventListener('click', handleAdminLogin);
-    document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') handleAdminLogin();
-    });
-    
-    // Type de code
-    document.getElementById('codeType')?.addEventListener('change', function() {
-        const isCustom = this.value === 'custom';
-        document.getElementById('customVotesGroup').style.display = isCustom ? 'block' : 'none';
-        updatePriceByType(this.value);
-    });
-    
-    // Génération de codes
-    document.getElementById('generateCodesBtn')?.addEventListener('click', generateCodes);
-    
-    // Actions
-    document.getElementById('exportBtn')?.addEventListener('click', exportToPDF);
-    document.getElementById('printBtn')?.addEventListener('click', printCodes);
-    document.getElementById('clearBtn')?.addEventListener('click', clearAllCodes);
-    document.getElementById('resetVotesBtn')?.addEventListener('click', resetAllCandidatesVotes);
-    
-    // Fermeture du modal
-    document.querySelector('.modal-close')?.addEventListener('click', () => {
-        document.getElementById('confirmationModal').classList.remove('active');
-    });
-
-    // AJOUTER CET ÉCOUTEUR
-    document.getElementById('toggleAdminPassword')?.addEventListener('click', function() {
-        const passwordInput = document.getElementById('adminPassword');
-        const icon = this.querySelector('i');
-    
-        if (passwordInput.type === 'password') {
-            passwordInput.type = 'text';
-            icon.className = 'fas fa-eye-slash';
-        } else {
-            passwordInput.type = 'password';
-            icon.className = 'fas fa-eye';
-        }
-    });
-}
-
-function setupAutoLogout() {
-    // Déconnexion quand l'utilisateur quitte la page
-    window.addEventListener('beforeunload', function() {
-        if (adminState.isAuthenticated) {
-            // Ne rien sauvegarder - déconnexion implicite
-        }
-    });
-    
-    // Déconnexion quand la page est cachée (onglet changé)
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden && adminState.isAuthenticated) {
-            // Optionnel : déconnecter quand l'onglet n'est plus actif
-            // adminState.isAuthenticated = false;
-            // showPasswordProtection();
-        }
-    });
-}
-
-// Appelez cette fonction dans initializeAdmin()
-function initializeAdmin() {
-    checkAdminAuth();
-    setupAdminEventListeners();
-    setupAutoLogout(); // <-- AJOUTEZ CETTE LIGNE
-    
     if (adminState.isAuthenticated) {
         loadAdminData();
     }
@@ -340,24 +129,25 @@ function initializeAdmin() {
 function handleAdminLogin() {
     const passwordInput = document.getElementById('adminPassword');
     const messageDiv = document.getElementById('passwordMessage');
-    
+
     if (!passwordInput) return;
-    
+
     const password = passwordInput.value.trim();
-    
+
     if (password === ADMIN_CONFIG.password) {
         adminState.isAuthenticated = true;
-        
-        // NE PAS SAUVEGARDER dans localStorage
-        // localStorage.setItem('theVoixAdminAuth', 'true');
-        // localStorage.setItem('theVoixAdminAuthTime', Date.now().toString());
-        
         showAdminInterface();
         loadAdminData();
-        
+        setupAdminActivityMonitoring();
+
         if (messageDiv) {
             messageDiv.className = 'message success show';
-            messageDiv.textContent = 'Authentification réussie !';
+            messageDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <h4 style="margin-bottom: 10px;">🔓 Connexion réussie</h4>
+                    <p>Sécurité activée : Verrouillage après 5 minutes d'inactivité</p>
+                </div>
+            `;
             messageDiv.style.display = 'block';
             setTimeout(() => messageDiv.style.display = 'none', 3000);
         }
@@ -367,12 +157,81 @@ function handleAdminLogin() {
             messageDiv.textContent = 'Mot de passe incorrect';
             messageDiv.style.display = 'block';
         }
-        
+
         passwordInput.value = '';
         passwordInput.focus();
         passwordInput.style.borderColor = 'var(--chorale-red)';
         setTimeout(() => passwordInput.style.borderColor = '', 1000);
     }
+}
+
+window.logoutAdmin = function() {
+    clearTimeout(adminInactivityTimer);
+    adminState.isAuthenticated = false;
+    localStorage.removeItem('theVoixAdminAuth');
+    localStorage.removeItem('theVoixAdminAuthTime');
+    location.reload();
+};
+
+function setupAutoLogout() {
+    window.addEventListener('beforeunload', function() {
+        if (adminState.isAuthenticated) {
+            // Déconnexion implicite - pas de persistance
+        }
+    });
+
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden && adminState.isAuthenticated) {
+            // Optionnel : garder la session active tant que la page est visible
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initializeAdmin();
+});
+
+function resetInactivityTimer() {
+    resetAdminInactivityTimer();
+}
+
+function setupAdminEventListeners() {
+    document.getElementById('submitPassword')?.addEventListener('click', handleAdminLogin);
+    document.getElementById('adminPassword')?.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') handleAdminLogin();
+    });
+
+    document.getElementById('codeType')?.addEventListener('change', function() {
+        const isCustom = this.value === 'custom';
+        const customVotesGroup = document.getElementById('customVotesGroup');
+        if (customVotesGroup) customVotesGroup.style.display = isCustom ? 'block' : 'none';
+        updatePriceByType(this.value);
+    });
+
+    document.getElementById('generateCodesBtn')?.addEventListener('click', generateCodes);
+    document.getElementById('exportBtn')?.addEventListener('click', exportToPDF);
+    document.getElementById('printBtn')?.addEventListener('click', printCodes);
+    document.getElementById('clearBtn')?.addEventListener('click', clearAllCodes);
+    document.getElementById('resetVotesBtn')?.addEventListener('click', resetAllCandidatesVotes);
+
+    document.querySelector('.modal-close')?.addEventListener('click', () => {
+        const modal = document.getElementById('confirmationModal');
+        if (modal) modal.classList.remove('active');
+    });
+
+    document.getElementById('toggleAdminPassword')?.addEventListener('click', function() {
+        const passwordInput = document.getElementById('adminPassword');
+        const icon = this.querySelector('i');
+        if (!passwordInput || !icon) return;
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            passwordInput.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    });
 }
 
 // DÉFINITIONS DES PACKS CORRECTES
@@ -1313,18 +1172,22 @@ async function resetAllCandidatesVotes() {
 
 function loadAdminData() {
     try {
-        const savedData = localStorage.getItem(ADMIN_CONFIG.storageKey);
+        const primarySavedData = localStorage.getItem(ADMIN_CONFIG.storageKey);
+        const sharedKey = typeof SHARED_CONFIG !== 'undefined' ? SHARED_CONFIG.adminKey : null;
+        const fallbackSavedData = sharedKey ? localStorage.getItem(sharedKey) : null;
+        const savedData = primarySavedData || fallbackSavedData;
+
         if (savedData) {
             const parsed = JSON.parse(savedData);
             adminState.codesByPack = parsed.codesByPack || {
                 simple: [], decouverte: [], passion: [], jubile: [], custom: []
             };
-            
+
             const usedCodesData = localStorage.getItem(ADMIN_CONFIG.usedCodesKey);
             if (usedCodesData) {
                 adminState.usedCodes = JSON.parse(usedCodesData);
             }
-            
+
             syncWithVoteData();
             updateCodesDisplay();
             updateAdminStats();
@@ -1335,10 +1198,9 @@ function loadAdminData() {
     }
 }
 
-// Dans admin.js - Assurez-vous que cette fonction existe et est correcte
 function saveAdminData() {
     console.log("💾 Sauvegarde des données admin...");
-    
+
     try {
         const dataToSave = {
             codesByPack: adminState.codesByPack,
@@ -1346,40 +1208,22 @@ function saveAdminData() {
             totalStats: adminState.stats,
             version: "3.0"
         };
-        
-        // UTILISER LA BONNE CLÉ - doit correspondre avec vote.js
-        localStorage.setItem('theVoixAdminCodes', JSON.stringify(dataToSave));
-        
+
+        localStorage.setItem(ADMIN_CONFIG.storageKey, JSON.stringify(dataToSave));
+        if (typeof SHARED_CONFIG !== 'undefined') {
+            localStorage.setItem(SHARED_CONFIG.adminKey, JSON.stringify(dataToSave));
+        }
+
         console.log("✅ Données sauvegardées avec succès");
-        
-        // Mettre à jour l'affichage
+
         setTimeout(() => {
             updateCodesDisplay();
             updateAdminStats();
         }, 100);
-        
+
     } catch (e) {
         console.error("❌ Erreur sauvegarde:", e);
         showAdminMessage('Erreur lors de la sauvegarde', 'error');
-    }
-}
-
-// MODIFIER loadAdminData() aussi :
-function loadAdminData() {
-    try {
-        const savedData = localStorage.getItem(SHARED_CONFIG.adminKey);
-        if (savedData) {
-            const parsed = JSON.parse(savedData);
-            adminState.codesByPack = parsed.codesByPack || {
-                simple: [], decouverte: [], passion: [], jubile: [], custom: []
-            };
-            
-            updateCodesDisplay();
-            updateAdminStats();
-        }
-    } catch (e) {
-        console.error('Erreur:', e);
-        showAdminMessage('Erreur de chargement', 'error');
     }
 }
 
